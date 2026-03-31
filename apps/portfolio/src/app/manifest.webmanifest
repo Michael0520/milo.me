@@ -1,0 +1,11 @@
+{
+  "short_name": "Michael Lo",
+  "name": "Michael Lo",
+  "description": "Web Frontend Engineer based in Taiwan.",
+  "icons": [],
+  "id": "/?utm_source=pwa",
+  "start_url": "/?utm_source=pwa",
+  "display": "standalone",
+  "scope": "/",
+  "screenshots": []
+}
