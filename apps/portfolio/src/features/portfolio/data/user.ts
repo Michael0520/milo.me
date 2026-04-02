@@ -15,7 +15,7 @@ export const USER: User = {
   ],
   address: "Taipei, Taiwan",
   phoneNumber: "",
-  email: "bWljaGFlbDg2MDUwMkBnbWFpbC5jb20=", // michael860502@gmail.com base64 encoded
+  email: "bWljaGFlbDg2MDUyMEBnbWFpbC5jb20=", // michael860520@gmail.com base64 encoded
   website: "https://www.michaello.me",
   jobTitle: "Web Frontend Engineer",
   jobs: [],

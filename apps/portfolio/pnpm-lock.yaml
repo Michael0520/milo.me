@@ -126,6 +126,9 @@ importers:
       schema-dts:
         specifier: ^1.1.5
         version: 1.1.5
+      shaders:
+        specifier: ^2.5.82
+        version: 2.5.82(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       sharp:
         specifier: ^0.34.3
         version: 0.34.3
@@ -5791,6 +5794,29 @@ packages:
     resolution: {integrity: sha512-j2xlma8PtYLbhvA612/MPOrDYsEp0DIiU1gC0BEbSBqWR6mBgwiKpA21Juq9tSswgUeIfxoUzZX8c7YwcL3ncA==}
     hasBin: true
 
+  shaders@2.5.82:
+    resolution: {integrity: sha512-l2C/WfC6JHD+XzO4vZ5ouSU74PmvxEnPyZB9zY5reBTf8Mr5TiqL4uB43Xoi+DnTXEY0/4oCHkMBe7qkglPKVA==}
+    peerDependencies:
+      pixi.js: ^8.0.0
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+      solid-js: ^1.8.0
+      svelte: ^5
+      vue: ^3.0.0
+    peerDependenciesMeta:
+      pixi.js:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      solid-js:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+
   sharp@0.34.3:
     resolution: {integrity: sha512-eX2IQ6nFohW4DbvHIOLRB3MHFpYqaqvXd3Tp5e/T/dSH83fxaNJQRvDMhASmkNTsNTVF2/OOopzRCt7xokgPfg==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
@@ -6076,6 +6102,9 @@ packages:
 
   third-party-capital@1.0.20:
     resolution: {integrity: sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA==}
+
+  three@0.183.2:
+    resolution: {integrity: sha512-di3BsL2FEQ1PA7Hcvn4fyJOlxRRgFYBpMTcyOgkwJIaDOdJMebEFPA+t98EvjuljDx4hNulAGwF6KIjtwI5jgQ==}
 
   throttle-debounce@3.0.1:
     resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==}
@@ -12999,6 +13028,13 @@ snapshots:
       - supports-color
       - typescript
 
+  shaders@2.5.82(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      three: 0.183.2
+    optionalDependencies:
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+
   sharp@0.34.3:
     dependencies:
       color: 4.2.3
@@ -13390,6 +13426,8 @@ snapshots:
       - react-native-b4a
 
   third-party-capital@1.0.20: {}
+
+  three@0.183.2: {}
 
   throttle-debounce@3.0.1: {}
 

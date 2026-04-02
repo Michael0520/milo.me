@@ -13,11 +13,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <JotaiProvider>
       <ThemeProvider
-        enableSystem
         disableTransitionOnChange
         enableColorScheme
         storageKey="theme"
-        defaultTheme="system"
+        forcedTheme="dark"
+        defaultTheme="dark"
         attribute="class"
       >
         <AppProgressProvider

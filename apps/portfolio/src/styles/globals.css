@@ -287,6 +287,10 @@
     text-rendering: optimizeLegibility;
   }
 
+  .dark body {
+    background: transparent;
+  }
+
   /* Custom scrollbar styling. Thanks @shadcn-ui */
   ::-webkit-scrollbar {
     width: 5px;
