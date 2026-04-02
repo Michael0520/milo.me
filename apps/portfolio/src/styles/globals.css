@@ -327,6 +327,49 @@
   }
 }
 
+/* Animated ML logo — antfu-style stroke-dasharray with mask */
+@keyframes ml-grow {
+  0% {
+    stroke-dashoffset: 1px;
+    stroke-dasharray: 0px 3000px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  40% {
+    stroke-dasharray: 3000px 0px;
+  }
+  85% {
+    stroke-dasharray: 3000px 0px;
+  }
+  95%,
+  to {
+    stroke-dasharray: 0px 3000px;
+  }
+}
+
+.ml-mark-stroke {
+  stroke-dashoffset: 1px;
+  stroke-dasharray: 999px 0px;
+  animation: ml-grow 10s ease infinite forwards;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ml-mark-stroke {
+    animation: none !important;
+    stroke-dasharray: unset !important;
+  }
+}
+
+@media print {
+  .ml-mark-stroke {
+    animation: none !important;
+    stroke-dasharray: unset !important;
+  }
+}
+
 @layer components {
   [data-rehype-pretty-code-figure] {
     @apply relative my-[1.25em] rounded-xl bg-code text-code-foreground;
