@@ -19,13 +19,13 @@ export const USER: User = {
   website: "https://www.michaello.me",
   jobTitle: "Web Frontend Engineer",
   jobs: [],
-  about: `
-- **Full Stack Web Developer** passionate about creating efficient, high-performance solutions with modern web technologies.
-- Skilled in **TypeScript**, **React**, **Next.js**, and modern front-end technologies; building high-quality, user-centric web applications.
-- Advocate for **Clean Architecture** and **Domain-Driven Design** in TypeScript projects.
-- Active open source contributor on [GitHub](https://github.com/Michael0520).
-- Creator of [Beautiful Code Snap](https://github.com/Michael0520/beautiful-code-snap): a beautiful code snapshot generator for developers.
-`,
+  about: `Hello, World! I am Michael Lo — a Full Stack Web Developer passionate about creating efficient, high-performance solutions with modern web technologies.
+
+I specialize in building modern web applications using Next.js, TypeScript, and React. I believe in working smarter, not harder — my philosophy is simple: avoid reinventing the wheel and learn technologies that make tomorrow a little lazier.
+
+As someone who values efficiency, I find repetitive tasks frustrating. That's why I'm passionate about learning new technologies that automate workflows and free up time for what matters.
+
+Coding is my way of making tomorrow a little lazier.`,
   avatar: "/images/avatar.webp",
   ogImage: "/images/og-image.png",
   namePronunciationUrl: "",
