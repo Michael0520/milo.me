@@ -1,5 +1,7 @@
 "use client";
 
+import { useId } from "react";
+
 /**
  * Animated "ML" logo mark using SVG mask + stroke-dasharray animation.
  * Technique from https://antfu.me/posts/animated-svg-logo
@@ -14,11 +16,12 @@ const STROKE_PATH = `M 275 468 C 300 478 340 482 390 466 C 420 454 434 448 440 4
 const VIEWBOX = "240 380 560 280";
 
 export function MLMarkAnimated(props: React.ComponentProps<"svg">) {
+  const maskId = useId().replace(/:/g, "");
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox={VIEWBOX} aria-hidden {...props}>
       <defs>
         <mask
-          id="ml-mask"
+          id={maskId}
           maskUnits="userSpaceOnUse"
           x="240"
           y="380"
@@ -29,24 +32,16 @@ export function MLMarkAnimated(props: React.ComponentProps<"svg">) {
           <path d={MASK_PATH} fill="white" />
         </mask>
       </defs>
-      <g mask="url(#ml-mask)">
+      <g mask={`url(#${maskId})`}>
         <path
           className="ml-mark-stroke"
           d={STROKE_PATH}
           stroke="currentColor"
-          strokeWidth="3"
+          strokeWidth="28"
           strokeLinecap="round"
           fill="none"
         />
       </g>
-    </svg>
-  );
-}
-
-export function MLMark(props: React.ComponentProps<"svg">) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox={VIEWBOX} aria-hidden {...props}>
-      <path d={MASK_PATH} fill="currentColor" />
     </svg>
   );
 }

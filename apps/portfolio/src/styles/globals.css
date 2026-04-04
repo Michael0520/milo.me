@@ -333,18 +333,13 @@
     0% {
       stroke-dashoffset: 1px;
       stroke-dasharray: 0px 3000px;
-      opacity: 0;
     }
-    10% {
-      opacity: 1;
-    }
-    40% {
+    50% {
       stroke-dasharray: 3000px 0px;
     }
-    85% {
+    75% {
       stroke-dasharray: 3000px 0px;
     }
-    95%,
     to {
       stroke-dasharray: 0px 3000px;
     }
@@ -353,7 +348,7 @@
   .ml-mark-stroke {
     stroke-dashoffset: 1px;
     stroke-dasharray: 3000px 0px;
-    animation: ml-grow 10s ease infinite forwards;
+    animation: ml-grow 6s ease-in-out infinite;
     transform-origin: center;
   }
 
