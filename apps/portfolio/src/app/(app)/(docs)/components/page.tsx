@@ -1,8 +1,10 @@
 import { PlusIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { Button } from "@/components/base/ui/button";
+
 import {
   Dialog,
   DialogClose,
@@ -56,6 +58,7 @@ npx shadcn@latest registry add ${registryConfig.namespace}
 \`\`\``;
 
 export default function Page() {
+  if (process.env.NODE_ENV !== "development") notFound();
   const posts = getDocsByCategory("components");
 
   return (

@@ -3,6 +3,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/base/ui/tooltip";
@@ -103,6 +104,7 @@ export default async function Page({
     slug: string;
   }>;
 }) {
+  if (process.env.NODE_ENV !== "development") notFound();
   const slug = (await params).slug;
   const doc = getDocBySlug(slug);
 

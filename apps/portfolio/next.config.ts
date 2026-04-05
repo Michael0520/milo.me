@@ -41,11 +41,6 @@ const nextConfig: NextConfig = {
         destination: "/:section/theme-switcher",
         permanent: true,
       },
-      {
-        source: "/testimonials",
-        destination: "/wall-of-love",
-        permanent: true,
-      },
     ];
   },
   async rewrites() {

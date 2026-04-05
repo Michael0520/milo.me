@@ -74,8 +74,12 @@ export default function Page() {
         <TechStack />
         <Separator />
 
-        <Components />
-        <Separator />
+        {process.env.NODE_ENV === "development" && (
+          <>
+            <Components />
+            <Separator />
+          </>
+        )}
 
         <Blog />
         <Separator />

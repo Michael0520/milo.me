@@ -3,17 +3,14 @@
 import { useRouter } from "@bprogress/next/app";
 import { useCommandState } from "cmdk";
 import {
-  AwardIcon,
-  BookmarkIcon,
   BoxIcon,
-  BriefcaseBusinessIcon,
-  CircleCheckBigIcon,
   CornerDownLeftIcon,
   DownloadIcon,
   FileTextIcon,
   LayersIcon,
   MoonStarIcon,
   MousePointer2Icon,
+  PresentationIcon,
   RssIcon,
   SunMediumIcon,
   TextInitialIcon,
@@ -58,6 +55,24 @@ type CommandLinkItem = {
   openInNewTab?: boolean;
 };
 
+const DEV_MENU_LINKS: CommandLinkItem[] =
+  process.env.NODE_ENV === "development"
+    ? [
+        {
+          title: "Components",
+          href: "/components",
+          icon: <Icons.react />,
+          shortcut: "GC",
+        },
+        {
+          title: "Blocks",
+          href: "/blocks",
+          icon: <Icons.gridView />,
+          shortcut: "GB",
+        },
+      ]
+    : [];
+
 const MENU_LINKS: CommandLinkItem[] = [
   {
     title: "Home",
@@ -65,35 +80,18 @@ const MENU_LINKS: CommandLinkItem[] = [
     icon: <ChanhDaiMark />,
     shortcut: "GH",
   },
+  ...DEV_MENU_LINKS,
   {
-    title: "Components",
-    href: "/components",
-    icon: <Icons.react />,
-    shortcut: "GC",
-  },
-  {
-    title: "Blocks",
-    href: "/blocks",
-    icon: <Icons.gridView />,
-    shortcut: "GB",
+    title: "Talks",
+    href: "/talks",
+    icon: <PresentationIcon />,
+    shortcut: "GT",
   },
   {
     title: "Blog",
     href: "/blog",
     icon: <Icons.news />,
     shortcut: "GL",
-  },
-  {
-    title: "Sponsors",
-    href: "/sponsors",
-    icon: <Icons.favourite />,
-    shortcut: "GS",
-  },
-  {
-    title: "Wall of Love",
-    href: "/wall-of-love",
-    icon: <Icons.bookHeart />,
-    shortcut: "GW",
   },
 ];
 
@@ -109,29 +107,9 @@ const PORTFOLIO_LINKS: CommandLinkItem[] = [
     icon: <LayersIcon />,
   },
   {
-    title: "Experience",
-    href: "/#experience",
-    icon: <BriefcaseBusinessIcon />,
-  },
-  {
     title: "Projects",
     href: "/#projects",
     icon: <BoxIcon />,
-  },
-  {
-    title: "Honors & Awards",
-    href: "/#awards",
-    icon: <AwardIcon />,
-  },
-  {
-    title: "Certifications",
-    href: "/#certs",
-    icon: <CircleCheckBigIcon />,
-  },
-  {
-    title: "Bookmarks",
-    href: "/#bookmarks",
-    icon: <BookmarkIcon />,
   },
   {
     title: "Download vCard",
@@ -321,19 +299,23 @@ export function CommandMenu({
             onLinkSelect={handleOpenLink}
           />
 
-          <CommandLinkGroup
-            heading="Components"
-            links={componentLinks}
-            fallbackIcon={<Icons.react />}
-            onLinkSelect={handleOpenLink}
-          />
+          {process.env.NODE_ENV === "development" && (
+            <>
+              <CommandLinkGroup
+                heading="Components"
+                links={componentLinks}
+                fallbackIcon={<Icons.react />}
+                onLinkSelect={handleOpenLink}
+              />
 
-          <CommandLinkGroup
-            heading="Blocks"
-            links={blockLinks}
-            fallbackIcon={<Icons.gridView />}
-            onLinkSelect={handleOpenLink}
-          />
+              <CommandLinkGroup
+                heading="Blocks"
+                links={blockLinks}
+                fallbackIcon={<Icons.gridView />}
+                onLinkSelect={handleOpenLink}
+              />
+            </>
+          )}
 
           <CommandLinkGroup
             heading="Blog"

@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { notFound } from "next/navigation";
 
 import { BlockDisplay } from "@/app/(preview)/components/block-display";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,7 @@ const FEATURED_BLOCKS = [
 ];
 
 export default function BlocksPage() {
+  if (process.env.NODE_ENV !== "development") notFound();
   return (
     <>
       {FEATURED_BLOCKS.map((name) => (
