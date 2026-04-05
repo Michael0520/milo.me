@@ -3,11 +3,22 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-const geistSemiBold = readFileSync(join(process.cwd(), "src/assets/fonts/Geist-SemiBold.ttf"));
+function loadFont(filename: string) {
+  const paths = [
+    join(process.cwd(), "src/assets/fonts", filename),
+    join(process.cwd(), "apps/portfolio/src/assets/fonts", filename),
+  ];
+  for (const p of paths) {
+    try {
+      return readFileSync(p);
+    } catch {}
+  }
+  throw new Error(`Font not found: ${filename}`);
+}
 
-const geistMonoRegular = readFileSync(
-  join(process.cwd(), "src/assets/fonts/GeistMono-Regular.ttf"),
-);
+const geistSemiBold = loadFont("Geist-SemiBold.ttf");
+
+const geistMonoRegular = loadFont("GeistMono-Regular.ttf");
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
