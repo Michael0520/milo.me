@@ -4,7 +4,6 @@ export type Talk = {
   date: string;
   description?: string;
   tags?: string[];
-  image?: string;
-  event?: string;
+  event: string;
   location?: string;
 };

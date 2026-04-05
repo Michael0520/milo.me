@@ -8,7 +8,6 @@ export const TALKS: Talk[] = [
     description:
       "From Traditional Debugging to Context Engineering - The Changing Role of Engineers",
     tags: ["ai", "react-grab", "context-engineering", "developer-workflow"],
-    image: "https://www.michaello.me/images/meetup-2025/cover.png",
     event: "Code for Taiwan Summit 2025",
     location: "Taiwan",
   },
@@ -19,7 +18,6 @@ export const TALKS: Talk[] = [
     description:
       "From tool selection to real-world implementation, how Monorepo becomes core infrastructure for modern frontend teams.",
     tags: ["monorepo", "toolchain", "nx", "turborepo", "oxlint", "ai"],
-    image: "https://www.michaello.me/images/jsdc-2025/4.png",
     event: "JSDC 2025",
     location: "Taiwan",
   },
@@ -30,7 +28,6 @@ export const TALKS: Talk[] = [
     description:
       "A comprehensive guide to selecting the right tools for monorepo management and exploring the OXC (Oxidation Compiler) bundler.",
     tags: ["monorepo", "toolchain", "oxc", "frontend"],
-    image: "https://www.michaello.me/images/jsdc-meetup-2025/3.png",
     event: "JSDC 小聚",
     location: "Taiwan",
   },

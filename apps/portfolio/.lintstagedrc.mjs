@@ -8,7 +8,7 @@ const buildEslintCommand = (filenames) =>
  * @type {import('lint-staged').Configuration}
  */
 const lintStagedConfig = {
-  "*.{js,jsx,ts,tsx}": [buildEslintCommand, "prettier --write"],
+  "!(public/slides/**)*.{js,jsx,ts,tsx}": [buildEslintCommand, "prettier --write"],
   "*.mdx": "prettier --write",
 };
 
