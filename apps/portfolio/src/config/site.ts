@@ -31,6 +31,10 @@ const DEV_NAV: NavItem[] =
 export const MAIN_NAV: NavItem[] = [
   ...DEV_NAV,
   {
+    title: "Talks",
+    href: "/talks",
+  },
+  {
     title: "Blog",
     href: "/blog",
   },

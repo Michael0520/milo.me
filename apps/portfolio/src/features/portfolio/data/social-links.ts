@@ -13,4 +13,16 @@ export const SOCIAL_LINKS: SocialLink[] = [
     subtitle: "michaello.dev",
     href: "https://www.instagram.com/michaello.dev/",
   },
+  {
+    icon: "/images/link-icons/threads.svg",
+    title: "Threads",
+    subtitle: "michaello.dev",
+    href: "https://www.threads.net/@michaello.dev",
+  },
+  {
+    icon: "/images/link-icons/bento.svg",
+    title: "Bento",
+    subtitle: "Code4Taiwan Community",
+    href: "https://code4taiwan.pse.is/88cqre",
+  },
 ];
