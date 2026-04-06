@@ -32,6 +32,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Slidev presentation builds (generated files):
+    "public/slides/**",
   ]),
 ]);
 
