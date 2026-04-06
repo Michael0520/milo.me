@@ -39,7 +39,6 @@
     "@ncdai/react-wheel-picker": "^1.2.0",
     "@next/third-parties": "^16.2.1",
     "@openpanel/web": "^1.2.0",
-    "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -121,7 +120,7 @@
     "@types/react-dom": "19.2.3"
   },
   "engines": {
-    "node": ">=18",
+    "node": "22.x",
     "pnpm": ">=9"
   },
   "packageManager": "pnpm@10.33.0"
