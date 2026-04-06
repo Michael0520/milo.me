@@ -2,6 +2,8 @@
 
 Personal portfolio and blog built with Next.js 16, Tailwind CSS 4, and shadcn/ui.
 
+Based on [chanhdai.me](https://chanhdai.me) by [@ncdai](https://github.com/ncdai), customized with new layout, shader background, ML logo animation, talks page, and personal data.
+
 **Live:** [milo-vite-plus-website.vercel.app](https://milo-vite-plus-website.vercel.app)
 
 ## Stack
