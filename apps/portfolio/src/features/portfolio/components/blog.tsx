@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
+import { ViewTransition } from "react";
 
 import { Button } from "@/components/base/ui/button";
 import { PostItem } from "@/features/blog/components/post-item";
@@ -16,7 +17,9 @@ export function Blog() {
     <Panel id="blog">
       <PanelHeader>
         <PanelTitle>
-          Blog
+          <ViewTransition name="blog-page-heading-title">
+            <span>Blog</span>
+          </ViewTransition>
           <PanelTitleSup>({allPosts.length})</PanelTitleSup>
         </PanelTitle>
       </PanelHeader>
