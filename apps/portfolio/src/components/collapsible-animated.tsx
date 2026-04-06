@@ -33,7 +33,7 @@ const useCollapsible = () => {
 function CollapsibleWithContext({
   defaultOpen,
   open: controlledOpen,
-  // eslint-disable-next-line @typescript-eslint/unbound-method
+
   onOpenChange,
   ...props
 }: React.ComponentProps<typeof CollapsibleRoot>) {

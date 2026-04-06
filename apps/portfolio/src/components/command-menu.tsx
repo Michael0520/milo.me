@@ -29,8 +29,8 @@ import type { DocPreview } from "@/features/doc/types/document";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
 import { trackEvent } from "@/lib/events";
 
-import { MichaelloMark } from "./michaello-mark";
 import { ComponentIcon, Icons } from "./icons";
+import { MichaelloMark } from "./michaello-mark";
 import { Button } from "./ui/button";
 import { Kbd, KbdGroup } from "./ui/kbd";
 import { Separator } from "./ui/separator";

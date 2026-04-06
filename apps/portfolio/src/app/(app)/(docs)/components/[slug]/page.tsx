@@ -3,7 +3,6 @@ import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/base/ui/tooltip";

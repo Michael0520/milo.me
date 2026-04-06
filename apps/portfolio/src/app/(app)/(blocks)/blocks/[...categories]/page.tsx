@@ -1,10 +1,9 @@
-import { Fragment } from "react";
 import { notFound } from "next/navigation";
+import { Fragment } from "react";
 
 import { BlockDisplay } from "@/app/(preview)/components/block-display";
 import { registryCategories } from "@/config/registry";
 import { getAllBlockIds } from "@/lib/blocks";
-
 import { cn } from "@/lib/utils";
 
 export const revalidate = false;

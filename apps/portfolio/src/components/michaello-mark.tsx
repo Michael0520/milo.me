@@ -1,1 +1,1 @@
-export { MLMarkAnimated as MichaelloMark, getMLMarkSVG as getMarkSVG } from "./ml-mark";
+export { getMLMarkSVG as getMarkSVG, MLMarkAnimated as MichaelloMark } from "./ml-mark";

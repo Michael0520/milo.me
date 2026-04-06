@@ -88,4 +88,4 @@ function PhotoCarousel({ children }: { children: React.ReactNode }) {
   );
 }
 
-export { PhotoCarousel, Photo };
+export { Photo, PhotoCarousel };

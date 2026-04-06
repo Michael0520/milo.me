@@ -21,9 +21,9 @@ import { AWARDS } from "@/features/portfolio/data/awards";
 import { BOOKMARKS } from "@/features/portfolio/data/bookmarks";
 import { CERTIFICATIONS } from "@/features/portfolio/data/certifications";
 import { EXPERIENCES } from "@/features/portfolio/data/experiences";
-import { SPONSORS } from "@/features/sponsor/data";
 import { TESTIMONIALS_1, TESTIMONIALS_2 } from "@/features/portfolio/data/testimonials";
 import { USER } from "@/features/portfolio/data/user";
+import { SPONSORS } from "@/features/sponsor/data";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
