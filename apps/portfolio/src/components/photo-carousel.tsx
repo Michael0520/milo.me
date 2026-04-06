@@ -3,22 +3,23 @@
 import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
 
+import { ImageZoom } from "@/components/kibo-ui/image-zoom";
 import { cn } from "@/lib/utils";
 
 function Photo({ src, alt, caption }: { src: string; alt?: string; caption?: string }) {
   return (
     <figure className="shrink-0 snap-start scroll-ml-4">
-      <div className="overflow-hidden rounded-lg">
+      <ImageZoom>
         <Image
           src={src}
           alt={alt || caption || ""}
           width={600}
           height={400}
-          className="h-[280px] w-auto object-cover sm:h-[360px] pointer-events-none"
+          className="h-[280px] w-auto rounded-lg object-cover sm:h-[360px]"
           unoptimized
           draggable={false}
         />
-      </div>
+      </ImageZoom>
       {caption && <figcaption className="mt-2 text-sm text-muted-foreground">{caption}</figcaption>}
     </figure>
   );
