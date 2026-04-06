@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.3.0](https://github.com/Michael0520/milo.me/compare/v0.2.0...v0.3.0) (2026-04-06)
+
+
+### Features
+
+* **ci:** add CI workflow for lint, type check, and build ([290173f](https://github.com/Michael0520/milo.me/commit/290173f01215949960b64b145e73f61776ec3ea7))
+
+
+### Bug Fixes
+
+* **ci:** add GITHUB_CONTRIBUTIONS_API_URL env for build step ([a03c165](https://github.com/Michael0520/milo.me/commit/a03c165b22c1ed9b925a14d464bda90045c98310))
+* **ci:** adjust tsconfig exclude paths for registry ([16b004d](https://github.com/Michael0520/milo.me/commit/16b004dd3a390e84fdc8f39a84d2471984c7dc6a))
+* **ci:** dynamic import ImageZoom to avoid SSR Element error during build ([892afa5](https://github.com/Michael0520/milo.me/commit/892afa59dca48b52d7206504ea2290afca91d8fd))
+* **ci:** exclude registry from type check to fix CI ([5eeeefd](https://github.com/Michael0520/milo.me/commit/5eeeefd97c13b17e2a5ee98f57b343b62634800f))
+* **ci:** exclude src/registry from tsconfig to fix fumadocs type errors ([3fd31c1](https://github.com/Michael0520/milo.me/commit/3fd31c13d3279a0aa93dc84c520c47512300c62a))
+* **ci:** fix import sort and export order lint errors ([7a0153d](https://github.com/Michael0520/milo.me/commit/7a0153d0efea1c9396b52088f2f22d66563c8056))
+* **ci:** fix import sort in mdx.tsx ([79b19da](https://github.com/Michael0520/milo.me/commit/79b19da22f77e001d23989cd563d66444717297d))
+* **ci:** ignore public/slides in eslint flat config ([c7efacb](https://github.com/Michael0520/milo.me/commit/c7efacb6448792be95d256e72adb3e54d462f466))
+* **ci:** remove unused AutoTypeTable import that caused fumadocs type error in CI ([4d4ad66](https://github.com/Michael0520/milo.me/commit/4d4ad660b68696b8bc123205903740826e55c693))
+
 ## [0.2.0](https://github.com/Michael0520/milo.me/compare/v0.1.0...v0.2.0) (2026-04-06)
 
 
