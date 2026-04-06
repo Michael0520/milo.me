@@ -69,6 +69,21 @@ function loadFont(filename: string) {
 - Blog post links: `prefetch={false}` to prevent unused image preloads
 - Avatar: `loading="lazy"` to prevent React SSR from generating cross-page `<link rel="preload">`
 
+## Upstream Tracking
+
+This repo is based on [ncdai/chanhdai.com](https://github.com/ncdai/chanhdai.com). The `upstream` remote is configured for tracking new features.
+
+**Important:** No shared git history. Upstream is a single app, ours is a monorepo (`apps/portfolio/`). Cannot cherry-pick — must manually reimplement.
+
+To check for new upstream features:
+
+```bash
+git fetch upstream
+git log <last-checked-hash>..upstream/main --oneline
+```
+
+Last checked hash is stored in Claude memory. When the user asks to "check upstream" or "看 upstream 有什麼新功能", fetch and produce a summary report grouped by feat/fix/refactor, then update memory.
+
 ## Legacy Repo
 
 Old portfolio at `/Users/ming/milo/personal-blog/milo` (Turborepo + Bun). Blog posts (45) not yet migrated.
