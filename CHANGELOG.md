@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/Michael0520/milo.me/compare/v0.3.0...v0.4.0) (2026-04-06)
+
+
+### Features
+
+* add second journal post "慢下來，才看得到更多" with photos ([4f8df7b](https://github.com/Michael0520/milo.me/commit/4f8df7b2b25d5a92f20f049519e5a4325c83ef1e))
+
 ## [0.3.0](https://github.com/Michael0520/milo.me/compare/v0.2.0...v0.3.0) (2026-04-06)
 
 
