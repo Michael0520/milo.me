@@ -16,8 +16,6 @@ concurrency:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_CONTRIBUTIONS_API_URL: https://github-contributions-api.jogruber.de
     steps:
       - uses: actions/checkout@v4
 
