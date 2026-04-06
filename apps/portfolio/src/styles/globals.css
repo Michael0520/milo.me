@@ -40,10 +40,10 @@
   --color-selection: var(--selection);
   --color-selection-foreground: var(--selection-foreground);
 
-  --font-sans: var(--font-geist-sans), var(--font-noto-sans-tc);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-mono);
   --font-pixel-square: var(--font-geist-pixel-square);
-  --font-heading: var(--font-geist-sans), var(--font-noto-sans-tc);
+  --font-heading: var(--font-geist-sans), system-ui, sans-serif;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
