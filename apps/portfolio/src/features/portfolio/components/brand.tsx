@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 
 import { MichaelloMark } from "@/components/michaello-mark";
-import { ChanhDaiWordmark } from "@/components/chanhdai-wordmark";
+import { MichaelloWordmark } from "@/components/michaello-wordmark";
 
 import { Panel, PanelHeader, PanelTitle } from "./panel";
 
@@ -31,7 +31,7 @@ export function Brand() {
           </div>
 
           <div className="screen-line-bottom flex items-center justify-center pr-8 after:z-1">
-            <ChanhDaiWordmark className="h-6 w-auto sm:h-10" />
+            <MichaelloWordmark className="h-6 w-auto sm:h-10" />
           </div>
         </div>
       </BrandContextMenu>
