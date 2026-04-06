@@ -40,34 +40,11 @@ Components showcase and Blocks are development tools, hidden in production:
 - Routes: `notFound()` at top of page function in production
 - Homepage: Components section wrapped in `process.env.NODE_ENV` check
 
-### SVG Mask IDs
-
-`MLMarkAnimated` uses `useId().replace(/:/g, "")` for unique mask IDs — prevents collision when multiple instances render simultaneously.
-
 ### Talks & Slides
 
 - Talk data is static in `data/talks.ts` (no Slidev dependency at runtime)
 - Slidev HTML builds live in `public/slides/{slug}/` with internal paths rewritten to match slug
 - `slug` is semantic (e.g., `jsdc-2025`), not date-based
-
-### OG Image Font Loading
-
-OG routes use `readFileSync` with fallback paths for monorepo compatibility:
-
-```ts
-function loadFont(filename: string) {
-  const paths = [
-    join(process.cwd(), "src/assets/fonts", filename),
-    join(process.cwd(), "apps/portfolio/src/assets/fonts", filename),
-  ];
-  // try each path...
-}
-```
-
-### Image Preload Prevention
-
-- Blog post links: `prefetch={false}` to prevent unused image preloads
-- Avatar: `loading="lazy"` to prevent React SSR from generating cross-page `<link rel="preload">`
 
 ## Upstream Tracking
 
@@ -83,10 +60,6 @@ git log <last-checked-hash>..upstream/main --oneline
 ```
 
 Last checked hash is stored in Claude memory. When the user asks to "check upstream" or "看 upstream 有什麼新功能", fetch and produce a summary report grouped by feat/fix/refactor, then update memory.
-
-## Legacy Repo
-
-Old portfolio at `/Users/ming/milo/personal-blog/milo` (Turborepo + Bun). Blog posts (45) not yet migrated.
 
 ## Blog System
 
