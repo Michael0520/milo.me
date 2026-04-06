@@ -90,60 +90,13 @@ Old portfolio at `/Users/ming/milo/personal-blog/milo` (Turborepo + Bun). Blog p
 
 ## Blog System
 
-### Blog Listing
+Use `/journal` skill to create blog posts. Writing conventions, MDX components, and photo handling are documented in `.claude/skills/journal/SKILL.md`.
 
-Text-based minimal list (no cover images). Posts grouped by year with large watermark year headers. Each item shows: title + date (MMM d) + reading time (Xmin).
+## CI/CD
 
-Reading time is calculated in `documents.ts` from content word count (CJK 400 chars/min, English 200 words/min).
-
-### Journal Posts
-
-Use `/journal` skill to create journal-style blog posts. Two modes: Life (休閒生活) / Work (工作技術).
-
-Key files:
-
-- `.claude/skills/journal/SKILL.md` — Skill definition (v3.0)
-- `src/features/doc/content/` — MDX files
-
-### MDX Components
-
-Custom components available in blog posts:
-
-| Component                     | Usage                                                 |
-| ----------------------------- | ----------------------------------------------------- |
-| `<PhotoCarousel>` + `<Photo>` | Horizontal scrollable photo gallery with drag support |
-| `<Callout>`                   | Highlighted callout box                               |
-| `<Steps>` + `<Step>`          | Numbered step list                                    |
-| `<FramedImage>`               | Image with border and optional zoom                   |
-| `<YouTubeEmbed>`              | Embedded YouTube video                                |
-| `<IframeEmbed>`               | Custom iframe embed                                   |
-
-PhotoCarousel usage:
-
-```mdx
-<PhotoCarousel>
-  <Photo src="/images/..." caption="描述" />
-  <Photo src="/images/..." caption="描述" />
-</PhotoCarousel>
-```
-
-### Fonts
-
-- English: Geist Sans / Geist Mono
-- Chinese: Noto Sans TC (思源黑體)
-- Fallback chain: `--font-sans: Geist Sans, Noto Sans TC`
-
-## Writing Conventions (正體中文)
-
-Blog posts written in Traditional Chinese follow these rules:
-
-- **句號** `。` 只出現在每段最後一句，段落中間用 `，` 連接
-- **不使用破折號** `——`，用 `，` 或 `：` 代替
-- **Blockquote** `>` 用於金句/重點語錄，每篇 2-3 個
-- **短句獨立成段**製造節奏感，例如：「其實只是愛漂亮？也許吧。」
-- **括號旁白**增加人味，例如：`（對，追星）`
-- **前後呼應**：開頭拋出的問題/主題，結尾要回答或呼應
-- **自然語言混用**：zh-TW、ja、en 按真實生活語境
+- **CI**: `.github/workflows/ci.yml` — Lint + Type Check + Build on push/PR to main
+- **Release**: `.github/workflows/release.yml` — Release Please auto-generates CHANGELOG, version bump, and GitHub Release
+- **Auto-delete branches**: Enabled in GitHub settings
 
 ## Conventions
 
@@ -152,3 +105,4 @@ Blog posts written in Traditional Chinese follow these rules:
 - Use `date-fns` for date formatting
 - Shared layout components in `src/components/` (e.g., `ContentGrid`)
 - Feature-specific components in `src/features/{feature}/components/`
+- GitHub repo: `Michael0520/milo.me`

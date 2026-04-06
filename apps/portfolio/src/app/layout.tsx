@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import { GoogleTagManager } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -122,6 +123,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <DuckFollower />
           </NuqsAdapter>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
