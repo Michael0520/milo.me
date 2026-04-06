@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.6.0](https://github.com/Michael0520/milo.me/compare/v0.5.0...v0.6.0) (2026-04-06)
+
+
+### Features
+
+* add Vercel Web Analytics and simplify CLAUDE.md ([7270d10](https://github.com/Michael0520/milo.me/commit/7270d10c18049108230c9666fe3bbe014f8827bd))
+
+
+### Bug Fixes
+
+* relax node engine requirement to &gt;=18 ([969dd09](https://github.com/Michael0520/milo.me/commit/969dd097c9bae5c20cf7c50e1c25d1b2be2dffe5))
+* relax root node engine to &gt;=18 for Vercel compatibility ([87fa0f2](https://github.com/Michael0520/milo.me/commit/87fa0f27b94466592709b65677b33f3299eea6cb))
+* use explicit version for @vercel/analytics instead of catalog ([38aa2e0](https://github.com/Michael0520/milo.me/commit/38aa2e00f9a71f5f10ef7d0706cce5d5684e4a95))
+
+
+### Reverts
+
+* remove @vercel/analytics to fix Vercel deploy (keeping CLAUDE.md cleanup) ([5f28b23](https://github.com/Michael0520/milo.me/commit/5f28b2311d7dc4efda2558042a637765c7652e11))
+
 ## [0.5.0](https://github.com/Michael0520/milo.me/compare/v0.4.0...v0.5.0) (2026-04-06)
 
 
