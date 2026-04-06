@@ -96,7 +96,13 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={fontVariables} suppressHydrationWarning>
-      <head>
+      <head />
+
+      {process.env.NEXT_PUBLIC_GTM_ID && (
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+      )}
+
+      <body>
         <Script
           id="dark-mode"
           strategy="beforeInteractive"
@@ -110,13 +116,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify(getWebSiteJsonLd()).replace(/</g, "\\u003c"),
           }}
         />
-      </head>
-
-      {process.env.NEXT_PUBLIC_GTM_ID && (
-        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
-      )}
-
-      <body>
         <Providers>
           <NuqsAdapter>
             {children}
