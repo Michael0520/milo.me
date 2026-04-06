@@ -1,0 +1,88 @@
+---
+title: "慢下來，才看得到更多"
+description: "關於工作節奏的調整、一個讓 build time 砍半的新工具、和一趟雨天的台中小旅行。"
+createdAt: "2026-04-07"
+updatedAt: "2026-04-07"
+category: personal
+---
+
+上一篇寫到「今年我好像開始有一點感覺了」，那個感覺是什麼，當時其實說不太清楚。
+
+這幾個月下來，我覺得可以稍微描述得更具體一點了：就是慢下來。
+
+不是那種躺平的慢，而是刻意地把腳步放緩，讓自己有空間去看到原本會忽略的東西，不管是工作上、技術上、還是生活裡。
+
+---
+
+## 工作上的調整
+
+前陣子新人 onboarding 算是極為穩定了，我也能獨立負責更多不同層面的事情，讓心情稍微放鬆了一些（但我還是很喜歡接受挑戰哈哈）。
+
+不過也因為一些小插曲，讓我開始重新思考自己在團隊裡的角色，做了一些調整：腳步放慢、重新定義影響力的方式，雖然這也影響了產出速度，但在公司文化和 R&R 上會比較契合。
+
+過去因為在各層面都有涉略的經驗，我經常扮演著一條龍的角色（對，我就是那一條龍），習慣實際參與並且主導專案的啟動，但目前公司的人數比過去多很多，大家的習慣是專業分工，這讓我必須換一個方式去思考自己的定位。
+
+以前有個網友跟我說過一句話：
+
+> If you never break anything, you're probably not moving fast enough.
+
+當時聽完沒什麼特別的感覺，但在這次工作上的調整之後，才慢慢意識到這句話背後的含義，過去的我確實一直在衝，也確實 break 了一些東西，但放慢之後反而看到了更多的問題，也開始學會從一百個問題裡面挑出真正有價值的，找到適合現狀資源跟時空背景去解決的那幾個，這個轉變對我來說蠻大的。
+
+---
+
+## vite-plus 出爐
+
+說到慢下來看到的新東西，最近在基礎設施上就碰到了一個讓我蠻興奮的改變。
+
+做過前端的人應該都有過這種經驗：一個專案裡面要設定 ESLint、Prettier、Webpack（或 Vite）、Vitest、Babel、PostCSS，每一個工具都有自己的 config 檔，光是讓它們好好相處就要花掉不少時間，更不用說版本升級的時候各種 breaking change 互相打架，dependency 衝突更是家常便飯。
+
+[vite-plus](https://viteplus.dev/) 是由 VoidZero 團隊推出的一個整合型基礎包，把 Vite、Vitest、Rolldown、OXC（包含 Linter、Formatter、Parser、Transformer）這七種工具打包在一起，開箱即用，過去需要分別設定七個工具的 config 檔，現在一個 `vite-plus` 就搞定了。
+
+而且它原生支援 monorepo，選好 workspace 模式之後，整個專案的 build、test、lint、format 都統一由 vite-plus 管理，不用再自己拼裝各種 config，也不用煩惱 monorepo 裡面各個 package 的設定要怎麼同步，對我來說省事非常多。
+
+這個 blog 目前就已經 migrate 到 vite-plus 了，實際跑下來 build time 跟 lint time 都縮短了 50% 以上，這個數字在基礎設施層級的改變來說真的很有感，尤其是底層用 Rolldown 取代了傳統的 JavaScript bundler，OXC 取代了 ESLint 和 Prettier 的角色，全部用 Rust 重寫，速度提升非常明顯。
+
+過去我們總是在「要不要升級」和「升級會不會炸」之間猶豫，vite-plus 的做法是把這些工具的相容性問題統一收進去，讓使用者只需要關心一個版本號，這在大型專案的維護上會輕鬆非常多。
+
+雖然現狀還有一些 bug，建議大家可以先觀望，但我非常期待接下來的版本修正，這項技術我認為會在未來的大型基礎設施上扮演很重要的角色。
+
+> 好的基礎設施不是讓你跑得更快，而是讓你不用再煩那些不該煩的事。
+
+---
+
+## 清明連假
+
+工作和技術聊完了，來點輕鬆的。
+
+清明連假去了台中踏青，雖然一直下雨，但完全沒有澆熄放假的熱情。去了綠美圖，展覽我是看不太懂哈哈，但建築物本身和展出的空間設計都蠻有特色的，光是在裡面走走看看就覺得很舒服。
+
+<PhotoCarousel>
+  <Photo src="/images/journal/journal-2026-q1-pt2/museum-3.jpg" caption="台中綠美圖" />
+  <Photo src="/images/journal/journal-2026-q1-pt2/museum-1.jpg" caption="綠美圖建築" />
+  <Photo src="/images/journal/journal-2026-q1-pt2/restaurant.jpg" caption="綠美圖" />
+  <Photo src="/images/journal/journal-2026-q1-pt2/museum-2.jpg" caption="展覽裝置" />
+  <Photo src="/images/journal/journal-2026-q1-pt2/museum-4.jpg" caption="山景三聯畫" />
+</PhotoCarousel>
+
+然後吃了不少台中美食，特別推薦禾間糧倉這間早午餐，非常豐盛，份量跟味道都很到位。
+
+<PhotoCarousel>
+  <Photo src="/images/journal/journal-2026-q1-pt2/brunch.jpg" caption="禾間糧倉早午餐" />
+  <Photo src="/images/journal/journal-2026-q1-pt2/yakiniku.jpg" caption="燒肉" />
+  <Photo src="/images/journal/journal-2026-q1-pt2/coffee.jpg" caption="PHASE 手沖" />
+  <Photo src="/images/journal/journal-2026-q1-pt2/frog.jpg" />
+</PhotoCarousel>
+
+下雨天配上好吃的東西，其實也不錯。
+
+![夕陽](/images/journal/journal-2026-q1-pt2/sunset.jpg)
+
+---
+
+## 繼續慢慢來
+
+回頭看這幾個月，不管是工作上的角色調整、技術上發現新工具、還是假期裡的小旅行，好像都指向同一件事：慢下來，反而能看到更多。
+
+上一篇的結尾我說「開始期待面對每一天的未知」，現在覺得，那個期待的來源可能就是這個：不急著趕路，讓每一天都有空間去發現一些什麼。
+
+繼續慢慢來。
