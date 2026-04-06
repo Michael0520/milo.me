@@ -50,8 +50,11 @@ export const MOBILE_NAV: NavItem[] = [
 
 export const X_USERNAME = "";
 export const GITHUB_USERNAME = "Michael0520";
-export const SOURCE_CODE_GITHUB_REPO = "Michael0520/milo-vite-plus";
-export const SOURCE_CODE_GITHUB_URL = "https://github.com/Michael0520/milo-vite-plus";
+export const SOURCE_CODE_GITHUB_REPO = "Michael0520/milo.me";
+export const SOURCE_CODE_GITHUB_URL = "https://github.com/Michael0520/milo.me";
+
+export const GITHUB_CONTRIBUTIONS_API_URL =
+  process.env.GITHUB_CONTRIBUTIONS_API_URL || "https://github-contributions-api.jogruber.de";
 
 export const SPONSORSHIP_URL = "";
 

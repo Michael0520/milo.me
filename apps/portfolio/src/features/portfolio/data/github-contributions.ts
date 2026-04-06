@@ -1,18 +1,15 @@
 import { unstable_cache } from "next/cache";
 
 import type { Activity } from "@/components/kibo-ui/contribution-graph";
-import { GITHUB_USERNAME } from "@/config/site";
+import { GITHUB_CONTRIBUTIONS_API_URL, GITHUB_USERNAME } from "@/config/site";
 
 type GitHubContributionsResponse = {
   contributions: Activity[];
 };
 
-const CONTRIBUTIONS_API_URL =
-  process.env.GITHUB_CONTRIBUTIONS_API_URL || "https://github-contributions-api.jogruber.de";
-
 export const getGitHubContributions = unstable_cache(
   async () => {
-    const res = await fetch(`${CONTRIBUTIONS_API_URL}/v4/${GITHUB_USERNAME}?y=last`);
+    const res = await fetch(`${GITHUB_CONTRIBUTIONS_API_URL}/v4/${GITHUB_USERNAME}?y=last`);
     const data = (await res.json()) as GitHubContributionsResponse;
     return data.contributions;
   },
