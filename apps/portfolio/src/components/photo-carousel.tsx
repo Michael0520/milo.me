@@ -1,10 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
 
-import { ImageZoom } from "@/components/kibo-ui/image-zoom";
 import { cn } from "@/lib/utils";
+
+const ImageZoom = dynamic(
+  () => import("@/components/kibo-ui/image-zoom").then((mod) => mod.ImageZoom),
+  {
+    ssr: false,
+  },
+);
 
 function Photo({ src, alt, caption }: { src: string; alt?: string; caption?: string }) {
   return (
