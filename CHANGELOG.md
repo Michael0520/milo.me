@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/Michael0520/milo.me/compare/v0.4.0...v0.5.0) (2026-04-06)
+
+
+### Features
+
+* add view transition for blog page navigation ([f3e2984](https://github.com/Michael0520/milo.me/commit/f3e2984c13bf0c6359647ba3895ca317ce705c46))
+
 ## [0.4.0](https://github.com/Michael0520/milo.me/compare/v0.3.0...v0.4.0) (2026-04-06)
 
 
