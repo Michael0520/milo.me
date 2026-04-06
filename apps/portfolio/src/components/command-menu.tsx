@@ -5,22 +5,16 @@ import { useCommandState } from "cmdk";
 import {
   BoxIcon,
   CornerDownLeftIcon,
-  DownloadIcon,
-  FileTextIcon,
   LayersIcon,
   MoonStarIcon,
-  MousePointer2Icon,
   PresentationIcon,
   RssIcon,
   SunMediumIcon,
   TextInitialIcon,
-  TriangleDashedIcon,
-  TypeIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { toast } from "sonner";
 
 import {
   CommandDialog,
@@ -33,12 +27,9 @@ import {
 } from "@/components/ui/command";
 import type { DocPreview } from "@/features/doc/types/document";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
-import { useDuckFollowerVisibility } from "@/hooks/use-duck-follower-visibility";
 import { trackEvent } from "@/lib/events";
-import { copyToClipboardWithEvent } from "@/utils/copy";
 
-import { ChanhDaiMark, getMarkSVG } from "./chanhdai-mark";
-import { getWordmarkSVG } from "./chanhdai-wordmark";
+import { MichaelloMark } from "./michaello-mark";
 import { ComponentIcon, Icons } from "./icons";
 import { Button } from "./ui/button";
 import { Kbd, KbdGroup } from "./ui/kbd";
@@ -77,7 +68,7 @@ const MENU_LINKS: CommandLinkItem[] = [
   {
     title: "Home",
     href: "/",
-    icon: <ChanhDaiMark />,
+    icon: <MichaelloMark />,
     shortcut: "GH",
   },
   ...DEV_MENU_LINKS,
@@ -111,11 +102,6 @@ const PORTFOLIO_LINKS: CommandLinkItem[] = [
     href: "/#projects",
     icon: <BoxIcon />,
   },
-  {
-    title: "Download vCard",
-    href: "/vcard",
-    icon: <DownloadIcon />,
-  },
 ];
 
 const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map((item) => ({
@@ -126,12 +112,6 @@ const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map((item) => ({
 }));
 
 const OTHER_LINK_ITEMS: CommandLinkItem[] = [
-  {
-    title: "llms.txt",
-    href: "/llms.txt",
-    icon: <FileTextIcon />,
-    openInNewTab: true,
-  },
   {
     title: "RSS Feed",
     href: "/rss",
@@ -156,11 +136,9 @@ export function CommandMenu({
 }) {
   const router = useRouter();
 
-  const { setTheme, resolvedTheme } = useTheme();
+  const { setTheme } = useTheme();
 
   const [open, setOpen] = useState(false);
-
-  const [, setIsDuckFollowerVisible] = useDuckFollowerVisibility();
 
   useHotkeys(
     "mod+k, slash",
@@ -205,18 +183,6 @@ export function CommandMenu({
     [router],
   );
 
-  const handleCopyText = useCallback((text: string, message: string) => {
-    setOpen(false);
-    void copyToClipboardWithEvent(text, {
-      name: "command_menu_action",
-      properties: {
-        action: "copy",
-        text: text,
-      },
-    });
-    toast.success(message);
-  }, []);
-
   const createThemeHandler = useCallback(
     (theme: "light" | "dark" | "system") => () => {
       setOpen(false);
@@ -233,18 +199,6 @@ export function CommandMenu({
     },
     [setTheme],
   );
-
-  const handleToggleDuckFollower = useCallback(() => {
-    setOpen(false);
-    setIsDuckFollowerVisible((isVisible) => !isVisible);
-
-    trackEvent({
-      name: "command_menu_action",
-      properties: {
-        action: "toggle_duck_follower",
-      },
-    });
-  }, [setIsDuckFollowerVisible]);
 
   const { componentLinks, blogLinks } = useMemo(
     () => ({
@@ -330,44 +284,6 @@ export function CommandMenu({
             onLinkSelect={handleOpenLink}
           />
 
-          <CommandGroup heading="Brand Assets">
-            <CommandItem
-              onSelect={() => {
-                handleCopyText(
-                  getMarkSVG(resolvedTheme === "light" ? "#000" : "#fff"),
-                  "Mark as SVG copied",
-                );
-              }}
-            >
-              <ChanhDaiMark />
-              Copy Mark as SVG
-            </CommandItem>
-
-            <CommandItem
-              onSelect={() => {
-                handleCopyText(
-                  getWordmarkSVG(resolvedTheme === "light" ? "#000" : "#fff"),
-                  "Logotype as SVG copied",
-                );
-              }}
-            >
-              <TypeIcon />
-              Copy Logotype as SVG
-            </CommandItem>
-
-            <CommandItem onSelect={() => handleOpenLink("/blog/chanhdai-brand")}>
-              <TriangleDashedIcon />
-              Brand Guidelines
-            </CommandItem>
-
-            <CommandItem asChild>
-              <a href="#" download>
-                <DownloadIcon />
-                Download Brand Assets
-              </a>
-            </CommandItem>
-          </CommandGroup>
-
           <CommandGroup heading="Theme">
             <CommandItem keywords={["theme"]} onSelect={createThemeHandler("light")}>
               <SunMediumIcon />
@@ -380,13 +296,6 @@ export function CommandMenu({
             <CommandItem keywords={["theme"]} onSelect={createThemeHandler("system")}>
               <Icons.contrast />
               Auto
-            </CommandItem>
-          </CommandGroup>
-
-          <CommandGroup heading="Interactive Features">
-            <CommandItem onSelect={handleToggleDuckFollower}>
-              <MousePointer2Icon />
-              Toggle Duck Follower
             </CommandItem>
           </CommandGroup>
 
@@ -515,21 +424,9 @@ type CommandMetaMap = Map<
 function buildCommandMetaMap() {
   const commandMetaMap: CommandMetaMap = new Map();
 
-  commandMetaMap.set("Download vCard", { commandKind: "command" });
-
   commandMetaMap.set("Light", { commandKind: "command" });
   commandMetaMap.set("Dark", { commandKind: "command" });
   commandMetaMap.set("Auto", { commandKind: "command" });
-
-  commandMetaMap.set("Copy Mark as SVG", {
-    commandKind: "command",
-  });
-  commandMetaMap.set("Copy Logotype as SVG", {
-    commandKind: "command",
-  });
-  commandMetaMap.set("Download Brand Assets", {
-    commandKind: "command",
-  });
 
   SOCIAL_LINK_ITEMS.forEach((item) => {
     commandMetaMap.set(item.title, {
@@ -558,7 +455,7 @@ function CommandMenuFooter() {
       <div className="flex h-10" />
 
       <div className="absolute inset-x-0 bottom-0 flex h-10 items-center justify-between gap-2 rounded-b-2xl border-t px-4 text-xs font-medium">
-        <ChanhDaiMark className="size-6 text-muted-foreground" />
+        <MichaelloMark className="size-6 text-muted-foreground" />
 
         <div className="flex shrink-0 items-center gap-2 max-sm:hidden">
           <span>{ENTER_ACTION_LABELS[selectedCommandKind]}</span>

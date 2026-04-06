@@ -19,11 +19,11 @@ export const USER: User = {
   website: "https://www.michaello.me",
   jobTitle: "Web Frontend Engineer",
   jobs: [],
-  about: `Hello, World! I am **Michael Lo** — a **Full Stack Web Developer** passionate about creating efficient, high-performance solutions with modern web technologies.
+  about: `Hi, I'm **Michael Lo**, a **Web Frontend Engineer** based in Taipei, Taiwan.
 
-I specialize in building modern web applications using **Next.js**, **TypeScript**, and **React**. I believe in working smarter, not harder — my philosophy is simple: avoid reinventing the wheel and learn technologies that make tomorrow a little lazier.
+I build things with **Next.js**, **TypeScript**, and **React**. I care about clean architecture, developer experience, and making complex systems feel simple. I'm also an active contributor in the open source community and enjoy sharing what I learn through talks and writing.
 
-As someone who values efficiency, I find repetitive tasks frustrating. That's why I'm passionate about learning new technologies that automate workflows and free up time for what matters.
+Outside of code, I'm someone who's constantly trying new things and figuring out my own pace. This site is where I document both the technical and the personal side of that journey.
 
 > Coding is my way of making tomorrow a little lazier.`,
   avatar: "/images/avatar.webp",
