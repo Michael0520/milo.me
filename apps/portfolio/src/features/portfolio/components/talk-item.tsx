@@ -9,16 +9,16 @@ export function TalkItem({ talk }: { talk: Talk }) {
       href={`/slides/${talk.slug}/index.html`}
       target="_blank"
       rel="noopener"
-      className="group block rounded-lg p-4 -mx-4 transition-colors hover:bg-accent-muted"
+      className="group block rounded-lg p-4 -mx-4 transition-all duration-200 hover:bg-foreground/[0.06]"
     >
       <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <h3 className="text-lg leading-snug font-semibold tracking-tight text-balance group-hover:text-primary">
+        <div className="flex-1 transition-all duration-200 group-hover:translate-x-1">
+          <h3 className="text-lg leading-snug font-semibold tracking-tight text-balance opacity-90 transition-opacity duration-200 group-hover:opacity-100">
             {talk.title}
           </h3>
 
           {talk.description && (
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground/70 line-clamp-2 transition-colors duration-200 group-hover:text-muted-foreground">
               {talk.description}
             </p>
           )}

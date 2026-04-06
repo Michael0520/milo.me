@@ -25,8 +25,8 @@ export function PostList({ posts }: { posts: Doc[] }) {
   return (
     <div>
       {groups.map(({ year, posts }) => (
-        <div key={year} className="relative pt-14 pb-4">
-          <div className="pointer-events-none absolute -top-2 -left-4 select-none text-[12rem] leading-none font-bold tracking-tight text-foreground/[0.08]">
+        <div key={year} className="relative overflow-hidden pt-[clamp(2.5rem,8vw,3.5rem)] pb-4">
+          <div className="pointer-events-none absolute top-0 left-0 select-none text-[clamp(5rem,15vw,12rem)] leading-none font-bold tracking-tight text-foreground/[0.08]">
             {year}
           </div>
 
