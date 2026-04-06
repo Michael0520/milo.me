@@ -35,6 +35,7 @@ import { CodeTabs } from "./code-tabs";
 import { ComponentPreviewV2 as ComponentPreview } from "./component-preview-v2";
 import { FramedImage, IframeEmbed, YouTubeEmbed } from "./embed";
 import { mdxCodeBlockComponents } from "./mdx-code-block";
+import { Photo, PhotoCarousel } from "./photo-carousel";
 import { Testimonial } from "./testimonial";
 
 const components: MDXRemoteProps["components"] = {
@@ -150,6 +151,8 @@ const components: MDXRemoteProps["components"] = {
   FramedImage,
   Testimonial,
   AutoTypeTable: (props) => <AutoTypeTable {...props} generator={generator} />,
+  PhotoCarousel,
+  Photo,
 };
 
 const options: MDXRemoteProps["options"] = {

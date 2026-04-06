@@ -5,6 +5,24 @@ import { cache } from "react";
 
 import type { Doc, DocMetadata } from "@/features/doc/types/document";
 
+function calculateReadingTime(content: string): number {
+  // Strip MDX/HTML tags and frontmatter
+  const text = content
+    .replace(/<[^>]+>/g, "")
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/[#*`>\-|[\]()!]/g, "")
+    .trim();
+
+  // Count CJK characters (~400 chars/min) and English words (~200 words/min)
+  const cjkChars = (text.match(/[\u4e00-\u9fff\u3040-\u30ff]/g) || []).length;
+  const nonCjkText = text.replace(/[\u4e00-\u9fff\u3040-\u30ff]/g, " ").trim();
+  const englishWords = nonCjkText.split(/\s+/).filter(Boolean).length;
+
+  const minutes = cjkChars / 400 + englishWords / 200;
+  return Math.max(1, Math.ceil(minutes));
+}
+
 function parseFrontmatter(fileContent: string) {
   const file = matter(fileContent);
 
@@ -35,6 +53,7 @@ function getMDXData(dir: string) {
       metadata,
       slug,
       content,
+      readingTime: calculateReadingTime(content),
     };
   });
 }

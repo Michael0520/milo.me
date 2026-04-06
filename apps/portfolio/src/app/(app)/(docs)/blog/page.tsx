@@ -62,8 +62,6 @@ export default function Page() {
       <Suspense fallback={<PostList posts={allPosts} />}>
         <PostListWithSearch posts={allPosts} />
       </Suspense>
-
-      <div className="h-4" />
     </div>
   );
 }

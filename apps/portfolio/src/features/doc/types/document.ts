@@ -35,6 +35,8 @@ export type Doc = {
   slug: string;
   /** MDX content body without frontmatter. */
   content: string;
+  /** Estimated reading time in minutes. */
+  readingTime: number;
 };
 
 /**
