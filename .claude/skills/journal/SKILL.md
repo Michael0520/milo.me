@@ -198,7 +198,7 @@ category: personal # or tech for Work mode
 1. File created at `src/features/doc/content/{slug}.mdx`
 2. Read through and adjust tone/wording to match your voice
 3. Uncomment and update photo paths when ready
-4. Preview: `pnpm --filter michaello-portfolio dev` → `/blog/{slug}`
+4. Preview: `pnpm --filter michaello-portfolio dev` → `/daily/{slug}` or `/tech/{slug}`
 
 ---
 
