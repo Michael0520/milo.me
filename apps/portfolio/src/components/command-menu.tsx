@@ -26,6 +26,7 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import type { DocPreview } from "@/features/doc/types/document";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
 import { trackEvent } from "@/lib/events";
 
@@ -209,15 +210,19 @@ export function CommandMenu({
   const { componentLinks, dailyLinks, techLinks } = useMemo(
     () => ({
       componentLinks: docs
-        .filter((doc) => doc.category === "components")
+        .filter((doc) => doc.category === DOC_CATEGORIES.components)
         .sort((a, b) =>
           a.title.localeCompare(b.title, "en", {
             sensitivity: "base",
           }),
         )
         .map(docToCommandLinkItem),
-      dailyLinks: docs.filter((doc) => doc.category === "personal").map(docToCommandLinkItem),
-      techLinks: docs.filter((doc) => doc.category === "tech").map(docToCommandLinkItem),
+      dailyLinks: docs
+        .filter((doc) => doc.category === DOC_CATEGORIES.personal)
+        .map(docToCommandLinkItem),
+      techLinks: docs
+        .filter((doc) => doc.category === DOC_CATEGORIES.tech)
+        .map(docToCommandLinkItem),
     }),
     [docs],
   );
@@ -497,7 +502,8 @@ function docToCommandLinkItem(doc: DocPreview): CommandLinkItem {
   return {
     title: doc.title,
     href: hrefMap[doc.category ?? ""] ?? `/daily/${doc.slug}`,
-    keywords: doc.category === "components" ? ["component"] : undefined,
-    icon: doc.category === "components" ? <ComponentIcon variant={doc.slug} /> : undefined,
+    keywords: doc.category === DOC_CATEGORIES.components ? ["component"] : undefined,
+    icon:
+      doc.category === DOC_CATEGORIES.components ? <ComponentIcon variant={doc.slug} /> : undefined,
   };
 }

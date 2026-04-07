@@ -1,12 +1,12 @@
-import type { Doc } from "@/features/doc/types/document";
+import { DOC_CATEGORIES, type DocCategory } from "@/features/doc/types/document";
 
-export function getDocPath(doc: Pick<Doc, "slug" | "metadata">): string {
-  switch (doc.metadata.category) {
-    case "components":
-      return `/components/${doc.slug}`;
-    case "tech":
-      return `/tech/${doc.slug}`;
-    default:
-      return `/daily/${doc.slug}`;
-  }
+const CATEGORY_ROUTE_MAP: Record<DocCategory, string> = {
+  [DOC_CATEGORIES.components]: "/components",
+  [DOC_CATEGORIES.tech]: "/tech",
+  [DOC_CATEGORIES.personal]: "/daily",
+};
+
+export function getDocPath(doc: { slug: string; metadata: { category?: DocCategory } }): string {
+  const route = CATEGORY_ROUTE_MAP[doc.metadata.category ?? DOC_CATEGORIES.personal];
+  return `${route}/${doc.slug}`;
 }

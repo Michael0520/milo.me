@@ -6,6 +6,7 @@ import { PostList } from "@/features/blog/components/post-list";
 import { PostListWithSearch } from "@/features/blog/components/post-list-with-search";
 import { PostSearchInput } from "@/features/blog/components/post-search-input";
 import { getDocsByCategory } from "@/features/doc/data/documents";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
 
 const title = "Tech";
 const description = "Technical notes, learnings, and developer stories.";
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  const allPosts = getDocsByCategory("tech");
+  const allPosts = getDocsByCategory(DOC_CATEGORIES.tech);
 
   return (
     <div className="min-h-svh">

@@ -2,10 +2,11 @@ import type { MetadataRoute } from "next";
 
 import { SITE_INFO } from "@/config/site";
 import { getAllDocs, getDocPath } from "@/features/doc/data/documents";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllDocs()
-    .filter((doc) => doc.metadata.category !== "components")
+    .filter((doc) => doc.metadata.category !== DOC_CATEGORIES.components)
     .map((post) => ({
       url: `${SITE_INFO.url}${getDocPath(post)}`,
       lastModified: new Date(post.metadata.updatedAt).toISOString(),

@@ -1,11 +1,12 @@
 import { SITE_INFO } from "@/config/site";
 import { getDocPath, getDocsByCategory } from "@/features/doc/data/documents";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
 
 export const revalidate = false;
 export const dynamic = "force-static";
 
 export function GET() {
-  const allPosts = getDocsByCategory("tech");
+  const allPosts = getDocsByCategory(DOC_CATEGORIES.tech);
 
   const itemsXml = allPosts
     .map(

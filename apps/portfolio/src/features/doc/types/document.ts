@@ -1,3 +1,11 @@
+export const DOC_CATEGORIES = {
+  personal: "personal",
+  tech: "tech",
+  components: "components",
+} as const;
+
+export type DocCategory = (typeof DOC_CATEGORIES)[keyof typeof DOC_CATEGORIES];
+
 export type DocMetadata = {
   title: string;
   description: string;
@@ -9,7 +17,7 @@ export type DocMetadata = {
   /**
    * Category identifier/slug used for filtering (see getDocsByCategory).
    */
-  category?: string;
+  category?: DocCategory;
   /**
    * Flag to show a "New" badge/highlight in the UI.
    */
@@ -46,5 +54,5 @@ export type Doc = {
 export type DocPreview = {
   slug: string;
   title: string;
-  category?: string;
+  category?: DocCategory;
 };

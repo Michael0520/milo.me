@@ -1,8 +1,9 @@
 import { SITE_INFO } from "@/config/site";
 import { getDocPath, getDocsByCategory } from "@/features/doc/data/documents";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
 
-const dailyPosts = getDocsByCategory("personal");
-const techPosts = getDocsByCategory("tech");
+const dailyPosts = getDocsByCategory(DOC_CATEGORIES.personal);
+const techPosts = getDocsByCategory(DOC_CATEGORIES.tech);
 
 const content = `# michaello.me
 

@@ -23,6 +23,7 @@ import {
   getDocsByCategory,
 } from "@/features/doc/data/documents";
 import type { Doc } from "@/features/doc/types/document";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
 import { USER } from "@/features/portfolio/data/user";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +32,7 @@ export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  return getDocsByCategory("tech").map((doc) => ({ slug: doc.slug }));
+  return getDocsByCategory(DOC_CATEGORIES.tech).map((doc) => ({ slug: doc.slug }));
 }
 
 export async function generateMetadata({
@@ -117,7 +118,7 @@ export default async function Page({
 
   const toc = getTableOfContents(doc.content);
 
-  const categoryDocs = getDocsByCategory("tech");
+  const categoryDocs = getDocsByCategory(DOC_CATEGORIES.tech);
   const { previous, next } = findNeighbour(categoryDocs, slug);
 
   return (

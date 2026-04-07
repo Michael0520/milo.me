@@ -5,11 +5,12 @@ import { ViewTransition } from "react";
 import { Button } from "@/components/base/ui/button";
 import { PostItem } from "@/features/blog/components/post-item";
 import { getDocsByCategory } from "@/features/doc/data/documents";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
 
 import { Panel, PanelHeader, PanelTitle, PanelTitleSup } from "./panel";
 
 export function Blog() {
-  const dailyPosts = getDocsByCategory("personal");
+  const dailyPosts = getDocsByCategory(DOC_CATEGORIES.personal);
 
   if (dailyPosts.length === 0) return null;
 
