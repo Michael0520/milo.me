@@ -1,12 +1,13 @@
 import { format } from "date-fns";
 import Link from "next/link";
 
+import { getDocPath } from "@/features/doc/data/doc-path";
 import type { Doc } from "@/features/doc/types/document";
 
 export function PostItem({ post }: { post: Doc }) {
   return (
     <Link
-      href={`/blog/${post.slug}`}
+      href={getDocPath(post)}
       prefetch={false}
       className="group flex items-baseline gap-3 rounded-md px-3 py-2.5 transition-all duration-200 hover:bg-foreground/[0.06]"
     >

@@ -44,16 +44,26 @@ const nextConfig: NextConfig = {
         destination: "/:section/theme-switcher",
         permanent: true,
       },
+      {
+        source: "/blog",
+        destination: "/daily",
+        permanent: true,
+      },
+      {
+        source: "/blog/:slug",
+        destination: "/daily/:slug",
+        permanent: false,
+      },
     ];
   },
   async rewrites() {
     return [
       {
-        source: "/:section(blog|components)/:slug.mdx",
+        source: "/:section(daily|tech|components)/:slug.mdx",
         destination: "/doc.mdx/:slug",
       },
       {
-        source: "/:section(blog|components)/:slug",
+        source: "/:section(daily|tech|components)/:slug",
         destination: "/doc.mdx/:slug",
         has: [
           {
@@ -65,7 +75,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/rss",
-        destination: "/blog/rss",
+        destination: "/daily/rss",
       },
       {
         source: "/registry/rss",

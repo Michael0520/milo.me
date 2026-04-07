@@ -73,16 +73,22 @@ const MENU_LINKS: CommandLinkItem[] = [
   },
   ...DEV_MENU_LINKS,
   {
+    title: "Daily",
+    href: "/daily",
+    icon: <Icons.news />,
+    shortcut: "GD",
+  },
+  {
+    title: "Tech",
+    href: "/tech",
+    icon: <LayersIcon />,
+    shortcut: "GN",
+  },
+  {
     title: "Talks",
     href: "/talks",
     icon: <PresentationIcon />,
     shortcut: "GT",
-  },
-  {
-    title: "Blog",
-    href: "/blog",
-    icon: <Icons.news />,
-    shortcut: "GL",
   },
 ];
 
@@ -200,7 +206,7 @@ export function CommandMenu({
     [setTheme],
   );
 
-  const { componentLinks, blogLinks } = useMemo(
+  const { componentLinks, dailyLinks, techLinks } = useMemo(
     () => ({
       componentLinks: docs
         .filter((doc) => doc.category === "components")
@@ -210,7 +216,8 @@ export function CommandMenu({
           }),
         )
         .map(docToCommandLinkItem),
-      blogLinks: docs.filter((doc) => doc.category !== "components").map(docToCommandLinkItem),
+      dailyLinks: docs.filter((doc) => doc.category === "personal").map(docToCommandLinkItem),
+      techLinks: docs.filter((doc) => doc.category === "tech").map(docToCommandLinkItem),
     }),
     [docs],
   );
@@ -272,9 +279,16 @@ export function CommandMenu({
           )}
 
           <CommandLinkGroup
-            heading="Blog"
-            links={blogLinks}
+            heading="Daily"
+            links={dailyLinks}
             fallbackIcon={<Icons.news />}
+            onLinkSelect={handleOpenLink}
+          />
+
+          <CommandLinkGroup
+            heading="Tech"
+            links={techLinks}
+            fallbackIcon={<LayersIcon />}
             onLinkSelect={handleOpenLink}
           />
 
@@ -475,12 +489,15 @@ function CommandMenuFooter() {
 }
 
 function docToCommandLinkItem(doc: DocPreview): CommandLinkItem {
-  const isComponent = doc.category === "components";
+  const hrefMap: Record<string, string> = {
+    components: `/components/${doc.slug}`,
+    tech: `/tech/${doc.slug}`,
+  };
 
   return {
     title: doc.title,
-    href: isComponent ? `/components/${doc.slug}` : `/blog/${doc.slug}`,
-    keywords: isComponent ? ["component"] : undefined,
-    icon: isComponent ? <ComponentIcon variant={doc.slug} /> : undefined,
+    href: hrefMap[doc.category ?? ""] ?? `/daily/${doc.slug}`,
+    keywords: doc.category === "components" ? ["component"] : undefined,
+    icon: doc.category === "components" ? <ComponentIcon variant={doc.slug} /> : undefined,
   };
 }

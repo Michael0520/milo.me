@@ -1,7 +1,8 @@
 import { SITE_INFO } from "@/config/site";
-import { getAllDocs } from "@/features/doc/data/documents";
+import { getDocPath, getDocsByCategory } from "@/features/doc/data/documents";
 
-const allPosts = getAllDocs();
+const dailyPosts = getDocsByCategory("personal");
+const techPosts = getDocsByCategory("tech");
 
 const content = `# michaello.me
 
@@ -10,9 +11,13 @@ const content = `# michaello.me
 - [About](${SITE_INFO.url}/about.md): About me, my tech stack, and how to connect.
 - [Talks](${SITE_INFO.url}/talks): Conference talks and presentations.
 
-## Blog
+## Daily
 
-${allPosts.map((item) => `- [${item.metadata.title}](${SITE_INFO.url}/blog/${item.slug}.mdx): ${item.metadata.description}`).join("\n")}
+${dailyPosts.map((item) => `- [${item.metadata.title}](${SITE_INFO.url}${getDocPath(item)}.mdx): ${item.metadata.description}`).join("\n")}
+
+## Tech
+
+${techPosts.length > 0 ? techPosts.map((item) => `- [${item.metadata.title}](${SITE_INFO.url}${getDocPath(item)}.mdx): ${item.metadata.description}`).join("\n") : "No posts yet."}
 `;
 
 export const revalidate = false;

@@ -16,7 +16,12 @@ import { SITE_INFO, X_USERNAME } from "@/config/site";
 import { PostKeyboardShortcuts } from "@/features/blog/components/post-keyboard-shortcuts";
 import { LLMCopyButtonWithViewOptions } from "@/features/blog/components/post-page-actions";
 import { PostShareMenu } from "@/features/blog/components/post-share-menu";
-import { findNeighbour, getAllDocs, getDocBySlug } from "@/features/doc/data/documents";
+import {
+  findNeighbour,
+  getDocBySlug,
+  getDocPath,
+  getDocsByCategory,
+} from "@/features/doc/data/documents";
 import type { Doc } from "@/features/doc/types/document";
 import { USER } from "@/features/portfolio/data/user";
 import { cn } from "@/lib/utils";
@@ -26,8 +31,7 @@ export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const docs = getAllDocs();
-  return docs.map((doc) => ({ slug: doc.slug }));
+  return getDocsByCategory("tech").map((doc) => ({ slug: doc.slug }));
 }
 
 export async function generateMetadata({
@@ -44,7 +48,7 @@ export async function generateMetadata({
 
   const { title, description, image, createdAt, updatedAt } = doc.metadata;
 
-  const postUrl = getDocUrl(doc);
+  const postUrl = getDocPath(doc);
   const ogImage =
     image ||
     `/og/simple?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
@@ -85,7 +89,7 @@ function getPageJsonLd(doc: Doc): WithContext<PageSchema> {
     image:
       doc.metadata.image ||
       `/og/simple?title=${encodeURIComponent(doc.metadata.title)}&description=${encodeURIComponent(doc.metadata.description)}`,
-    url: `${SITE_INFO.url}${getDocUrl(doc)}`,
+    url: `${SITE_INFO.url}${getDocPath(doc)}`,
     datePublished: new Date(doc.metadata.createdAt).toISOString(),
     dateModified: new Date(doc.metadata.updatedAt).toISOString(),
     author: {
@@ -113,8 +117,8 @@ export default async function Page({
 
   const toc = getTableOfContents(doc.content);
 
-  const allDocs = getAllDocs();
-  const { previous, next } = findNeighbour(allDocs, slug);
+  const categoryDocs = getDocsByCategory("tech");
+  const { previous, next } = findNeighbour(categoryDocs, slug);
 
   return (
     <>
@@ -125,37 +129,37 @@ export default async function Page({
         }}
       />
 
-      <PostKeyboardShortcuts basePath="/blog" previous={previous} next={next} />
+      <PostKeyboardShortcuts basePath="/tech" previous={previous} next={next} />
 
       <div className="flex items-center justify-between p-2 pl-4">
         <Button
-          className="h-7 gap-2 border-none px-0 font-mono text-muted-foreground hover:text-foreground"
+          className="h-7 gap-2 border-none px-0 text-muted-foreground hover:text-foreground"
           variant="link"
           size="sm"
           asChild
         >
-          <Link href="/blog">
+          <Link href="/tech">
             <ArrowLeftIcon />
-            <ViewTransition name="blog-page-heading-title">
-              <span>Blog</span>
+            <ViewTransition name="tech-page-heading-title">
+              <span>Tech</span>
             </ViewTransition>
           </Link>
         </Button>
 
         <div className="flex items-center gap-2">
           <LLMCopyButtonWithViewOptions
-            markdownUrl={`${getDocUrl(doc)}.mdx`}
-            isComponent={doc.metadata.category === "components"}
+            markdownUrl={`${getDocPath(doc)}.mdx`}
+            isComponent={false}
           />
 
-          <PostShareMenu title={doc.metadata.title} url={getDocUrl(doc)} />
+          <PostShareMenu title={doc.metadata.title} url={getDocPath(doc)} />
 
           {previous && (
             <Tooltip>
               <TooltipTrigger
                 render={
                   <Button className="size-7 border-none" variant="secondary" size="icon-sm" asChild>
-                    <Link href={`/blog/${previous.slug}`}>
+                    <Link href={`/tech/${previous.slug}`}>
                       <ArrowLeftIcon />
                       <span className="sr-only">Previous</span>
                     </Link>
@@ -178,7 +182,7 @@ export default async function Page({
               <TooltipTrigger
                 render={
                   <Button className="size-7 border-none" variant="secondary" size="icon-sm" asChild>
-                    <Link href={`/blog/${next.slug}`}>
+                    <Link href={`/tech/${next.slug}`}>
                       <span className="sr-only">Next</span>
                       <ArrowRightIcon />
                     </Link>
@@ -225,9 +229,4 @@ export default async function Page({
       <div className="screen-line-top h-4 w-full" />
     </>
   );
-}
-
-function getDocUrl(doc: Doc) {
-  const isComponent = doc.metadata.category === "components";
-  return isComponent ? `/components/${doc.slug}` : `/blog/${doc.slug}`;
 }

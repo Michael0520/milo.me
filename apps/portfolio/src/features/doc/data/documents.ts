@@ -75,6 +75,8 @@ export function getDocsByCategory(category: string) {
   return getAllDocs().filter((doc) => doc.metadata?.category === category);
 }
 
+export { getDocPath } from "./doc-path";
+
 export function findNeighbour(docs: Doc[], slug: string) {
   const len = docs.length;
 

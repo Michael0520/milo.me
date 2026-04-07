@@ -5,10 +5,10 @@ import { X_USERNAME } from "@/config/site";
 import { PostList } from "@/features/blog/components/post-list";
 import { PostListWithSearch } from "@/features/blog/components/post-list-with-search";
 import { PostSearchInput } from "@/features/blog/components/post-search-input";
-import { getAllDocs } from "@/features/doc/data/documents";
+import { getDocsByCategory } from "@/features/doc/data/documents";
 
-const title = "Blog";
-const description = "A collection of articles on development, design, and ideas.";
+const title = "Daily";
+const description = "Life updates, reflections, and personal stories.";
 
 const ogImage = `/og/simple?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
 
@@ -16,10 +16,10 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: {
-    canonical: "/blog",
+    canonical: "/daily",
   },
   openGraph: {
-    url: "/blog",
+    url: "/daily",
     type: "website",
     images: {
       url: ogImage,
@@ -37,13 +37,13 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  const allPosts = getAllDocs();
+  const allPosts = getDocsByCategory("personal");
 
   return (
     <div className="min-h-svh">
       <div className="screen-line-bottom px-4">
         <h1 className="text-3xl leading-none font-semibold tracking-tight">
-          <ViewTransition name="blog-page-heading-title">
+          <ViewTransition name="daily-page-heading-title">
             <span>{title}</span>
           </ViewTransition>
         </h1>
