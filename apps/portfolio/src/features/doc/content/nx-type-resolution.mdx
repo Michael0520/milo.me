@@ -1,0 +1,250 @@
+---
+title: "Nx Monorepo Type Resolution: paths vs Project References"
+description: >-
+  How TypeScript resolves cross-package types without paths mapping, and the
+  role of nx sync
+createdAt: "2026-03-23"
+updatedAt: "2026-03-23"
+category: tech
+---
+
+> 在 Nx monorepo 裡，tsconfig references 不該手動加——但沒有它 TypeScript 又找不到跨 package 的型別。到底是怎麼運作的？
+
+## 引言
+
+在 Nx monorepo 裡跨 package import 型別，直覺上會想到 `tsconfig.base.json` 的 `paths` mapping。但打開 tsconfig 卻發現**根本沒有 `paths`**，TypeScript 還是正常解析了
+
+這背後涉及兩個不同的機制：傳統的 `paths` mapping 和新的 **Project References**，以及 Nx 的 `sync` 如何把這一切串起來
+
+---
+
+## 傳統做法：paths mapping
+
+最直覺的跨 package 型別解析方式，是在 `tsconfig.base.json` 設定 `paths`：
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@myorg/shared": ["packages/shared/src/index.ts"],
+      "@myorg/utils": ["packages/utils/src/index.ts"]
+    }
+  }
+}
+```
+
+TypeScript 看到 `import { something } from '@myorg/shared'` 時，會直接透過 `paths` 找到對應的 source file，把它當成同一個 project 的一部分來處理。
+
+| 優點               | 缺點                             |
+| ------------------ | -------------------------------- |
+| 設定簡單，一目瞭然 | 不支援 incremental build         |
+| 不需要額外工具     | 每次 typecheck 載入整個 codebase |
+| 適合小型 monorepo  | 大型 repo IDE 會變慢             |
+
+這在小型 monorepo 裡完全夠用，但隨著 package 數量增長，每次 `tsc` 都要重新檢查所有依賴的型別，速度會越來越慢。
+
+---
+
+## 新做法：Project References
+
+Nx 現在推薦的做法是 **Project References**，搭配 pnpm workspace 和 `package.json` exports 來解析跨 package 型別。不需要 `paths`
+
+核心設定有三個部分：
+
+### 1. `tsconfig.base.json` 啟用 composite
+
+```json
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true
+  }
+}
+```
+
+注意：**沒有 `paths`**。
+
+### 2. 各 package 的 `tsconfig.lib.json` 宣告 references
+
+```json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc"
+  },
+  "references": [{ "path": "../shared" }, { "path": "../utils" }]
+}
+```
+
+`references` 告訴 TypeScript：「這個 package 依賴哪些其他 package」，讓 `tsc --build` 能以正確的順序做 incremental typecheck。
+
+### 3. `package.json` 用 exports 指定入口
+
+```json
+{
+  "name": "@myorg/shared",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": {
+      "development": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  }
+}
+```
+
+pnpm workspace 會在 `node_modules/@myorg/shared` 建立 symlink 指向實際的 package 目錄，TypeScript 再透過 `package.json` 的 exports 找到入口檔案。
+
+<Callout type="info">
+  `customConditions` 在 `tsconfig.base.json` 裡的角色：當你設定 `"customConditions":
+  ["development"]` 時，TypeScript 會優先匹配 exports 裡的 `"development"` 條件，直接指向
+  source（`./src/index.ts`），而不是 build 產物。開發時不用先 build 就能拿到型別
+</Callout>
+
+---
+
+## 解析流程
+
+當你在程式碼裡寫下一行 import，背後到底發生了什麼事？
+
+**Step 1: 程式碼寫 import**
+
+```typescript
+import { ApiResMocker } from "@one-e2e/e2e";
+```
+
+TypeScript 看到 `@one-e2e/e2e`，開始解析這個 module。
+
+**Step 2: pnpm workspace symlink 解析**
+
+pnpm workspace 在安裝依賴時，已經把 `node_modules/@one-e2e/e2e` 建成一個 symlink，指向實際的 `packages/e2e/` 目錄。
+
+```
+node_modules/@one-e2e/e2e → ../../packages/e2e/
+```
+
+TypeScript 的 module resolution 跟著這個 symlink 找到 `packages/e2e/`。
+
+**Step 3: 讀取 `package.json` 的 exports**
+
+TypeScript 讀到 `packages/e2e/package.json`，根據 exports 的條件找到入口：
+
+```json
+{
+  "exports": {
+    ".": {
+      "development": "./src/index.ts"
+    }
+  }
+}
+```
+
+搭配 `customConditions: ["development"]`，直接解析到 `packages/e2e/src/index.ts`。
+
+**Step 4: `tsc --build` 透過 references 做 incremental typecheck**
+
+當執行 `tsc --build` 時，TypeScript 讀取 `references` 欄位，知道 package 之間的依賴關係，可以：
+
+- 按正確的順序 typecheck（先 check 被依賴的 package）
+- 利用 `.tsbuildinfo` 做 incremental check（只重新檢查有改動的部分）
+
+<Callout type="tip">
+  沒有 `references`，`tsc --build` 就不知道 package 之間的依賴關係。型別解析本身可能還是會成功（因為
+  pnpm symlink + exports 已經搞定了路徑），但 incremental build 會壞掉，typecheck 的順序也可能出錯
+</Callout>
+
+---
+
+## nx sync 怎麼運作
+
+到這裡你可能會想：那 `references` 要自己寫嗎？不用，這就是 `nx sync` 的工作。
+
+### 觸發方式
+
+有兩種情況會觸發：
+
+1. **手動執行** `npx nx sync`
+2. **自動偵測**：跑 build 或 typecheck 時，Nx 發現 tsconfig 跟實際依賴不同步，會提示你執行 sync
+
+### 背後機制
+
+Nx 用 `@nx/js:typescript-sync` 這個 sync generator 來處理，流程是：
+
+1. 分析 **Nx project graph**（根據 source code 的 import 語句和 `package.json` 的 dependencies）
+2. 算出每個 project 依賴哪些其他 project
+3. 自動產生或更新每個 `tsconfig.lib.json` 的 `references` 欄位
+
+### 實際驗證
+
+當 workspace 不同步時：
+
+```bash
+$ npx nx sync
+NX  The workspace is out of sync
+
+[@nx/js:typescript-sync]: Some TypeScript configuration files are missing project references...
+
+? Would you like to sync the identified changes to get your workspace up to date? Yes
+
+NX  The workspace was synced successfully
+```
+
+再跑一次確認已同步：
+
+```bash
+$ npx nx sync
+NX  The workspace is already up to date
+```
+
+---
+
+## 為什麼不能手動加也不能刪
+
+<Callout type="tip">
+  `tsconfig.lib.json` 裡的 `references` 是由 `nx sync` 自動管理的，不要手動修改。
+</Callout>
+
+背後原因很實際：
+
+| 操作                   | 後果                                                              |
+| ---------------------- | ----------------------------------------------------------------- |
+| 手動加 references      | 下次 `nx sync` 可能覆蓋你加的內容，或把順序重新排列               |
+| 手動刪 references      | TypeScript `tsc --build` 找不到依賴的型別，incremental check 壞掉 |
+| 加了不存在的 reference | build 直接報錯                                                    |
+
+正確做法是：
+
+1. 管好 `package.json` 的 workspace dependencies（`"@myorg/shared": "workspace:^"`）
+2. 在 source code 裡正常寫 import
+3. 讓 `nx sync` 根據這些資訊自動產生 references
+
+**你負責 dependency 和 import，Nx 負責 references。**
+
+---
+
+## 兩種做法對照
+
+| 項目              | paths mapping                      | Project References                    |
+| ----------------- | ---------------------------------- | ------------------------------------- |
+| 設定方式          | `tsconfig.base.json` 的 `paths`    | `references` + `package.json` exports |
+| Module 解析       | TypeScript `paths` 直接對應 source | pnpm symlink + exports 條件           |
+| Incremental build | 不支援                             | 支援（`tsc --build`）                 |
+| IDE 效能          | 大型 repo 會慢                     | 只載入相關 project                    |
+| 維護方式          | 手動管理 `paths`                   | `nx sync` 自動管理 `references`       |
+| 適合規模          | 小型 monorepo                      | 中大型 monorepo                       |
+
+---
+
+## 系列文章
+
+1. [Nx Monorepo 架構演進](/blog/nx-monorepo-evolution)
+2. **型別解析：paths 與 Project References** ← 目前位置
+3. [moduleResolution：bundler vs nodenext](/blog/nx-module-resolution)
+
+---
+
+## 參考資源
+
+- [TypeScript Project Linking - Nx Docs](https://nx.dev/docs/concepts/typescript-project-linking)
+- [TypeScript Project References - Nx Blog](https://nx.dev/blog/typescript-project-references)
+- [Switch to Workspaces Project References - Nx Guide](https://nx.dev/docs/technologies/typescript/guides/switch-to-workspaces-project-references)

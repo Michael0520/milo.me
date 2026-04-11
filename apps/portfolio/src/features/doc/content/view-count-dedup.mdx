@@ -1,0 +1,208 @@
+---
+title: Blog View Count Implementation
+description: 在部落格加個瀏覽計數應該很簡單吧？結果比我想的複雜一點
+createdAt: "2025-12-09"
+updatedAt: "2025-12-09"
+image: /images/blog/view-count-dedup.png
+category: tech
+---
+
+> 原本以為 view count 就是每次 +1，做完才發現一個小計數器也有不少學問。
+
+## 問題在哪
+
+View count 聽起來很單純，有人看文章就 +1。但仔細想想，如果文章顯示 1,000 views，其中 800 次是同一個人狂按 F5，這數字還有意義嗎？
+
+所以需要做**訪客去重**，讓每個人在一段時間內只被算一次。
+
+## API 設計
+
+就三支 API：
+
+| Method | Endpoint       | 說明               |
+| ------ | -------------- | ------------------ |
+| GET    | `/views/:slug` | 拿瀏覽數           |
+| POST   | `/views/:slug` | 記錄瀏覽（會去重） |
+| GET    | `/views`       | 拿全部文章瀏覽數   |
+
+重點在 POST，要判斷這個人是不是已經看過了。
+
+## 怎麼判斷「同一個人」
+
+| 方案                  | 準嗎 | 隱私 | 說明                                  |
+| --------------------- | ---- | ---- | ------------------------------------- |
+| Cookie / LocalStorage | 還好 | 👍   | 清掉瀏覽資料就破功，無痕模式也沒用    |
+| User ID（要登入）     | 最準 | 👍   | 但我不想要求登入                      |
+| 純 IP                 | 不準 | 普通 | 一間公司可能共用一個 IP，幾百人算一個 |
+| **IP + User-Agent**   | 夠用 | 👍   | 最後選這個                            |
+| 瀏覽器指紋            | 很準 | 👎   | 隱私問題大，Brave、Firefox 會干擾     |
+
+最後選 **IP + User-Agent** 組合做 hash：
+
+- 使用者沒辦法繞過（不像 Cookie 可以清）
+- 不存個資，只存 hash
+- 實作簡單
+
+## 實作
+
+### 產生 fingerprint
+
+```typescript
+function createFingerprint(ip: string, userAgent: string): string {
+  return hash(`${ip}:${userAgent}`);
+}
+```
+
+把 IP 跟 User-Agent 組起來做 hash，就是這個人的「指紋」。
+
+### 抓真正的 IP
+
+在有 CDN 的環境，直接拿到的是 proxy IP，要從 header 撈：
+
+```typescript
+function extractClientIP(headers: Headers): string {
+  const xff = headers["x-forwarded-for"];
+  if (xff) return xff.split(",")[0].trim();
+
+  return headers["cf-connecting-ip"] || headers["x-real-ip"] || "unknown";
+}
+```
+
+### 用 Redis 記錄
+
+Redis 存兩種 key：
+
+| Key                            | Value | 用途                         |
+| ------------------------------ | ----- | ---------------------------- |
+| `views:{slug}`                 | `42`  | 瀏覽總數                     |
+| `visitor:{slug}:{fingerprint}` | `1`   | 存在 = 訪問過，24hr 後自動刪 |
+
+查詢是 O(1)，Redis 的 TTL 會自動清過期記錄。
+
+### 完整流程
+
+```typescript
+async function recordView(slug: string, ip: string, userAgent: string) {
+  const fingerprint = createFingerprint(ip, userAgent);
+  const visitorKey = `visitor:${slug}:${fingerprint}`;
+
+  // 檢查是否已經來過
+  const hasVisited = await redis.exists(visitorKey);
+  if (hasVisited) {
+    const count = await redis.get(`views:${slug}`);
+    return { count, isNewView: false };
+  }
+
+  // 新訪客：標記 + 計數
+  await redis.set(visitorKey, 1, { ex: 86400 }); // 24hr TTL
+  const count = await redis.incr(`views:${slug}`);
+  return { count, isNewView: true };
+}
+```
+
+為什麼 TTL 設 24 小時？太短會重複算，太長回訪的人永遠不計。24 小時剛好是「日活躍訪客」的概念。
+
+## 已知限制
+
+| 情況             | 結果               | 影響       |
+| ---------------- | ------------------ | ---------- |
+| VPN 換 IP        | 當新訪客           | 少數人     |
+| 同公司同 IP      | 不同 UA = 不同訪客 | 還行       |
+| 同電腦不同瀏覽器 | 當不同訪客         | 會高估一點 |
+
+不完美，但在不存個資的前提下夠用了。
+
+## SSG Blog 怎麼處理動態資料
+
+這個 blog 用 Next.js SSG，頁面在 build time 就產生好了。但 view count 每個人看到的可能不同，不能寫死在 HTML 裡。
+
+幾種做法：
+
+| 做法      | 說明                             | 問題                                  |
+| --------- | -------------------------------- | ------------------------------------- |
+| SSR       | 每個 request 都打 API 拿數字     | TTFB 變慢，為了一個數字不值得         |
+| ISR       | 設 `revalidate = 60`，每分鐘更新 | 數字落後最多 60 秒，整頁要 revalidate |
+| SSG + CSR | 頁面靜態，數字 client fetch      | 數字會「跳」一下                      |
+
+最後選 **SSG + CSR**。view count 用 client component，載入後才打 API：
+
+```tsx
+"use client";
+
+function ViewCount({ slug }) {
+  const [count, setCount] = useState(null);
+
+  useEffect(() => {
+    api
+      .views({ slug })
+      .get()
+      .then((res) => setCount(res.data.count));
+  }, [slug]);
+
+  return <span>{count ?? "--"} views</span>;
+}
+```
+
+頁面先顯示 `--`，拿到資料後換成數字。這個「跳」的體驗其實很常見，Medium、Dev.to 都這樣做。
+
+重點是：**靜態內容跟動態資料分開處理**。文章本身 cache 住，view count 不影響 TTFB。
+
+## 優化：減少不必要的請求
+
+上面的做法可以 work，但有些情境會觸發不必要的 refetch。
+
+例如使用者切換 tab 再回來，或是網路重連，瀏覽器可能會重新 fetch。後端的 Redis 會擋住重複計數，資料不會錯，但這些多餘的 request 還是浪費資源。
+
+### 用 TanStack Query 管理
+
+改用 [TanStack Query](https://tanstack.com/query) 的 `useQuery`：
+
+```typescript
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchViewCount(slug: string, increment: boolean) {
+  const endpoint = api.views({ slug });
+  const { data, error } = increment ? await endpoint.post() : await endpoint.get();
+
+  if (error) throw new Error(error.value.message);
+  return data.count;
+}
+
+export function useViewCount(slug: string, options = {}) {
+  const { increment = false } = options;
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["views", slug, increment],
+    queryFn: () => fetchViewCount(slug, increment),
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
+  return { count: data ?? null, isLoading, error };
+}
+```
+
+`staleTime: Infinity` 代表資料永遠不過期，同一個 session 內不會重複 fetch。
+
+### 兩層防護
+
+| 層級 | 機制                         | 效果                      |
+| ---- | ---------------------------- | ------------------------- |
+| 前端 | TanStack Query cache         | 同一 session 不重複打 API |
+| 後端 | Redis visitor key + 24hr TTL | 同一訪客 24hr 內只算一次  |
+
+這樣的好處：
+
+- 切換 tab 再回來，不會重新打 API
+- 網路重連時，不會觸發 refetch
+- 後端還是最後一道防線，確保資料正確
+
+比起自己用 `useRef` 或 `useState` 土炮防止重複請求，TanStack Query 是更成熟的解法。
+
+## 參考資料
+
+- [Upstash Redis](https://upstash.com/)
+- [TanStack Query](https://tanstack.com/query)
+- [Plausible — How to count unique visitors without cookies](https://plausible.io/blog/google-analytics-cookies)

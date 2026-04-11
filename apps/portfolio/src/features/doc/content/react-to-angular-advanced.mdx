@@ -1,0 +1,431 @@
+---
+title: "Rediscovering Angular: Performance & Deployment"
+description: >-
+  Advanced Angular topics: Styling, @defer, Zoneless, Testing and Build best
+  practices
+createdAt: "2025-12-14"
+updatedAt: "2025-12-14"
+image: /images/blog/angular-advanced.jpg
+category: tech
+---
+
+> 涵蓋讓專案 production-ready 所需的進階主題：樣式封裝、效能優化、測試與部署。
+
+---
+
+## Styling
+
+### Component Styles
+
+Angular 預設使用 View Encapsulation（類似 Shadow DOM），樣式只作用於當前 component。
+
+```typescript
+@Component({
+  selector: "app-button",
+  standalone: true,
+  styles: `
+    /* 只影響這個 component 的 button */
+    button {
+      padding: 8px 16px;
+      border-radius: 4px;
+    }
+  `,
+  template: `<button><ng-content /></button>`,
+})
+export class ButtonComponent {}
+```
+
+### View Encapsulation 模式
+
+| Mode              | 說明                               |
+| ----------------- | ---------------------------------- |
+| `Emulated` (預設) | 用 attribute selector 模擬 scoping |
+| `None`            | 無 encapsulation，樣式全域         |
+| `ShadowDom`       | 真正的 Shadow DOM                  |
+
+```typescript
+@Component({
+  encapsulation: ViewEncapsulation.None, // Global styles
+})
+```
+
+### Tailwind CSS
+
+設定跟 React 專案幾乎一樣。
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init
+```
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  content: ["./src/**/*.{html,ts}"],
+  theme: { extend: {} },
+  plugins: [],
+};
+```
+
+```css
+/* styles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+```typescript
+@Component({
+  template: `
+    <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Click me</button>
+  `,
+})
+export class ButtonComponent {}
+```
+
+---
+
+## 進階功能
+
+### @defer - 延遲載入
+
+這是 Angular 獨有的功能，React 沒有等價的內建方案。
+
+```typescript
+@Component({
+  template: `
+    @defer (on viewport) {
+      <app-heavy-chart [data]="chartData()" />
+    } @placeholder {
+      <div class="skeleton">Loading chart...</div>
+    } @loading (minimum 500ms) {
+      <app-spinner />
+    } @error {
+      <div>Failed to load chart</div>
+    }
+  `,
+})
+export class DashboardComponent {}
+```
+
+**Defer Triggers：**
+
+| Trigger          | 說明               |
+| ---------------- | ------------------ |
+| `on idle`        | 瀏覽器閒置時載入   |
+| `on viewport`    | 進入可視區域時載入 |
+| `on interaction` | 使用者互動時載入   |
+| `on hover`       | Hover 時載入       |
+| `on timer(5s)`   | 5 秒後載入         |
+| `when condition` | 條件為 true 時載入 |
+
+<Callout type="tip">`@defer` 會自動 code split，不需要額外設定，對大型 dashboard 很有用</Callout>
+
+### Lifecycle Hooks
+
+| React                     | Angular           | 觸發時機                         |
+| ------------------------- | ----------------- | -------------------------------- |
+| `useEffect(() => {}, [])` | `ngOnInit`        | Component 初始化後               |
+| `useEffect cleanup`       | `ngOnDestroy`     | Component 銷毀前                 |
+| -                         | `ngOnChanges`     | Input 變更時                     |
+| `useLayoutEffect`         | `afterRender`     | DOM 更新後（同步）               |
+| -                         | `afterNextRender` | 下一次 render 後（SSR friendly） |
+
+```typescript
+@Component({...})
+export class MyComponent implements OnInit, OnDestroy {
+  ngOnInit() {
+    // Component mounted
+  }
+
+  ngOnDestroy() {
+    // Cleanup
+  }
+}
+
+// 或使用新 API
+export class MyComponent {
+  constructor() {
+    afterNextRender(() => {
+      // Safe to access DOM
+    });
+  }
+}
+```
+
+### View Queries
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React useRef</TabsTrigger>
+<TabsTrigger value="angular">Angular viewChild</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { useRef, useEffect } from "react";
+
+function VideoPlayer() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    videoRef.current?.play();
+  }, []);
+
+  return <video ref={videoRef} src="video.mp4" />;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { Component, viewChild, afterNextRender, ElementRef } from "@angular/core";
+
+@Component({
+  selector: "app-video-player",
+  standalone: true,
+  template: `<video #video src="video.mp4"></video>`,
+})
+export class VideoPlayerComponent {
+  video = viewChild<ElementRef<HTMLVideoElement>>("video");
+
+  constructor() {
+    afterNextRender(() => {
+      this.video()?.nativeElement.play();
+    });
+  }
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Change Detection 策略
+
+Angular 預設會在任何事件後檢查整棵 component tree，使用 `OnPush` 可以大幅減少檢查次數。
+
+**Default vs OnPush**
+
+| 策略    | 檢查時機                        | 適用場景           |
+| ------- | ------------------------------- | ------------------ |
+| Default | 任何事件後檢查整棵樹            | 小型應用、快速開發 |
+| OnPush  | 只在 input 變更或手動觸發時檢查 | 效能敏感、大型應用 |
+
+**使用 OnPush**
+
+```typescript
+import { Component, ChangeDetectionStrategy, input } from "@angular/core";
+
+@Component({
+  selector: "app-user-card",
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div class="card">
+      <h3>{{ user().name }}</h3>
+      <p>{{ user().email }}</p>
+    </div>
+  `,
+})
+export class UserCardComponent {
+  user = input.required<User>();
+}
+```
+
+**OnPush 觸發更新的情況**
+
+1. `input()` / `@Input()` 變更（reference 變更）
+2. Component 內的事件（click、submit 等）
+3. `signal()` 值變更（Signals 自動觸發）
+4. `async` pipe 收到新值
+5. 手動呼叫 `ChangeDetectorRef.markForCheck()`
+
+<Callout type="tip">
+  搭配 Signals 使用 OnPush 效果最好——Signal 變更會自動標記 component 需要更新，不需要手動處理
+</Callout>
+
+### Zoneless
+
+Angular 20 支援 Zoneless（stable），使用 Signals 來觸發更新，類似 React 的 fine-grained updates。
+
+```typescript
+// app.config.ts
+import { provideZonelessChangeDetection } from "@angular/core";
+
+export const appConfig = {
+  providers: [
+    provideZonelessChangeDetection(), // Angular 20 stable
+  ],
+};
+```
+
+<Callout type="info">
+  Zoneless 模式下只有 Signals 的 component 會自動更新，效能大幅提升，但要確保所有狀態都用 Signals
+</Callout>
+
+---
+
+## Testing
+
+### Unit Testing
+
+Angular 20 已廢棄 Karma，推薦使用 Web Test Runner 或 Vitest。
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React (Vitest)</TabsTrigger>
+<TabsTrigger value="angular">Angular (TestBed)</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { render, screen } from "@testing-library/react";
+import { Counter } from "./Counter";
+
+describe("Counter", () => {
+  it("should render initial count", () => {
+    render(<Counter />);
+    expect(screen.getByText("Count: 0")).toBeInTheDocument();
+  });
+});
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { CounterComponent } from "./counter.component";
+
+describe("CounterComponent", () => {
+  let component: CounterComponent;
+  let fixture: ComponentFixture<CounterComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [CounterComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(CounterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it("should render initial count", () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.textContent).toContain("Count: 0");
+  });
+});
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Service Testing
+
+```typescript
+import { TestBed } from "@angular/core/testing";
+import { AuthService } from "./auth.service";
+
+describe("AuthService", () => {
+  let service: AuthService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(AuthService);
+  });
+
+  it("should login user", () => {
+    service.login({ id: "1", name: "Test" });
+    expect(service.user()).toEqual({ id: "1", name: "Test" });
+  });
+});
+```
+
+---
+
+## Build & DevOps
+
+### Build System
+
+Angular 預設使用 esbuild，build 速度大幅提升。
+
+```bash
+# Development
+ng serve
+
+# Production build
+ng build --configuration production
+```
+
+### SSR & Hydration
+
+```bash
+ng add @angular/ssr
+```
+
+```typescript
+// app.config.server.ts
+import { provideServerRendering } from "@angular/platform-server";
+
+export const serverConfig = {
+  providers: [provideServerRendering()],
+};
+```
+
+Angular 支援 Full Hydration，類似 Next.js 的 hydration。
+
+---
+
+## 總結
+
+### 核心概念對照
+
+| 概念     | React                | Angular               |
+| -------- | -------------------- | --------------------- |
+| 狀態     | `useState`           | `signal()`            |
+| 計算值   | `useMemo`            | `computed()`          |
+| 副作用   | `useEffect`          | `effect()`            |
+| 全域狀態 | Context / Zustand    | Service / SignalStore |
+| Props    | `props`              | `input()`             |
+| Events   | `onEvent`            | `output()`            |
+| DOM ref  | `useRef`             | `viewChild()`         |
+| 條件渲染 | `{condition && ...}` | `@if`                 |
+| 列表渲染 | `.map()`             | `@for`                |
+
+### 心態轉換
+
+1. **Template vs JSX** - Angular 用 HTML template + 綁定語法，不是 JavaScript
+2. **自動依賴追蹤** - 不需要手動維護 dependency array
+3. **Class-based** - Component 是 class，但用 `inject()` 取代 constructor injection
+4. **DI over Context** - Service + DI 取代 Context 的角色
+5. **RxJS 可選** - 有 Signals 後，RxJS 使用場景減少很多
+
+### 學習資源
+
+- [Angular.dev](https://angular.dev) - 官方文件（新版）
+- [Angular Signals](https://angular.dev/guide/signals)
+- [Angular Control Flow](https://angular.dev/guide/templates/control-flow)
+- [NgRx SignalStore](https://ngrx.io/guide/signals)
+
+---
+
+以上是我重新認識 Angular 的筆記，Signals、Standalone Components、新的 Control Flow 語法都讓開發體驗改善不少。
+
+---
+
+## 系列文章
+
+1. [專案建立與 Component](/blog/react-to-angular-basics)
+2. [Signals 響應式狀態管理](/blog/react-to-angular-signals)
+3. [路由、資料與表單](/blog/react-to-angular-app)
+4. **效能優化與部署** ← 目前位置

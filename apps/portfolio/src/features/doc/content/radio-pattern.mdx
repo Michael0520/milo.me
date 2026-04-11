@@ -1,0 +1,269 @@
+---
+title: RADIO Pattern
+description: 前端系統設計的結構化思考框架，從需求分析到優化的完整方法論
+createdAt: "2025-02-15"
+updatedAt: "2025-12-11"
+image: /images/blog/radio-pattern.png
+category: tech
+---
+
+> 前端系統設計有沒有一套方法論可以依循？
+
+## 什麼是 RADIO？
+
+RADIO 是 [Yangshun Tay](https://www.linkedin.com/in/yangshun/) 在 [GreatFrontEnd](https://www.greatfrontend.com/) 上發表的前端系統設計框架。
+
+原本是針對系統設計面試設計的，但這套思考流程在日常開發也很實用——不管是規劃新功能、寫技術文件、還是跟同事討論架構都適用。
+
+| 階段              | 目標                 | 重點問題             |
+| ----------------- | -------------------- | -------------------- |
+| **R**equirements  | 釐清需求與範圍       | 我們到底要做什麼？   |
+| **A**rchitecture  | 識別關鍵元件及其關係 | 系統長什麼樣子？     |
+| **D**ata Model    | 描述資料實體與欄位   | 資料從哪來、存在哪？ |
+| **I**nterface     | 定義元件間的 API     | 元件之間怎麼溝通？   |
+| **O**ptimizations | 討論優化與深入探討   | 怎麼做得更好？       |
+
+---
+
+## R - Requirements（需求探索）
+
+很多人拿到需求就開始畫架構圖，但需求本身往往是模糊的，「做一個 News Feed」這句話裡面有太多東西沒說清楚：
+
+- 要支援哪些功能？發文、按讚、留言、分享？
+- 要支援哪些裝置？桌面、手機、平板？
+- 效能要求是什麼？首屏載入要多快？
+- 有離線需求嗎？
+
+### Functional vs Non-functional
+
+| 類型           | 說明                 | 範例                     |
+| -------------- | -------------------- | ------------------------ |
+| Functional     | 沒有就不能用         | 使用者可以發文、可以按讚 |
+| Non-functional | 沒有也能用，但體驗差 | 首屏 < 3 秒、滾動 60fps  |
+
+先把 functional requirements 搞清楚，再來考慮 non-functional，不然會發現自己在優化一個根本不需要的功能。
+
+### 核心功能 vs 加分項
+
+實際開發中時間永遠不夠，把功能分成 must-have 跟 nice-to-have：
+
+| 優先級       | 功能                                   |
+| ------------ | -------------------------------------- |
+| Must Have    | 瀏覽貼文列表、發布文字貼文、按讚互動   |
+| Nice to Have | 圖片/影片上傳、即時通知、貼文編輯/刪除 |
+
+---
+
+## A - Architecture（架構設計）
+
+確認需求後開始畫架構圖，不需要很精美，重點是**釐清元件之間的關係跟資料流向**。
+
+### 常見的前端元件
+
+| 元件       | 職責                       | 類比             |
+| ---------- | -------------------------- | ---------------- |
+| Server     | 提供 API，處理資料持久化   | 當成黑盒子就好   |
+| Controller | 發請求、轉換資料、處理錯誤 | 交通指揮         |
+| Store      | 管理應用程式狀態           | 資料倉庫         |
+| View       | 渲染 UI、處理使用者互動    | 使用者看到的東西 |
+
+### 範例：News Feed 架構
+
+#### Frontend — React / Next.js
+
+- **Feed UI** — 貼文列表
+- **Post Item** — 單篇貼文
+- **Composer** — 發文表單
+
+#### Client Store — Zustand / Redux
+
+- **posts** — 貼文資料
+- **user** — 使用者狀態
+- **pagination** — 分頁資訊
+
+#### Server — REST API / GraphQL
+
+- **GET /feed** — 取得貼文
+- **POST /posts** — 發布貼文
+
+每個元件都要能說清楚它的職責，如果說不清楚，可能是切得不對。
+
+---
+
+## D - Data Model（資料模型）
+
+資料分兩種：
+
+| 類型              | 來源     | 特性                 | 範例                 |
+| ----------------- | -------- | -------------------- | -------------------- |
+| Server-originated | 後端 API | 需要持久化、多人共享 | 使用者資料、貼文內容 |
+| Client-only       | 前端產生 | 不需要存到後端       | 表單輸入、UI 狀態    |
+
+### Server Data 範例
+
+```typescript
+interface Post {
+  id: string;
+  content: string;
+  author: User;
+  createdAt: number;
+  reactions: {
+    like: number;
+    love: number;
+  };
+}
+
+interface User {
+  id: string;
+  name: string;
+  avatarUrl: string;
+}
+```
+
+### Client Data 範例
+
+```typescript
+// 要送出去的資料（但還沒送）
+interface DraftPost {
+  content: string;
+  image?: File;
+}
+
+// 純 UI 狀態（關掉頁面就沒了）
+interface UIState {
+  isComposerOpen: boolean;
+  isLoading: boolean;
+  error: string | null;
+}
+```
+
+為什麼要分清楚？因為**生命週期不同**：Server data 要考慮 cache、stale、invalidation，Client data 通常 component unmount 就沒了。
+
+---
+
+## I - Interface（API 定義）
+
+這裡的 API 不只是 HTTP API，也包括 component props、store actions。
+
+### Server-Client API
+
+```typescript
+// GET /api/feed?cursor={cursor}&limit={limit}
+interface GetFeedResponse {
+  posts: Post[];
+  pagination: {
+    nextCursor: string | null;
+    hasMore: boolean;
+  };
+}
+
+// POST /api/posts
+interface CreatePostRequest {
+  content: string;
+  image?: string;
+}
+```
+
+### Client-Client API
+
+```typescript
+// Store 提供的 interface
+interface FeedStore {
+  posts: Post[];
+  isLoading: boolean;
+
+  fetchFeed: (cursor?: string) => Promise<void>;
+  createPost: (draft: DraftPost) => Promise<Post>;
+}
+
+// Component props
+interface PostItemProps {
+  post: Post;
+  onReact: (type: ReactionType) => void;
+  onComment: () => void;
+}
+```
+
+定義清楚 interface 的好處是**可以平行開發**，前端可以先 mock 資料，不用等後端 API 好。
+
+---
+
+## O - Optimizations（優化策略）
+
+前面四個步驟是「讓它 work」，這步是「讓它 work well」，根據產品特性選擇要深入的領域：
+
+| 產品類型  | 優化重點               |
+| --------- | ---------------------- |
+| 電商網站  | 效能（首屏、LCP）、SEO |
+| 社群媒體  | 無限滾動、即時更新     |
+| 編輯器    | 併發處理、undo/redo    |
+| Dashboard | 大量資料渲染、圖表效能 |
+
+### 效能優化範例
+
+**虛擬列表**：只渲染可見區域，處理長列表
+
+```typescript
+import { useVirtualizer } from '@tanstack/react-virtual';
+
+function FeedList({ posts }: { posts: Post[] }) {
+  const virtualizer = useVirtualizer({
+    count: posts.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 300,
+    overscan: 5,
+  });
+
+  return (
+    <div ref={parentRef}>
+      {virtualizer.getVirtualItems().map((item) => (
+        <PostItem key={posts[item.index].id} post={posts[item.index]} />
+      ))}
+    </div>
+  );
+}
+```
+
+**Optimistic Update**：先改 UI，再發請求
+
+```typescript
+async function handleLike(postId: string) {
+  // 1. 先更新 UI（使用者立刻看到效果）
+  store.incrementLike(postId);
+
+  try {
+    // 2. 發請求
+    await api.likePost(postId);
+  } catch {
+    // 3. 失敗就 rollback
+    store.decrementLike(postId);
+  }
+}
+```
+
+這招用在按讚、收藏這種操作特別有效，使用者不用等 loading。
+
+### 其他優化方向
+
+| 領域   | 常見做法                               |
+| ------ | -------------------------------------- |
+| 網路   | Request deduplication、SWR、Prefetch   |
+| 渲染   | Lazy loading、Code splitting、Skeleton |
+| 無障礙 | 語意化 HTML、鍵盤導航、ARIA labels     |
+| 離線   | Service Worker、IndexedDB cache        |
+
+---
+
+## 小結
+
+- **Requirements 花的時間永遠值得**：問清楚再動手，比做完再改省時間
+- **畫圖比講話有用**：架構圖不用漂亮，但要畫，很多時候畫出來才發現自己沒想清楚
+- **先 work 再 work well**：不要一開始就想優化，先讓功能跑起來，再根據實際瓶頸優化
+- **深度優於廣度**：每個領域都講一點，不如挑一個講透
+
+---
+
+## 延伸閱讀
+
+- [GreatFrontEnd - RADIO Framework](https://www.greatfrontend.com/system-design/framework)
+- [Frontend System Design Interview Guide](https://www.greatfrontend.com/system-design)

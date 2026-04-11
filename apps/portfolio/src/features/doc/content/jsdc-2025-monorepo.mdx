@@ -1,0 +1,469 @@
+---
+title: JSDC 2025｜Modern Monorepo Toolchain
+description: >-
+  From tool selection to real-world implementation, how Monorepo becomes core
+  infrastructure for modern frontend teams.
+createdAt: "2025-11-29"
+updatedAt: "2025-11-29"
+image: /images/jsdc-2025/4.png
+category: tech
+---
+
+感謝 JSDC 2025 主辦方的邀請，有機會在今年 11 月 29 日分享一場關於 Monorepo 的演講，主題是《Modern Monorepo Toolchain - Build Systems, Task Runners & Beyond》，希望能從實務角度分享 Monorepo 的工具選型、管理策略，以及 AI 賦能的新趨勢。
+
+> 投影片連結：[michaello.me/slides/2025-11-29](https://www.michaello.me/slides/2025-11-29/)
+
+---
+
+## Intro
+
+Hi 大家好，很高興今天有機會來 JSDC 分享！
+
+今天要聊的主題是 **Modern Monorepo Toolchain**，會涵蓋從工具選型（`pnpm`、`Nx`、`Turborepo`）、版本控制策略、Remote Cache 加速，到 UI Library 的 `shadcn/ui` 模式，最後再看看 `Bun`、`VoidZero`、`Oxlint` 這些未來趨勢。
+
+我是 Michael，專注在 Web 領域的軟體工程師，同時也是 Code for Taiwan 的成員。我的 slogan 是：
+
+> Coding is my way of making tomorrow a little lazier.
+
+所以平常特別喜歡研究工程效率和 Developer Experience 相關的東西——畢竟能讓明天的自己可以有多出一些時間懶惰一下～
+
+今天的投影片和這篇紀錄都會放在我的網站上，有任何問題歡迎聯絡交流！
+
+---
+
+## 跨專案開發的痛點
+
+![Cross-Project Development Nightmares](/images/jsdc-2025/5.png)
+
+在進入 Monorepo 之前，我們先來看看大家在跨專案開發時經常遇到的問題。
+
+### Dependency Hell（依賴地獄）
+
+版本衝突到處都是！每次升級套件都像在拆炸彈。
+不知道升了會不會影響其他專案，然後就一直卡在「我怕改壞」的狀態。
+
+### 重複造輪子
+
+最經典的例子是 `formatDate`：
+
+```ts
+// 專案 A
+export const formatDate = (date: Date) => date.toLocaleDateString()
+
+// 專案 B
+export const formatDate = (d: string) => dayjs(d).format('YYYY-MM-DD')
+
+// 專案 C
+export function formatDate(timestamp: number) { ... }
+```
+
+你有沒有發現，每個專案都有自己的 date formatter？
+而且 input/output 格式都不一樣，久而久之就累積了好幾種版本。
+
+### 開發體驗不一致
+
+UI 風格分散、coding convention 各自為政。
+A 專案用 `camelCase`，B 專案用 `snake_case`，新人進來都不知道要 follow 哪一套。
+
+### 版本漂移
+
+手動同步跨 repo 的變更，版本錯位的風險很高。
+常常發生「我這邊可以跑啊」的情況，然後 debug 半天才發現是版本不一致。
+
+這些問題有沒有辦法解決？答案是有的，就是 **Monorepo**。
+
+---
+
+## 架構演進：Monolith → Polyrepo → Monorepo
+
+![Architecture Evolution](/images/jsdc-2025/8.png)
+
+在這邊我用三個階段來說明架構的演進：
+
+### Monolith（單體架構）
+
+所有程式碼在一起，但緊密耦合，難以擴展。
+改一個地方可能影響整個系統，團隊越大越痛苦。
+
+### Polyrepo（多倉庫）
+
+各團隊獨立 repo，自由度很高。
+但問題是會形成**資訊孤島**，跨團隊協作困難，重複造輪子的情況更嚴重。
+
+```text
+# Polyrepo 結構
+├── app-web/
+│   ├── package.json   ← v1.0.0
+│   └── node_modules/
+├── app-mobile/
+│   ├── package.json   ← v2.1.0
+│   └── node_modules/
+└── lib-shared/
+    ├── package.json   ← v0.8.0
+    └── node_modules/
+```
+
+好處是團隊自主、權限簡單、獨立部署——但代價呢？就是前面提到的依賴地獄、程式碼重複、跨 repo 改動痛苦。
+
+### Monorepo（單一倉庫）
+
+結合兩者優點：**統一管理、共享程式碼，同時保持模組邊界**。
+
+```text
+# Monorepo 結構
+monorepo/
+├── package.json         ← workspace root
+├── pnpm-workspace.yaml
+├── apps/
+│   ├── web/
+│   └── mobile/
+├── packages/
+│   ├── shared/
+│   └── ui/
+└── node_modules/        ← shared deps
+```
+
+這就是為什麼 Google、Meta、Microsoft 都選擇 Monorepo。
+當你的團隊需要跨專案共享程式碼時，Monorepo 幾乎是唯一解。
+
+**關鍵點：Monorepo 不只是把東西放在一起，而是建立統一的基礎設施。**
+
+---
+
+## 工具鏈選型
+
+接下來聊聊現代 Monorepo 的工具選擇。
+
+### 工具鏈演進史
+
+在進入工具比較之前，先來了解一下歷史脈絡，這樣比較容易理解為什麼現在的選擇是這樣：
+
+- **Lerna**：幾乎是最早出現的 Monorepo 工具，但在 2020 年停止維護
+- **Nx**：2022 年接手 Lerna，現在 Lerna v6+ 底層其實就是 Nx 引擎
+- **pnpm**：JS 原生的套件管理工具，workspace 原生支援
+- **Turborepo**：2021 年開源後被 Vercel 收購，專注任務編排和 Next.js 生態整合
+
+如果你 Google 搜尋 Monorepo，會看到一堆 Lerna 的舊文章——但那些已經過時了。現在的主流組合是 **pnpm + Nx** 或 **pnpm + Turborepo**。
+
+### 現代架構：pnpm + (Nx or Turborepo)
+
+| 工具          | 定位                                            |
+| ------------- | ----------------------------------------------- |
+| **pnpm**      | 現代 Monorepo 標準套件管理，workspace 原生支援  |
+| **Nx**        | 企業級 build system，2022 接手 Lerna            |
+| **Turborepo** | 2021 開源，Vercel 收購，專注 task orchestration |
+
+### Nx vs Turborepo 怎麼選？
+
+![Nx vs Turborepo](/images/jsdc-2025/10.png)
+
+這大概是我最常被問到的問題，簡單整理一下：
+
+**相同點：**
+
+- 都有 Local + Remote Caching
+- 都有 Task Orchestration（任務編排）
+
+**差異點：**
+
+- **Code Generation**: Nx 有 `nx generate`，Turborepo 沒有
+- **Plugin Ecosystem**: Nx 生態系豐富，Turborepo 走極簡路線
+- **Learning Curve**: Nx 學習曲線較陡，Turborepo 較平緩
+
+**我的建議：**
+
+- **Nx** 適合企業需要深度整合、有專人維護 infra 的情況
+- **Turborepo** 適合想快速上手、團隊框架都是使用 NextJS
+
+---
+
+## 團隊管理
+
+工具選好了，接下來是團隊管理。這部分很重要，因為工具只是手段，**策略才是關鍵**。
+
+### 版本控制策略
+
+兩種主要模式：
+
+- **Fixed Mode**: 所有 packages 共用版本（如 1.0.0 → 1.1.0）
+  - 適合緊密耦合的 packages
+  - Sprint Teams 建議用這個，可以及早發現整合問題
+
+- **Independent Mode**: 每個 package 獨立版本
+  - 適合獨立運作的 packages
+  - 彈性高但管理成本也高
+
+### CODEOWNERS
+
+![CODEOWNERS](/images/jsdc-2025/12.png)
+
+[CODEOWNERS](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) 是 GitHub 提供的功能，用來定義程式碼的負責人。在 Monorepo 中，它是防止架構腐化的關鍵機制！
+
+只要在 `.github/CODEOWNERS` 檔案中定義規則：
+
+```txt
+# UI 相關的變更需要 frontend-team 審核
+/packages/ui/**       @frontend-team
+
+# 核心邏輯需要 core-team 審核
+/packages/core/**     @core-team
+
+# CI/CD 設定需要 devops-team 審核
+/.github/**           @devops-team
+
+# 全域設定檔需要 tech-lead 審核
+/*.config.*           @tech-lead
+```
+
+效果是：
+
+- **自動分配 Reviewer**：PR 提交後，GitHub 會根據變更的檔案自動 assign 對應的 reviewer
+- **保護關鍵程式碼**：搭配 Branch Protection Rules，可以要求必須經過 CODEOWNERS 審核才能 merge
+- **明確責任歸屬**：每個模組都有明確的負責人，出問題時知道找誰
+
+> 💡 小技巧：可以搭配 [Required Reviews](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches#require-pull-request-reviews-before-merging) 設定，強制要求 CODEOWNERS 審核通過才能合併。
+
+### Remote Cache
+
+![Remote Cache](/images/jsdc-2025/13.png)
+
+Remote Cache 是效能的終極加速器。核心概念其實很簡單：**不重複執行別人已完成的任務**。
+
+想像一下：如果你的同事已經跑過某個 task，而且輸入沒變，為什麼你還要再跑一次？直接拿他的輸出來用就好了。
+
+**真實案例：**
+
+- Before: 45 分鐘
+- After: 8 分鐘
+- **效率提升 82%**
+
+這是我們實際導入後的數據。Monorepo 規模越大，Cache 的價值就越高。而且這些工具內建的規則都很完善，不需要太多心智負擔就能導入。
+
+---
+
+## UI Library：為什麼選擇 shadcn/ui
+
+導入 Monorepo 後，對我最有感的改善就是 UI Kit 的管理。這邊也順便分享一下我們選擇 shadcn/ui 的原因。
+
+### 傳統 UI Library 的問題
+
+傳統 UI library 像是黑盒子，用久了會發現幾個痛點：
+
+- 難以客製化——要改樣式就得覆寫一堆 CSS
+- 升級版本風險高——像 Ant Design、Material UI 每次大版本升級，樣式都可能跑掉
+- 被框架綁定——想換也換不掉，因為已經用太深了
+
+### shadcn/ui 的 Hard Fork 策略
+
+[shadcn/ui](https://ui.shadcn.com/) 採用了不同的思路：
+
+- 程式碼直接複製到你的專案，**完全擁有**
+- 可以自由修改，不用等上游發布
+- 可以建立自己的 **Registry**，跨專案共享
+
+這種模式叫做 **Hard Fork Flexibility**——你不是在「使用」一個 library，而是在「擁有」一套可以自由修改的 components。
+
+### 自建 shadcn Registry
+
+以 shadcn/ui 為基底，你可以延伸出領域特定的元件庫：
+
+```text
+packages/ui-registry/
+├── registry.json        ← 組件設定
+└── registry/new-york/
+    ├── ui/
+    │   ├── button.tsx
+    │   └── card.tsx
+    ├── chart/           ← Chart library
+    ├── form/            ← Form library
+    └── animation/       ← Animation library
+```
+
+每個組件有自己的 `registry.json` 定義元資料：
+
+```json
+{
+  "name": "action-button",
+  "type": "registry:component",
+  "registryDependencies": ["button"],
+  "files": [
+    {
+      "path": "registry/new-york/ui/action-button.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}
+```
+
+安裝只要一個指令：
+
+```bash
+npx shadcn add https://ui.example.com/r/button.json
+```
+
+#### Private Registry
+
+如果是公司內部使用，可以設定 Private Registry 搭配 token 認證：
+
+```json
+{
+  "registries": {
+    "@internal": {
+      "url": "https://ui.company.com/r",
+      "headers": {
+        "Authorization": "Bearer ${REGISTRY_TOKEN}"
+      }
+    }
+  }
+}
+```
+
+這樣就可以用 `npx shadcn add @internal/button` 安裝內部組件。好處是：
+
+- 支援 GitHub Private Repo + PAT
+- 靜態託管，不需要後端
+- 集中管理，跨專案一致性
+
+這樣就可以大幅度將 UI 模組化、提升復用性，也可以根據 DDD 的方式來進行維護或補齊測試。
+
+### AI + MCP
+
+最近 `shadcn/ui` 還支援了 `MCP`（Model Context Protocol），這是個蠻有趣的發展：
+
+**`shadcn/ui` + `Registry` + `MCP` = AI-powered development**
+
+設定完成後，你可以用自然語言搜尋和安裝組件，AI 會理解你的 Registry 上下文，幫你生成符合專案風格的程式碼。這件事甚至可以搭配 Figma MCP，把效率拉升到另一個層次。
+
+---
+
+## 未來展望
+
+最後來聊聊我關注的一些未來趨勢——這些工具可能會改變我們建構 Monorepo 的方式。
+
+### Bun
+
+![The Power of Bun](/images/jsdc-2025/19.png)
+
+[Bun](https://bun.sh/) 是一個野心很大的專案，目標是用一個 Runtime 統一所有工具：
+
+- Package Manager
+- Native TypeScript
+- Bundler
+- Test Runner
+
+效能比較（cold install）：
+
+- `npm`: 33.4s
+- `pnpm`: 14.6s
+- `Bun`: **2.1s** (快 16 倍！)
+
+#### 案例：Midjourney
+
+Midjourney 在近期的分享中提到，他們將整套工具改成用 Bun 來建構：
+
+- **100 萬+** 活躍用戶
+- 僅 **5 個** 維護者
+- 哲學：_"Oppose bloat in infrastructure"_
+
+這反映出一個重要觀點：當基礎設施越精簡，你想要做大膽的決定都會更輕鬆，也能降低風險、拉高成功率。
+
+### VoidZero / Vite+
+
+[VoidZero](https://voidzero.dev/) 是 Vue/Vite 作者尤雨溪創立的公司，專注打造下一代 JavaScript 工具鏈。
+
+他們的願景是把所有工具統一在 `vite` 指令下：
+
+```bash
+vite dev    # 開發
+vite build  # 打包
+vite test   # 測試
+vite lint   # Linting
+vite fmt    # 格式化
+vite run    # Monorepo 任務執行
+```
+
+注意最後一行：`vite run` 支援 Monorepo！這對我來說影響很大。我很期待 Vite+ 出現後，是否能取代現有的 Nx/Turborepo，讓工具鏈更統一。
+
+關於 VoidZero 的更多內容，推薦看 [codefarmer 在 JSDC 2024 的分享](https://www.codefarmer.tw/blog/jsdc-2024-notes)，有非常完整的介紹。
+
+### Oxlint
+
+![Oxlint Performance](/images/jsdc-2025/24.png)
+
+[Oxlint](https://oxc.rs/docs/guide/usage/linter) 是 Rust 驅動的 linter，是 VoidZero 較早釋出的工具之一：
+
+- ESLint: 4,116ms
+- Oxlint: **48ms** (快 85 倍！)
+
+**雙軌策略建議：**
+
+- Oxlint 處理 90% 常見規則（速度快）
+- ESLint 處理 10% plugin 規則（生態系完整）
+
+實作方式：
+
+```json
+{
+  "scripts": {
+    "lint": "oxlint && eslint"
+  }
+}
+```
+
+搭配 [eslint-plugin-oxlint](https://github.com/oxc-project/eslint-plugin-oxlint) 可以自動關閉重複規則檢查。先用 Oxlint 跑常見規則，剩餘的規則交給 ESLint。
+
+這個改動理論上可以讓你的專案快非常多，尤其是本身 ESLint 規則就很大量的話。等到 Oxlint 規則夠完整時，我們就可以輕鬆移除掉 ESLint，讓專案效能拉到最高。
+
+---
+
+## 總結：Infra Core 思維
+
+> 每一個你寫的設定、每一個你定義的邊界，都在塑造團隊的速度與穩定性。
+
+### 冰山模型
+
+![Infra Core](/images/jsdc-2025/25.png)
+
+我喜歡用冰山來理解 Monorepo 的本質：
+
+**冰山上（Application Layer）：**
+
+- UI、Logic、Features
+- 這是大家平常專注的地方，也是最容易看到成果的地方
+
+**冰山下（Core Infrastructure）：**
+
+- Build、CI/CD、Cache、DX
+- 這是 Monorepo 在解決的事情——雖然看不見，但它支撐著一切
+
+當專案夠大時，你寫的任何一行設定、定義的任何一個邊界，都會影響到整個團隊的速度與穩定性。所以當你把冰山下的基礎打得夠穩，上面的冰山就可以更穩固地浮在水平面上。
+
+Monorepo 不只是資料夾結構，而是你的**基礎設施基石**。
+
+最後再特別提一句話：
+
+**Don't over-design, focus on simplicity.**
+
+不要過度設計，專注於化繁為簡。
+
+---
+
+## 收尾
+
+以上就是我在 JSDC 2025 的分享內容！
+
+感謝 JSDC 給我這個機會，也感謝所有來聽講的朋友們！如果你對 Monorepo 有任何問題或想法，歡迎透過網站上的聯絡方式找我聊聊。
+
+---
+
+## 相關連結
+
+- [投影片 - Modern Monorepo Toolchain](https://www.michaello.me/slides/2025-11-29/)
+- [JSDC 2024 - VoidZero 完整分享 by codefarmer](https://www.codefarmer.tw/blog/jsdc-2024-notes)
+- [shadcn/ui 官網](https://ui.shadcn.com/)
+- [shadcn/ui Registry MCP 文件](https://ui.shadcn.com/docs/registry/mcp)
+- [Nx 官網](https://nx.dev/)
+- [Turborepo 官網](https://turbo.build/)
+- [Oxlint 官網](https://oxc.rs/docs/guide/usage/linter)
+- [Bun 官網](https://bun.sh/)
+- [VoidZero 官網](https://voidzero.dev/)
