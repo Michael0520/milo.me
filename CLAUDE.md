@@ -18,6 +18,9 @@ npx tsc --noEmit --project apps/portfolio/tsconfig.json
 
 # Lint
 vp check --fix
+
+# Verify Vercel compat (simulate Vercel's install)
+cd apps/portfolio && pnpm install --frozen-lockfile
 ```
 
 ## Key Directories
@@ -51,6 +54,8 @@ Components showcase and Blocks are development tools, hidden in production:
 This repo is based on [ncdai/chanhdai.com](https://github.com/ncdai/chanhdai.com). The `upstream` remote is configured for tracking new features.
 
 **Important:** No shared git history. Upstream is a single app, ours is a monorepo (`apps/portfolio/`). Cannot cherry-pick — must manually reimplement.
+
+**After pulling upstream changes:** Delete any `apps/portfolio/pnpm-workspace.yaml` and `apps/portfolio/pnpm-lock.yaml` that upstream introduces. These make pnpm treat `apps/portfolio` as a separate workspace root, breaking Vercel deploys (Vercel runs install from `apps/portfolio`).
 
 To check for new upstream features:
 
