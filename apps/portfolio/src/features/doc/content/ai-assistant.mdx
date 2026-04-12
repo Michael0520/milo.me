@@ -291,7 +291,9 @@ const MessageContent = memo(function MessageContent({ content, isDark }) {
 
 <Steps>
 
-<Step>建立 Blog 知識庫</Step>
+<Step>
+
+### 建立 Blog 知識庫
 
 Build script 掃描所有 `.mdx` 檔，產出 `blog-knowledge.json`：
 
@@ -318,7 +320,11 @@ async function buildBlogKnowledge() {
 }
 ```
 
-<Step>System Prompt 設計</Step>
+</Step>
+
+<Step>
+
+### System Prompt 設計
 
 定義 AI 的行為規範，注入 blog 知識：
 
@@ -354,7 +360,11 @@ Michael Lo: Full Stack Developer in Taipei. Specializes in Next.js, React, TypeS
 
 </CodeCollapsibleWrapper>
 
-<Step>AI Adapter</Step>
+</Step>
+
+<Step>
+
+### AI Adapter
 
 支援多 provider 切換：
 
@@ -379,7 +389,11 @@ export function createAIAdapter(provider?: ProviderType) {
 
 <Callout type="tip">Groq 用 OpenAI-compatible API，直接用 `openaiText` 改 `baseURL` 就好。</Callout>
 
-<Step>Chat API Endpoint</Step>
+</Step>
+
+<Step>
+
+### Chat API Endpoint
 
 Elysia.js 建立 `/chat`，回傳 SSE stream：
 
@@ -424,7 +438,11 @@ export function createChatRoutes() {
   也是必要的，否則瀏覽器可能不會即時顯示 streaming 內容。
 </Callout>
 
-<Step>Frontend Hook</Step>
+</Step>
+
+<Step>
+
+### Frontend Hook
 
 TanStack AI React 的 `useChat` 處理 SSE：
 
@@ -449,7 +467,11 @@ export function useAiChat(options?: UseAiChatOptions) {
 }
 ```
 
-<Step>UI 元件</Step>
+</Step>
+
+<Step>
+
+### UI 元件
 
 浮動按鈕 + 對話框，支援展開/縮小：
 
@@ -487,7 +509,11 @@ export function AiAssistant() {
 
 </CodeCollapsibleWrapper>
 
-<Step>鍵盤快捷鍵</Step>
+</Step>
+
+<Step>
+
+### 鍵盤快捷鍵
 
 `⌘J` / `Ctrl+J` 開關：
 
@@ -512,6 +538,7 @@ useEffect(() => {
   記得排除 `input` 和 `textarea`，否則使用者在輸入框打字時按 `⌘J` 會意外觸發。
 </Callout>
 
+</Step>
 </Steps>
 
 ---

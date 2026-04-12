@@ -260,7 +260,9 @@ Adapter 層就是「橋接」Use Case 跟外部世界的地方，有三種角色
 
 <Steps>
 
-<Step>Repository — 資料存取</Step>
+<Step>
+
+### Repository — 資料存取
 
 負責把 Entity 轉成儲存格式，再從儲存還原成 Entity：
 
@@ -297,7 +299,11 @@ export class KvCartRepository implements CartRepository {
 }
 ```
 
-<Step>Presenter — 輸出格式化</Step>
+</Step>
+
+<Step>
+
+### Presenter — 輸出格式化
 
 把輸出轉成特定格式，這邊用 SSE：
 
@@ -321,7 +327,11 @@ export class HonoServerEventPresenter implements StreamingEventPresenter {
 }
 ```
 
-<Step>Agent — LLM 整合</Step>
+</Step>
+
+<Step>
+
+### Agent — LLM 整合
 
 這是這個專案比較特別的地方——**把 LLM 當成一種 Adapter**：
 
@@ -350,6 +360,7 @@ export class LlmChatAgent implements ChatAgent {
 
 為什麼說特別？傳統 Clean Architecture 沒有「Agent」這東西，但 LLM 就是一種外部服務啊，用 Adapter 包起來很合理。
 
+</Step>
 </Steps>
 
 ---
