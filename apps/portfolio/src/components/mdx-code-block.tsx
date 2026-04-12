@@ -4,6 +4,14 @@ import type { NpmCommands } from "@/types/unist";
 import { CodeBlockCommand } from "./code-block-command";
 import { CopyButton } from "./copy-button";
 import { getIconForLanguageExtension } from "./icons";
+import { MermaidBlock } from "./mermaid-block";
+
+function isMermaidCode(children: React.ReactNode): boolean {
+  const child = Array.isArray(children) ? children[0] : children;
+  if (!child || typeof child !== "object" || !("props" in child)) return false;
+  const props = (child as { props?: { "data-language"?: string } }).props;
+  return props?.["data-language"] === "mermaid";
+}
 
 export const mdxCodeBlockComponents = {
   figure({ className, ...props }: React.ComponentProps<"figure">) {
@@ -36,6 +44,7 @@ export const mdxCodeBlockComponents = {
     __bun__,
 
     className,
+    children,
     ...props
   }: React.ComponentProps<"pre"> & {
     __withMeta__?: boolean;
@@ -54,12 +63,18 @@ export const mdxCodeBlockComponents = {
       );
     }
 
+    if (__rawString__ && isMermaidCode(children)) {
+      return <MermaidBlock code={__rawString__} />;
+    }
+
     return (
       <>
         <pre
           className={cn(__rawString__ && !__withMeta__ && "[--code-padding-right:6rem]", className)}
           {...props}
-        />
+        >
+          {children}
+        </pre>
 
         {__rawString__ && (
           <>

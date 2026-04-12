@@ -215,6 +215,137 @@ Repeat until the user is satisfied.
 
 ---
 
+## MDX Components Cheat Sheet
+
+Components available in blog posts (defined in `src/components/mdx.tsx`):
+
+### Content
+
+- `<Callout>` — alert/note box. Wrap multi-line content with blank lines inside.
+- `<Steps>` + `<Step>` — numbered step list. See gotcha below.
+- `<Tabs>` + `<TabsList>` + `<TabsTrigger>` + `<TabsContent>` — tabbed content. Note the 4 separate components, not a single `<Tab>`.
+- `<Testimonial>` — quote card with author.
+
+### Media
+
+- `<YouTubeEmbed id="..." />` — YouTube video
+- `<IframeEmbed src="..." />` — generic iframe
+- `<FramedImage>` — image with frame + zoom
+- `<PhotoCarousel>` + `<Photo>` — drag-scrollable photo carousel
+
+### Code
+
+- Fenced code blocks with language → Shiki syntax highlighting
+- ` ```mermaid ` → auto-rendered as SVG flowchart via `MermaidBlock`
+- ` ```plaintext title="src/" ` → use for file trees, directory listings
+
+### NOT available (do not use)
+
+- `<Tab>` (old single-component format) — use the 4 Tabs components instead
+- `<FlowDiagram>` / `<ArchitectureDiagram>` — use ```mermaid code block or markdown
+- `<Files>` / `<Folder>` / `<File>` — use plaintext code block
+- `<CodeBlockCommand>` — not wired up (npm variant switcher)
+
+---
+
+## MDX Gotchas (will break the build or cause hydration errors)
+
+### 1. `<Step>` is a container — put title AND content inside
+
+`<Step>` renders as a `<div>` wrapper with a numbered badge. Use `### Title` for the heading, and put the content right below — all inside the same `<Step>`:
+
+````mdx
+<Steps>
+
+<Step>
+
+### Repository — data access
+
+Handles Entity serialization and storage.
+
+```typescript title="repo.ts"
+// code here
+```
+````
+
+</Step>
+
+<Step>
+
+### Presenter — output formatting
+
+Turns domain output into a specific format.
+
+</Step>
+
+</Steps>
+```
+
+Always blank lines after `<Step>` and before `</Step>`. The `<Steps>` wrapper gives each Step an auto-incrementing number badge.
+
+### 2. Always put blank lines around JSX block components
+
+MDX parses JSX without blank lines as inline content and wraps it in `<p>`. When the component renders a block element (like `<Step>` → `<h3>`), you get `<p><h3>` which is invalid HTML and causes hydration errors.
+
+```mdx
+<!-- ❌ WRONG — <Step> gets wrapped in <p> -->
+
+Some intro text
+
+<Step>Title</Step>
+content right after
+
+<!-- ✅ CORRECT — blank lines separate blocks -->
+
+Some intro text
+
+<Step>Title</Step>
+
+content right after
+```
+
+This applies to `<Step>`, `<Callout>`, `<Tabs>`, `<Steps>`, code blocks, etc.
+
+### 3. `<Callout>` content should use blank lines for multi-paragraph
+
+```mdx
+<Callout>**Note:** Single line is fine.</Callout>
+
+<Callout>
+
+Multi-paragraph content needs blank lines.
+
+Second paragraph here.
+
+</Callout>
+```
+
+### 4. Tabs require `TabsIndicator` and explicit `defaultValue`
+
+```mdx
+<Tabs defaultValue="first">
+<TabsList>
+<TabsTrigger value="first">First</TabsTrigger>
+<TabsTrigger value="second">Second</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="first">
+
+Content for first tab.
+
+</TabsContent>
+
+<TabsContent value="second">
+
+Content for second tab.
+
+</TabsContent>
+</Tabs>
+```
+
+---
+
 ## Guardrails
 
 - **Do NOT use `——`（破折號）in any output.**

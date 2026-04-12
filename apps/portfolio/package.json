@@ -52,6 +52,7 @@
     "libphonenumber-js": "^1.12.41",
     "lru-cache": "^11.3.3",
     "lucide-react": "^1.8.0",
+    "mermaid": "catalog:",
     "motion": "^12.38.0",
     "next": "16.2.1",
     "next-mdx-remote": "^6.0.0",

@@ -2,6 +2,8 @@ import type { Doc } from "@/features/doc/types/document";
 
 import { PostCardItem } from "./post-card-item";
 
+export const POSTS_PER_PAGE = 10;
+
 export function PostCardList({ posts }: { posts: Doc[] }) {
   return (
     <div>
@@ -9,9 +11,7 @@ export function PostCardList({ posts }: { posts: Doc[] }) {
 
       <div className="px-4 divide-y divide-line">
         {posts.map((post) => (
-          <div key={post.slug} className="py-2">
-            <PostCardItem post={post} />
-          </div>
+          <PostCardItem key={post.slug} post={post} />
         ))}
       </div>
 
@@ -20,8 +20,6 @@ export function PostCardList({ posts }: { posts: Doc[] }) {
           <p className="font-mono text-sm">No posts found.</p>
         </div>
       )}
-
-      <div className="h-4" />
     </div>
   );
 }

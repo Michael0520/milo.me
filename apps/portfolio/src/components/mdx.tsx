@@ -125,12 +125,12 @@ const components: MDXRemoteProps["components"] = {
   Callout,
   Steps: (props) => (
     <div
-      className="md:ml-3.5 md:border-l md:pl-7.5 prose-h3:text-lg prose-h3:text-wrap"
+      className="md:ml-3.5 md:border-l md:pl-7.5 prose-h3:text-lg prose-h3:text-wrap [&>div.step]:relative [&>div.step]:mt-6 [&>div.step_h3]:mt-0"
       {...props}
     />
   ),
-  Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
-    <h3 className={cn("step font-medium", className)} {...props} />
+  Step: ({ className, ...props }: React.ComponentProps<"div">) => (
+    <div className={cn("step", className)} {...props} />
   ),
   Tabs,
   TabsList,

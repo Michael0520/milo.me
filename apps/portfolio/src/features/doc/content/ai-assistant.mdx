@@ -292,6 +292,7 @@ const MessageContent = memo(function MessageContent({ content, isDark }) {
 <Steps>
 
 <Step>
+
 ### 建立 Blog 知識庫
 
 Build script 掃描所有 `.mdx` 檔，產出 `blog-knowledge.json`：
@@ -322,6 +323,7 @@ async function buildBlogKnowledge() {
 </Step>
 
 <Step>
+
 ### System Prompt 設計
 
 定義 AI 的行為規範，注入 blog 知識：
@@ -357,9 +359,11 @@ Michael Lo: Full Stack Developer in Taipei. Specializes in Next.js, React, TypeS
 ```
 
 </CodeCollapsibleWrapper>
+
 </Step>
 
 <Step>
+
 ### AI Adapter
 
 支援多 provider 切換：
@@ -383,12 +387,12 @@ export function createAIAdapter(provider?: ProviderType) {
 }
 ```
 
-<Callout type="tip">
-Groq 用 OpenAI-compatible API，直接用 `openaiText` 改 `baseURL` 就好。
-</Callout>
+<Callout type="tip">Groq 用 OpenAI-compatible API，直接用 `openaiText` 改 `baseURL` 就好。</Callout>
+
 </Step>
 
 <Step>
+
 ### Chat API Endpoint
 
 Elysia.js 建立 `/chat`，回傳 SSE stream：
@@ -430,11 +434,14 @@ export function createChatRoutes() {
 </CodeCollapsibleWrapper>
 
 <Callout type="warning">
-SSE 的 `Content-Type` 必須是 `text/event-stream`，`Cache-Control: no-cache` 也是必要的，否則瀏覽器可能不會即時顯示 streaming 內容。
+  SSE 的 `Content-Type` 必須是 `text/event-stream`，`Cache-Control: no-cache`
+  也是必要的，否則瀏覽器可能不會即時顯示 streaming 內容。
 </Callout>
+
 </Step>
 
 <Step>
+
 ### Frontend Hook
 
 TanStack AI React 的 `useChat` 處理 SSE：
@@ -463,6 +470,7 @@ export function useAiChat(options?: UseAiChatOptions) {
 </Step>
 
 <Step>
+
 ### UI 元件
 
 浮動按鈕 + 對話框，支援展開/縮小：
@@ -500,9 +508,11 @@ export function AiAssistant() {
 ```
 
 </CodeCollapsibleWrapper>
+
 </Step>
 
 <Step>
+
 ### 鍵盤快捷鍵
 
 `⌘J` / `Ctrl+J` 開關：
@@ -525,10 +535,10 @@ useEffect(() => {
 ```
 
 <Callout type="tip">
-記得排除 `input` 和 `textarea`，否則使用者在輸入框打字時按 `⌘J` 會意外觸發。
+  記得排除 `input` 和 `textarea`，否則使用者在輸入框打字時按 `⌘J` 會意外觸發。
 </Callout>
-</Step>
 
+</Step>
 </Steps>
 
 ---

@@ -1,72 +1,29 @@
-import type { Metadata } from "next";
-import { Suspense, ViewTransition } from "react";
+import { Suspense } from "react";
 
-import { X_USERNAME } from "@/config/site";
+import { DocsListPageLayout } from "@/features/blog/components/docs-list-page-layout";
 import { PostList } from "@/features/blog/components/post-list";
 import { PostListWithSearch } from "@/features/blog/components/post-list-with-search";
-import { PostSearchInput } from "@/features/blog/components/post-search-input";
+import { buildDocsListMetadata } from "@/features/blog/lib/build-docs-list-metadata";
 import { getDocsByCategory } from "@/features/doc/data/documents";
 import { DOC_CATEGORIES } from "@/features/doc/types/document";
 
 const title = "Daily";
 const description = "Life updates, reflections, and personal stories.";
 
-const ogImage = `/og/simple?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`;
-
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: {
-    canonical: "/daily",
-  },
-  openGraph: {
-    url: "/daily",
-    type: "website",
-    images: {
-      url: ogImage,
-      width: 1200,
-      height: 630,
-      alt: title,
-    },
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: X_USERNAME,
-    creator: X_USERNAME,
-    images: [ogImage],
-  },
-};
+export const metadata = buildDocsListMetadata({ title, description, path: "/daily" });
 
 export default function Page() {
   const allPosts = getDocsByCategory(DOC_CATEGORIES.personal);
 
   return (
-    <div className="min-h-svh">
-      <div className="screen-line-bottom px-4">
-        <h1 className="text-3xl leading-none font-semibold tracking-tight">
-          <ViewTransition name="daily-page-heading-title">
-            <span>{title}</span>
-          </ViewTransition>
-        </h1>
-      </div>
-
-      <div className="p-4">
-        <p className="font-mono text-sm text-balance text-muted-foreground">{description}</p>
-      </div>
-
-      <div className="screen-line-top screen-line-bottom p-2">
-        <Suspense
-          fallback={
-            <div className="flex h-9 w-full rounded-lg border border-input dark:bg-input/30" />
-          }
-        >
-          <PostSearchInput />
-        </Suspense>
-      </div>
-
+    <DocsListPageLayout
+      title={title}
+      description={description}
+      viewTransitionName="daily-page-heading-title"
+    >
       <Suspense fallback={<PostList posts={allPosts} />}>
         <PostListWithSearch posts={allPosts} />
       </Suspense>
-    </div>
+    </DocsListPageLayout>
   );
 }

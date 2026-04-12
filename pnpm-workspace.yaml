@@ -8,6 +8,7 @@ allowBuilds:
 catalog:
   "@fission-ai/openspec": ^1.2.0
   "@types/node": ^24.12.2
+  mermaid: ^11.14.0
   typescript: ^5.9.3
   vite: npm:@voidzero-dev/vite-plus-core@latest
   vite-plus: latest
