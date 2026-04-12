@@ -1,0 +1,873 @@
+---
+title: "Rediscovering Angular: Routing, Data & Forms"
+description: "Practical Angular notes covering DI, Routing, Data Fetching and Forms"
+createdAt: "2025-12-13"
+updatedAt: "2025-12-13"
+image: /images/blog/angular-app.jpg
+category: tech
+---
+
+> 掌握 Component 和 Signals 後，接下來學習建立完整應用所需的功能：DI、路由、資料取得與表單。
+
+---
+
+## Dependency Injection
+
+React 用 Context 共享狀態，Angular 用 Service + DI。
+
+### Services vs Context
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React Context</TabsTrigger>
+<TabsTrigger value="angular">Angular Service</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+// AuthContext.tsx
+import { createContext, useContext, useState, ReactNode } from "react";
+
+type AuthState = {
+  user: User | null;
+  login: (user: User) => void;
+  logout: () => void;
+};
+
+const AuthContext = createContext<AuthState | null>(null);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+
+  const value = {
+    user,
+    login: (user: User) => setUser(user),
+    logout: () => setUser(null),
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
+}
+
+// Usage in component
+function Profile() {
+  const { user, logout } = useAuth();
+  return user ? <button onClick={logout}>Logout</button> : null;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+// auth.service.ts
+import { Injectable, signal, computed } from "@angular/core";
+
+@Injectable({ providedIn: "root" })
+export class AuthService {
+  private _user = signal<User | null>(null);
+
+  // Public readonly signal
+  user = this._user.asReadonly();
+  isLoggedIn = computed(() => this._user() !== null);
+
+  login(user: User) {
+    this._user.set(user);
+  }
+
+  logout() {
+    this._user.set(null);
+  }
+}
+
+// Usage in component
+import { Component, inject } from "@angular/core";
+
+@Component({
+  selector: "app-profile",
+  standalone: true,
+  template: `
+    @if (auth.user(); as user) {
+      <button (click)="auth.logout()">Logout</button>
+    }
+  `,
+})
+export class ProfileComponent {
+  auth = inject(AuthService);
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### inject() vs Constructor Injection
+
+```typescript
+// Recommended
+export class MyComponent {
+  private auth = inject(AuthService);
+  private http = inject(HttpClient);
+}
+
+// Legacy way (still works)
+export class MyComponent {
+  constructor(
+    private auth: AuthService,
+    private http: HttpClient,
+  ) {}
+}
+```
+
+<Callout type="tip">
+  `inject()` 更簡潔，可以在 function 中使用（如 route guards），建議優先使用
+</Callout>
+
+### Hierarchical Injection
+
+Angular 的 DI 是階層式的，可以在不同層級提供不同的 service 實例。
+
+```typescript
+// Component-level provider (每個 component instance 一個)
+@Component({
+  selector: "app-form",
+  standalone: true,
+  providers: [FormStateService], // 每個 form 有自己的 state
+  template: `...`,
+})
+export class FormComponent {}
+```
+
+相比之下，React 需要巢狀 Context.Provider：
+
+```tsx
+<FormProvider>
+  <Form />
+</FormProvider>
+```
+
+---
+
+## Routing
+
+### Route 設定
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React Router</TabsTrigger>
+<TabsTrigger value="angular">Angular Router</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+// main.tsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/users/:id" element={<UserDetail />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </BrowserRouter>,
+);
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+// app.routes.ts
+import { Routes } from "@angular/router";
+
+export const routes: Routes = [
+  { path: "", component: HomeComponent },
+  { path: "about", component: AboutComponent },
+  { path: "users/:id", component: UserDetailComponent },
+  { path: "**", component: NotFoundComponent },
+];
+
+// app.config.ts
+import { provideRouter } from "@angular/router";
+import { routes } from "./app.routes";
+
+export const appConfig = {
+  providers: [provideRouter(routes)],
+};
+
+// app.component.ts
+@Component({
+  standalone: true,
+  imports: [RouterOutlet],
+  template: `<router-outlet />`,
+})
+export class AppComponent {}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Route Parameters
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React Router</TabsTrigger>
+<TabsTrigger value="angular">Angular Router</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { useParams } from "react-router-dom";
+
+function UserDetail() {
+  const { id } = useParams<{ id: string }>();
+
+  return <div>User ID: {id}</div>;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { Component, inject } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { map } from "rxjs";
+
+@Component({
+  selector: "app-user-detail",
+  standalone: true,
+  template: `<div>User ID: {{ id() }}</div>`,
+})
+export class UserDetailComponent {
+  private route = inject(ActivatedRoute);
+
+  // Convert Observable to Signal
+  id = toSignal(this.route.paramMap.pipe(map((params) => params.get("id"))));
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Navigation
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React Router</TabsTrigger>
+<TabsTrigger value="angular">Angular Router</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { Link, useNavigate } from "react-router-dom";
+
+function Nav() {
+  const navigate = useNavigate();
+
+  return (
+    <nav>
+      <Link to="/">Home</Link>
+      <Link to="/about">About</Link>
+      <button onClick={() => navigate("/users/123")}>Go to User</button>
+    </nav>
+  );
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { Component, inject } from "@angular/core";
+import { RouterLink, Router } from "@angular/router";
+
+@Component({
+  selector: "app-nav",
+  standalone: true,
+  imports: [RouterLink],
+  template: `
+    <nav>
+      <a routerLink="/">Home</a>
+      <a routerLink="/about">About</a>
+      <button (click)="goToUser()">Go to User</button>
+    </nav>
+  `,
+})
+export class NavComponent {
+  private router = inject(Router);
+
+  goToUser() {
+    this.router.navigate(["/users", "123"]);
+  }
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Lazy Loading
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React</TabsTrigger>
+<TabsTrigger value="angular">Angular</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { lazy, Suspense } from "react";
+
+const Dashboard = lazy(() => import("./Dashboard"));
+
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Suspense>
+  );
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+// app.routes.ts
+export const routes: Routes = [
+  {
+    path: "dashboard",
+    loadComponent: () =>
+      import("./dashboard/dashboard.component").then((m) => m.DashboardComponent),
+  },
+  {
+    path: "admin",
+    loadChildren: () => import("./admin/admin.routes").then((m) => m.adminRoutes),
+  },
+];
+```
+
+</TabsContent>
+
+</Tabs>
+
+<Callout type="info">
+  `loadComponent` 和 `loadChildren` 內建 lazy loading，不需要額外的 `Suspense` wrapper
+</Callout>
+
+---
+
+## Data Fetching
+
+### HttpClient 基礎
+
+Angular 使用 `HttpClient`，回傳 RxJS Observable。
+
+```typescript
+// app.config.ts
+import { provideHttpClient } from "@angular/common/http";
+
+export const appConfig = {
+  providers: [provideHttpClient()],
+};
+
+// user.service.ts
+import { Injectable, inject } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+
+@Injectable({ providedIn: "root" })
+export class UserService {
+  private http = inject(HttpClient);
+
+  getUsers() {
+    return this.http.get<User[]>("/api/users");
+  }
+
+  getUser(id: string) {
+    return this.http.get<User>(`/api/users/${id}`);
+  }
+
+  createUser(data: CreateUserDto) {
+    return this.http.post<User>("/api/users", data);
+  }
+}
+```
+
+### RxJS 快速入門
+
+RxJS 的 Observable 類似 Promise，但可以發出多個值。
+
+| Promise       | Observable                    |
+| ------------- | ----------------------------- |
+| 只發出一個值  | 可以發出多個值                |
+| 立即執行      | 訂閱時才執行（lazy）          |
+| `.then()`     | `.pipe()` + operators         |
+| `async/await` | `subscribe()` 或 `toSignal()` |
+
+```typescript
+// Promise
+const data = await fetch("/api/users").then((r) => r.json());
+
+// Observable (傳統方式)
+this.http.get("/api/users").subscribe((data) => {
+  console.log(data);
+});
+
+// Observable + Signal (推薦)
+users = toSignal(this.http.get<User[]>("/api/users"));
+```
+
+### toSignal() - Observable 轉 Signal
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React (TanStack Query)</TabsTrigger>
+<TabsTrigger value="angular">Angular (toSignal)</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { useQuery } from "@tanstack/react-query";
+
+function UserList() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => fetch("/api/users").then((r) => r.json()),
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error!</div>;
+
+  return (
+    <ul>
+      {data.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { Component, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { UserService } from "./user.service";
+
+@Component({
+  selector: "app-user-list",
+  standalone: true,
+  template: `
+    @if (users(); as userList) {
+      <ul>
+        @for (user of userList; track user.id) {
+          <li>{{ user.name }}</li>
+        }
+      </ul>
+    } @else {
+      <div>Loading...</div>
+    }
+  `,
+})
+export class UserListComponent {
+  private userService = inject(UserService);
+
+  // Observable → Signal
+  users = toSignal(this.userService.getUsers());
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+<Callout type="info">
+  `toSignal()` 自動訂閱 Observable，component 銷毀時自動取消訂閱，初始值是 `undefined` 要處理
+  loading 狀態
+</Callout>
+
+### Error Handling
+
+```typescript
+import { catchError, of, map } from "rxjs";
+
+@Component({
+  template: `
+    @if (users().error) {
+      <div>Error: {{ users().error }}</div>
+    } @else if (users().data; as data) {
+      <ul>
+        ...
+      </ul>
+    } @else {
+      <div>Loading...</div>
+    }
+  `,
+})
+export class UserListComponent {
+  private userService = inject(UserService);
+
+  users = toSignal(
+    this.userService.getUsers().pipe(
+      map((data) => ({ data, error: null })),
+      catchError((err) => of({ data: null, error: err.message })),
+    ),
+    { initialValue: { data: null, error: null } },
+  );
+}
+```
+
+### HTTP Interceptors
+
+Interceptor 可以攔截所有 HTTP 請求，用於加入 auth token、處理錯誤、logging 等。
+
+**認證 Interceptor**
+
+```typescript
+// auth.interceptor.ts
+import { HttpInterceptorFn } from "@angular/common/http";
+import { inject } from "@angular/core";
+import { AuthService } from "./auth.service";
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const auth = inject(AuthService);
+  const token = auth.getToken();
+
+  if (token) {
+    req = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  return next(req);
+};
+```
+
+**全域錯誤處理 Interceptor**
+
+```typescript
+// error.interceptor.ts
+import { HttpInterceptorFn } from "@angular/common/http";
+import { inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { catchError, throwError } from "rxjs";
+
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
+
+  return next(req).pipe(
+    catchError((error) => {
+      if (error.status === 401) {
+        router.navigate(["/login"]);
+      }
+      return throwError(() => error);
+    }),
+  );
+};
+```
+
+**註冊 Interceptors**
+
+```typescript
+// app.config.ts
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
+
+export const appConfig = {
+  providers: [provideHttpClient(withInterceptors([authInterceptor, errorInterceptor]))],
+};
+```
+
+<Callout type="tip">
+  Interceptor 執行順序就是陣列順序，request 時順向執行，response 時逆向執行
+</Callout>
+
+---
+
+## Route Guards
+
+Angular 的 Route Guards 類似 Next.js 的 middleware，用於保護路由、驗證權限。
+
+### 認證守衛
+
+```typescript
+// auth.guard.ts
+import { inject } from "@angular/core";
+import { Router, CanActivateFn } from "@angular/router";
+import { AuthService } from "./auth.service";
+
+export const authGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  if (auth.isLoggedIn()) {
+    return true;
+  }
+
+  // 未登入，導向登入頁
+  return router.createUrlTree(["/login"]);
+};
+```
+
+### 套用到路由
+
+```typescript
+// app.routes.ts
+export const routes: Routes = [
+  { path: "login", component: LoginComponent },
+  {
+    path: "dashboard",
+    component: DashboardComponent,
+    canActivate: [authGuard], // 需要登入
+  },
+  {
+    path: "admin",
+    loadComponent: () => import("./admin.component"),
+    canActivate: [authGuard, adminGuard], // 可以組合多個 guard
+  },
+];
+```
+
+### 常用 Guard 類型
+
+| Guard           | 用途                           |
+| --------------- | ------------------------------ |
+| `canActivate`   | 進入路由前檢查                 |
+| `canDeactivate` | 離開路由前檢查（如未儲存提醒） |
+| `canMatch`      | 決定是否匹配此路由             |
+| `resolve`       | 進入前預先載入資料             |
+
+### 離開確認（canDeactivate）
+
+```typescript
+// unsaved-changes.guard.ts
+export const unsavedChangesGuard: CanDeactivateFn<{ hasUnsavedChanges: () => boolean }> = (
+  component,
+) => {
+  if (component.hasUnsavedChanges()) {
+    return confirm("有未儲存的變更，確定要離開嗎？");
+  }
+  return true;
+};
+```
+
+<Callout type="tip">
+  Guard 可以回傳 `boolean`、`UrlTree`（重導向）、或 `Observable<boolean>`（非同步檢查）
+</Callout>
+
+---
+
+## Forms
+
+Angular 有兩種 Forms：Template-driven 和 Reactive Forms，簡單表單用 Template-driven，複雜表單用 Reactive Forms。
+
+### Template-driven Forms
+
+類似 Vue 的 `v-model`，適合簡單表單。
+
+```typescript
+import { Component } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+
+@Component({
+  selector: "app-login",
+  standalone: true,
+  imports: [FormsModule],
+  template: `
+    <form (ngSubmit)="onSubmit()">
+      <input [(ngModel)]="email" name="email" type="email" />
+      <input [(ngModel)]="password" name="password" type="password" />
+      <button type="submit">Login</button>
+    </form>
+  `,
+})
+export class LoginComponent {
+  email = "";
+  password = "";
+
+  onSubmit() {
+    console.log({ email: this.email, password: this.password });
+  }
+}
+```
+
+### Reactive Forms
+
+類似 react-hook-form，適合複雜表單。
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React (react-hook-form)</TabsTrigger>
+<TabsTrigger value="angular">Angular Reactive Forms</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { useForm } from "react-hook-form";
+
+function LoginForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("email", { required: true })} />
+      {errors.email && <span>Email is required</span>}
+
+      <input type="password" {...register("password", { minLength: 6 })} />
+      {errors.password && <span>Min 6 characters</span>}
+
+      <button type="submit">Login</button>
+    </form>
+  );
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { Component, inject } from "@angular/core";
+import { ReactiveFormsModule, FormBuilder, Validators } from "@angular/forms";
+
+@Component({
+  selector: "app-login",
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  template: `
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <input formControlName="email" />
+      @if (form.get("email")?.hasError("required")) {
+        <span>Email is required</span>
+      }
+
+      <input type="password" formControlName="password" />
+      @if (form.get("password")?.hasError("minlength")) {
+        <span>Min 6 characters</span>
+      }
+
+      <button type="submit" [disabled]="form.invalid">Login</button>
+    </form>
+  `,
+})
+export class LoginComponent {
+  private fb = inject(FormBuilder);
+
+  form = this.fb.group({
+    email: ["", [Validators.required, Validators.email]],
+    password: ["", [Validators.required, Validators.minLength(6)]],
+  });
+
+  onSubmit() {
+    if (this.form.valid) {
+      console.log(this.form.value);
+    }
+  }
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+---
+
+## 常見踩坑
+
+### 忘記 `providedIn: 'root'`
+
+```typescript
+// ❌ 每個 component 拿到不同 instance
+@Injectable()
+export class AuthService {}
+
+// ✅ 全域 singleton
+@Injectable({ providedIn: "root" })
+export class AuthService {}
+```
+
+### Observable 沒訂閱
+
+從 React 來的人很容易忘記，Observable 是 lazy 的，沒 subscribe 就不會執行
+
+```typescript
+// ❌ 什麼事都不會發生
+this.http.get("/api/users");
+
+// ✅ subscribe 或 toSignal
+this.http.get("/api/users").subscribe(console.log);
+users = toSignal(this.http.get<User[]>("/api/users"));
+```
+
+### Route 參數變了但畫面沒更新
+
+`snapshot` 只讀一次，要監聽變化得用 Observable
+
+```typescript
+// ❌ 只讀一次
+const id = this.route.snapshot.paramMap.get("id");
+
+// ✅ 監聽變化
+id = toSignal(this.route.paramMap.pipe(map((p) => p.get("id"))));
+```
+
+### Reactive Forms 炸掉
+
+忘記 import `ReactiveFormsModule` 會噴 `Can't bind to 'formGroup'`
+
+```typescript
+@Component({
+  imports: [ReactiveFormsModule], // 別忘了這行
+})
+```
+
+---
+
+## 系列文章
+
+1. [專案建立與 Component](/blog/react-to-angular-basics)
+2. [Signals 響應式狀態管理](/blog/react-to-angular-signals)
+3. **路由、資料與表單** ← 目前位置
+4. [效能優化與部署](/blog/react-to-angular-advanced)

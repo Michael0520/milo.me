@@ -1,0 +1,539 @@
+---
+title: "Rediscovering Angular: Project Setup & Components"
+description: Angular 20 learning notes from project setup to component basics
+createdAt: "2025-12-11"
+updatedAt: "2025-12-11"
+image: /images/blog/angular-basics.jpg
+category: tech
+---
+
+> 最近開始學習 Angular 20，這是我的學習筆記，會用 React 的概念對照，幫助自己理解。
+
+## Angular 20 和我印象中的差異
+
+我對 Angular 的印象還停留在 NgModule、繁瑣的 decorator、Zone.js 的「魔法」，實際接觸 Angular 20 後發現變化非常大：
+
+| 舊 Angular           | Angular 20                    | 引入版本                   |
+| -------------------- | ----------------------------- | -------------------------- |
+| NgModule 必須        | Standalone Components（預設） | v17                        |
+| `*ngIf`, `*ngFor`    | `@if`, `@for` Control Flow    | v17                        |
+| `@Input()` decorator | `input()` function            | v17.1                      |
+| RxJS everywhere      | Signals 響應式系統            | v16 preview → v20 stable   |
+| Zone.js 偵測變更     | Zoneless                      | v18 preview → v20.2 stable |
+| Webpack              | esbuild + Vite                | v17                        |
+| Karma 測試           | Web Test Runner / Vitest      | v20 實驗性                 |
+
+<Callout type="info">
+  這篇用 React 概念對照 Angular 20，很多特性從 v17 就開始引入，v20 才全部穩定
+</Callout>
+
+---
+
+## 專案建立
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React (Vite)</TabsTrigger>
+<TabsTrigger value="angular">Angular CLI</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```bash
+npm create vite@latest my-app -- --template react-ts
+cd my-app
+npm install
+npm run dev
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```bash
+npm install -g @angular/cli
+ng new my-app --standalone
+cd my-app
+ng serve
+```
+
+</TabsContent>
+
+</Tabs>
+
+Angular 預設 `--standalone`，不會產生 `app.module.ts`
+
+### 專案結構對照
+
+```plaintext title="React (Vite)"
+├── src/
+│   ├── components/
+│   │   └── Button.tsx
+│   ├── hooks/
+│   │   └── useAuth.ts
+│   ├── App.tsx
+│   └── main.tsx
+├── package.json
+└── vite.config.ts
+```
+
+```plaintext title="Angular"
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   └── button/
+│   │   │       └── button.component.ts
+│   │   ├── services/
+│   │   │   └── auth.service.ts
+│   │   ├── app.component.ts
+│   │   └── app.routes.ts
+│   └── main.ts
+├── angular.json
+└── package.json
+```
+
+<Callout type="tip">
+  Angular 習慣用資料夾包 component，但 standalone 也可以像 React 一樣單檔案
+</Callout>
+
+### 第一個 Component
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React</TabsTrigger>
+<TabsTrigger value="angular">Angular</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+// Button.tsx
+export function Button({ label }: { label: string }) {
+  return <button>{label}</button>;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+// button.component.ts
+import { Component, input } from "@angular/core";
+
+@Component({
+  selector: "app-button",
+  standalone: true,
+  template: `<button>{{ label() }}</button>`,
+})
+export class ButtonComponent {
+  label = input.required<string>();
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+**Angular Component 解析：**
+
+| 屬性               | 說明                             |
+| ------------------ | -------------------------------- |
+| `selector`         | HTML tag 名稱，如 `<app-button>` |
+| `standalone: true` | 不需要 NgModule                  |
+| `template`         | 內嵌 HTML template               |
+| `input()`          | 接收父層傳入的資料（類似 props） |
+
+---
+
+## Component 基礎
+
+### Template Syntax 對照
+
+| 功能       | React JSX                  | Angular Template        |
+| ---------- | -------------------------- | ----------------------- |
+| 顯示變數   | `{count}`                  | `{{ count() }}`         |
+| 屬性綁定   | `disabled={true}`          | `[disabled]="true"`     |
+| 事件綁定   | `onClick={handler}`        | `(click)="handler()"`   |
+| Class 綁定 | `className={styles}`       | `[class]="styles"`      |
+| Style 綁定 | `style={{ color: 'red' }}` | `[style.color]="'red'"` |
+
+<Callout type="info">`()` = 事件輸出、`[]` = 資料輸入、`[()]` = 雙向綁定</Callout>
+
+### Control Flow
+
+Angular 17 引入新的 Control Flow 語法，取代 `*ngIf` / `*ngFor`
+
+#### 條件渲染
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React</TabsTrigger>
+<TabsTrigger value="angular">Angular</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+function Profile({ user }) {
+  return <div>{user ? <span>Welcome, {user.name}</span> : <span>Please login</span>}</div>;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+@Component({
+  template: `
+    <div>
+      @if (user()) {
+        <span>Welcome, {{ user().name }}</span>
+      } @else {
+        <span>Please login</span>
+      }
+    </div>
+  `,
+})
+export class ProfileComponent {
+  user = signal<User | null>(null);
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+#### 列表渲染
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React</TabsTrigger>
+<TabsTrigger value="angular">Angular</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+function UserList({ users }) {
+  return (
+    <ul>
+      {users.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+@Component({
+  template: `
+    <ul>
+      @for (user of users(); track user.id) {
+        <li>{{ user.name }}</li>
+      } @empty {
+        <li>No users found</li>
+      }
+    </ul>
+  `,
+})
+export class UserListComponent {
+  users = signal<User[]>([]);
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+<Callout type="tip">
+  `@for` 內建 `@empty` 處理空陣列，`track` 取代舊的 `trackBy` function，簡潔很多
+</Callout>
+
+#### Switch 條件
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React</TabsTrigger>
+<TabsTrigger value="angular">Angular</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+function StatusBadge({ status }) {
+  switch (status) {
+    case "active":
+      return <span className="green">Active</span>;
+    case "pending":
+      return <span className="yellow">Pending</span>;
+    default:
+      return <span className="gray">Unknown</span>;
+  }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+@Component({
+  template: `
+    @switch (status()) {
+      @case ("active") {
+        <span class="green">Active</span>
+      }
+      @case ("pending") {
+        <span class="yellow">Pending</span>
+      }
+      @default {
+        <span class="gray">Unknown</span>
+      }
+    }
+  `,
+})
+export class StatusBadgeComponent {
+  status = input<string>("unknown");
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Component 溝通
+
+#### Props (Input)
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React</TabsTrigger>
+<TabsTrigger value="angular">Angular</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+type Props = {
+  title: string;
+  count?: number;
+};
+
+function Card({ title, count = 0 }: Props) {
+  return (
+    <div>
+      <h2>{title}</h2>
+      <span>{count}</span>
+    </div>
+  );
+}
+
+// Usage
+<Card title="Hello" count={5} />;
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+@Component({
+  selector: "app-card",
+  standalone: true,
+  template: `
+    <div>
+      <h2>{{ title() }}</h2>
+      <span>{{ count() }}</span>
+    </div>
+  `,
+})
+export class CardComponent {
+  title = input.required<string>();
+  count = input<number>(0); // default value
+}
+
+// Usage in parent template
+// <app-card [title]="'Hello'" [count]="5" />
+```
+
+</TabsContent>
+
+</Tabs>
+
+#### Events (Output)
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React</TabsTrigger>
+<TabsTrigger value="angular">Angular</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+type Props = {
+  onSelect: (id: string) => void;
+};
+
+function Item({ onSelect }: Props) {
+  return <button onClick={() => onSelect("123")}>Select</button>;
+}
+
+// Usage
+<Item onSelect={(id) => console.log(id)} />;
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+@Component({
+  selector: "app-item",
+  standalone: true,
+  template: ` <button (click)="select.emit('123')">Select</button> `,
+})
+export class ItemComponent {
+  select = output<string>();
+}
+
+// Usage in parent template
+// <app-item (select)="onSelect($event)" />
+```
+
+</TabsContent>
+
+</Tabs>
+
+#### Two-way Binding (model)
+
+`model()` 簡化雙向綁定（v17.2 引入）
+
+```typescript
+// toggle.component.ts
+@Component({
+  selector: "app-toggle",
+  standalone: true,
+  template: `
+    <input type="checkbox" [checked]="checked()" (change)="checked.set($event.target.checked)" />
+  `,
+})
+export class ToggleComponent {
+  checked = model<boolean>(false);
+}
+
+// Usage: <app-toggle [(checked)]="isEnabled" />
+```
+
+<Callout type="info">`model()` 讓你用 `[()]` 語法雙向綁定，不用自己配 `input` + `output`</Callout>
+
+### Content Projection
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React</TabsTrigger>
+<TabsTrigger value="angular">Angular</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+function Card({ children, header }) {
+  return (
+    <div className="card">
+      <div className="card-header">{header}</div>
+      <div className="card-body">{children}</div>
+    </div>
+  );
+}
+
+// Usage
+
+<Card header={<h2>Title</h2>}>
+  <p>Content here</p>
+</Card>;
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+@Component({
+  selector: "app-card",
+  standalone: true,
+  template: `
+    <div class="card">
+      <div class="card-header">
+        <ng-content select="[header]" />
+      </div>
+      <div class="card-body">
+        <ng-content />
+      </div>
+    </div>
+  `,
+})
+export class CardComponent {}
+
+// Usage
+// <app-card>
+// <h2 header>Title</h2>
+// <p>Content here</p>
+// </app-card>
+```
+
+</TabsContent>
+
+</Tabs>
+
+---
+
+## 常見問題
+
+### `standalone: true` 是什麼？還需要 NgModule 嗎？
+
+Angular 17 開始 standalone 是預設值，component 不用宣告在 NgModule 裡，直接 import 就能用。舊專案的 NgModule 還是支援，但新專案建議全部 standalone
+
+### 為什麼 template 要用 `()` 和 `[]`？
+
+| 語法         | 意思     | 記法                       |
+| ------------ | -------- | -------------------------- |
+| `[property]` | 資料輸入 | 方括號 = 資料「進去」      |
+| `(event)`    | 事件輸出 | 小括號 = 事件「出來」      |
+| `[()]`       | 雙向綁定 | 結合 `[]` 輸入和 `()` 輸出 |
+
+一眼就能看出資料流向
+
+### `input()` vs `@Input()` 差在哪？
+
+`input()` 是新 API（v17.1），回傳 Signal：
+
+- 型別推斷更好
+- `input.required<T>()` 強制必填
+- 和 Signals 整合
+
+`@Input()` 是舊語法，還能用但新專案建議用 `input()`
+
+---
+
+## 系列文章
+
+1. **專案建立與 Component** ← 目前位置
+2. [Signals 響應式狀態管理](/blog/react-to-angular-signals)
+3. [路由、資料與表單](/blog/react-to-angular-app)
+4. [效能優化與部署](/blog/react-to-angular-advanced)

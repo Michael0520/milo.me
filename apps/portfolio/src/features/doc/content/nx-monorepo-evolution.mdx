@@ -1,0 +1,273 @@
+---
+title: "Nx Monorepo Architecture Evolution: From Categories to Composition"
+description: >-
+  From the deprecated Package-Based vs Integrated classification to the modern
+  Workspaces + Project References approach
+createdAt: "2026-03-23"
+updatedAt: "2026-03-23"
+category: tech
+---
+
+> 「這個 Nx repo 到底是 package-based 還是 integrated？」——想回答這個問題，卻發現官方已經不這樣分了
+
+## 起因
+
+在建構一個 Nx monorepo 的過程中，想搞清楚自己的 repo 屬於哪種架構。它同時用了 pnpm `workspace:^` 協定、TypeScript project references、還有 `nx sync` 自動維護 tsconfig
+
+兩邊都沾到：各 package 有自己的 `package.json`（像 package-based），但又沒有用 `paths` mapping（不像傳統的 integrated）
+
+去翻了 Nx 官方文件才發現——這個分類已經被廢棄了
+
+---
+
+## Nx 的舊分類
+
+Nx 過去把 monorepo 分成三種類型：
+
+| 類型              | 特徵                               | 依賴方式                             | 版本管理     |
+| ----------------- | ---------------------------------- | ------------------------------------ | ------------ |
+| **Package-Based** | 各 project 有自己的 `package.json` | `workspace:*` 協定互相依賴           | 各自管理版本 |
+| **Integrated**    | 共用根層級設定                     | TypeScript imports + `paths` mapping | 統一版本管理 |
+| **Standalone**    | 單一應用                           | 不適用                               | 不適用       |
+
+### Package-Based
+
+每個 library 或 app 都是一個獨立的 npm package，有自己的 `package.json`、`tsconfig.json`，透過 workspace protocol 互相引用：
+
+```json
+{
+  "dependencies": {
+    "@myorg/shared-utils": "workspace:*",
+    "@myorg/ui-components": "workspace:^"
+  }
+}
+```
+
+好處是每個 package 邊界清楚，可以獨立發布
+
+壞處是設定檔散落各處，維護成本高
+
+### Integrated
+
+沒有各自的 `package.json`，所有 project 共享根層級的 `node_modules`，透過 `tsconfig.base.json` 的 `paths` 做模組解析：
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@myorg/shared-utils": ["libs/shared-utils/src/index.ts"],
+      "@myorg/ui-components": ["libs/ui-components/src/index.ts"]
+    }
+  }
+}
+```
+
+好處是設定集中，開發體驗好
+
+壞處是 package 邊界模糊，不容易獨立發布
+
+### 為什麼會搞混
+
+現實中，大部分 repo 都是混合使用的——有些 package 需要獨立發布所以有 `package.json`，有些內部 library 只用 `paths` mapping。兩種做法並存才是常態
+
+---
+
+## 為什麼廢棄
+
+從 Nx 20 開始，官方正式不再區分 package-based 和 integrated。
+
+<Callout type="info">
+  **Nx 官方觀點：** "As of Nx 20, it is no longer useful to draw a distinction between integrated
+  and package-based repositories." 每個 repo 都是混合使用各種功能，硬要分類只會製造困惑。
+</Callout>
+
+原因很直觀：
+
+1. **實務上都是混合體** — 你可能有些 package 需要 `package.json` 發布到 registry，有些純內部 library 只需要 `paths` mapping
+2. **功能是可組合的** — workspace protocol、paths mapping、project references 這些都是獨立的功能，不是互斥的選擇
+3. **工具已經成熟** — pnpm workspaces、TypeScript project references、Nx sync 可以協同運作，不需要二選一
+
+與其問「我的 repo 是哪一類」，不如問「我用了哪些功能、為什麼用」。
+
+---
+
+## 現代做法：Workspaces + Project References
+
+Nx 20+ 推薦的做法是把兩個正交的關注點拆開處理：
+
+| 關注點                 | 工具                          | 作用                             |
+| ---------------------- | ----------------------------- | -------------------------------- |
+| **Package linking**    | pnpm/npm/yarn workspaces      | 讓 packages 之間能互相 import    |
+| **Type checking**      | TypeScript project references | 讓 `tsc` 能正確做增量型別檢查    |
+| **Task orchestration** | Nx project graph              | 決定 build/test 的執行順序與快取 |
+| **Reference 同步**     | `nx sync`                     | 自動維護 tsconfig references     |
+
+### Workspaces 處理 Package Linking
+
+在 `pnpm-workspace.yaml` 定義 workspace 範圍：
+
+```yaml
+packages:
+  - "packages/*"
+  - "apps/*"
+```
+
+然後在根層級 `package.json` 用 `workspace:^` 協定引用內部 packages：
+
+```json
+{
+  "dependencies": {
+    "@myorg/shared-utils": "workspace:^",
+    "@myorg/ui-components": "workspace:^"
+  }
+}
+```
+
+`workspace:^` 表示「用 workspace 裡的版本，發布時轉換成 `^x.y.z`」。這樣開發時走 symlink，發布時是正常的 semver range
+
+### TypeScript Project References 處理型別檢查
+
+每個 package 的 `tsconfig.json` 設定 `composite: true`：
+
+```json
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "outDir": "./dist"
+  }
+}
+```
+
+然後在根層級的 `tsconfig.json` 用 `references` 宣告依賴關係：
+
+```json
+{
+  "references": [
+    { "path": "./packages/shared-utils" },
+    { "path": "./packages/ui-components" },
+    { "path": "./apps/my-app" }
+  ]
+}
+```
+
+這讓 TypeScript 能做增量編譯——只重新檢查有改動的 package 和它的下游。
+
+### nx sync 自動維護 References
+
+手動維護 `tsconfig.json` 的 `references` 很容易忘記或搞錯。Nx 提供 `@nx/js:typescript-sync` generator，根據 project graph 自動同步：
+
+```bash
+npx nx sync
+```
+
+它會：
+
+1. 分析 Nx 的 project graph，找出 packages 之間的依賴關係
+2. 自動更新各個 `tsconfig.json` 的 `references` 欄位
+3. 確保 `composite`、`declaration` 等必要設定都在
+
+<Callout type="tip">
+  把 `nx sync` 加進 CI pipeline，或搭配 `nx sync:check` 確保 references
+  永遠是最新的。這樣就不用擔心有人新增 package 後忘了更新 references
+</Callout>
+
+### 一個完整範例
+
+根層級 `tsconfig.base.json`（注意：**沒有 `paths`**）：
+
+```json
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "declaration": true
+  }
+}
+```
+
+根層級 `package.json`：
+
+```json
+{
+  "name": "@myorg/root",
+  "private": true,
+  "devDependencies": {
+    "@myorg/shared-utils": "workspace:^",
+    "@myorg/ui-components": "workspace:^"
+  }
+}
+```
+
+各 package 的 `package.json` 用 source publishing（`main` 直接指向 source）：
+
+```json
+{
+  "name": "@myorg/shared-utils",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  }
+}
+```
+
+型別解析靠 pnpm symlink + `package.json` exports，不需要 `paths`
+
+詳細機制在[下一篇](/blog/nx-type-resolution)說明
+
+---
+
+## 跟其他工具的比較
+
+| 面向                   | Nx                                    | pnpm workspaces (單獨) | Turborepo                  |
+| ---------------------- | ------------------------------------- | ---------------------- | -------------------------- |
+| **Package linking**    | 用 workspace protocol                 | 用 workspace protocol  | 用 workspace protocol      |
+| **TypeScript 解析**    | `nx sync` 自動維護 project references | 手動維護               | 手動維護                   |
+| **Task orchestration** | Project graph + 細粒度快取            | 無（需搭配其他工具）   | Pipeline + hash-based 快取 |
+| **tsconfig 維護**      | `@nx/js:typescript-sync` 自動同步     | 手動                   | 手動                       |
+| **增量建置**           | 基於 project graph 的 affected 命令   | 無                     | 基於 hash 比對             |
+| **程式碼產生**         | 內建 generators                       | 無                     | 無                         |
+| **模組邊界**           | ESLint plugin 強制執行                | 無                     | 無                         |
+
+<Callout type="tip">
+如果你只是要一個簡單的 monorepo，pnpm workspaces 就很夠用
+
+但當 repo 長大、packages 之間的依賴變複雜，Nx 的 project graph 和自動同步就能省下大量手動維護的時間。Turborepo 則是在 task orchestration 上有不錯的體驗，但 TypeScript 的整合度不如 Nx
+
+</Callout>
+
+---
+
+## 結論
+
+不要再問「這是 package-based 還是 integrated」了。現代 monorepo 的正確思維是：
+
+1. **用 workspaces** 處理 package 之間的 linking
+2. **用 project references** 處理 TypeScript 的增量型別檢查
+3. **用 Nx sync** 自動維護兩者之間的一致性
+4. **用 project graph** 做 task orchestration 和快取
+
+這些功能是正交的，可以按需組合，不需要硬塞進某個分類裡。
+
+---
+
+## 系列文章
+
+1. **Nx Monorepo 架構演進** ← 目前位置
+2. [型別解析：paths 與 Project References](/blog/nx-type-resolution)
+3. [moduleResolution：bundler vs nodenext](/blog/nx-module-resolution)
+
+---
+
+## 參考資源
+
+- [New Nx Experience for TypeScript Monorepos](https://nx.dev/blog/new-nx-experience-for-typescript-monorepos)
+- [TypeScript Project Linking](https://nx.dev/docs/concepts/typescript-project-linking)
+- [Integrated vs Package-Based (Deprecated)](https://canary.nx.dev/docs/reference/deprecated/integrated-vs-package-based)

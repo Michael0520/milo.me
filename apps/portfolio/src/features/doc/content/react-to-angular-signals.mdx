@@ -1,0 +1,571 @@
+---
+title: "Rediscovering Angular: Signals & Reactive State"
+description: Deep dive into Angular Signals and SignalStore
+createdAt: "2025-12-12"
+updatedAt: "2025-12-12"
+image: /images/blog/angular-signals.jpg
+category: tech
+---
+
+> Signals 是 Angular 20 最重要的改變，運作方式和 React Hooks 不同——自動追蹤依賴、不需要 dependency array。
+
+## 概念對照
+
+| React           | Angular                    | 說明                        |
+| --------------- | -------------------------- | --------------------------- |
+| `useState`      | `signal()`                 | 響應式狀態                  |
+| `useMemo`       | `computed()`               | 衍生計算值                  |
+| `useEffect`     | `effect()`                 | 副作用                      |
+| `useRef`        | `viewChild()` / `signal()` | DOM 參照或不觸發渲染的值    |
+| `useCallback`   | 不需要                     | Angular 沒有 re-render 問題 |
+| `useContext`    | `inject()`                 | 依賴注入                    |
+| Zustand / Redux | SignalStore                | 全域狀態管理                |
+
+---
+
+## Signal 基礎
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React useState</TabsTrigger>
+<TabsTrigger value="angular">Angular signal()</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>+</button>
+      <button onClick={() => setCount((c) => c - 1)}>-</button>
+      <button onClick={() => setCount(0)}>Reset</button>
+    </div>
+  );
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { Component, signal } from "@angular/core";
+
+@Component({
+  selector: "app-counter",
+  standalone: true,
+  template: `
+    <div>
+      <p>Count: {{ count() }}</p>
+      <button (click)="count.set(count() + 1)">+</button>
+      <button (click)="count.update(c => c - 1)">-</button>
+      <button (click)="count.set(0)">Reset</button>
+    </div>
+  `,
+})
+export class CounterComponent {
+  count = signal(0);
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+**Signal 操作方法：**
+
+| 方法            | 說明         | 範例                       |
+| --------------- | ------------ | -------------------------- |
+| `signal(value)` | 建立 signal  | `signal(0)`                |
+| `signal()`      | 讀取值       | `count()`                  |
+| `.set(value)`   | 設定新值     | `count.set(5)`             |
+| `.update(fn)`   | 基於舊值更新 | `count.update(c => c + 1)` |
+
+---
+
+## Computed - 衍生狀態
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React useMemo</TabsTrigger>
+<TabsTrigger value="angular">Angular computed()</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { useState, useMemo } from "react";
+
+function Cart() {
+  const [items, setItems] = useState([
+    { name: "Apple", price: 100, qty: 2 },
+    { name: "Banana", price: 50, qty: 3 },
+  ]);
+
+  // 必須手動列出 dependency
+  const total = useMemo(() => {
+    return items.reduce((sum, item) => sum + item.price * item.qty, 0);
+  }, [items]);
+
+  return <p>Total: ${total}</p>;
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { Component, signal, computed } from "@angular/core";
+
+@Component({
+  selector: "app-cart",
+  standalone: true,
+  template: `<p>Total: {{ total() }}</p>`,
+})
+export class CartComponent {
+  items = signal([
+    { name: "Apple", price: 100, qty: 2 },
+    { name: "Banana", price: 50, qty: 3 },
+  ]);
+
+  // 自動追蹤依賴，不需要 deps array！
+  total = computed(() => {
+    return this.items().reduce((sum, item) => sum + item.price * item.qty, 0);
+  });
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+<Callout type="tip">`computed()` 會**自動追蹤**依賴，不需要手動維護 dependency array</Callout>
+
+---
+
+## Effect - 副作用
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React useEffect</TabsTrigger>
+<TabsTrigger value="angular">Angular effect()</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { useState, useEffect } from "react";
+
+function SearchResults({ query }) {
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    // 必須列出 query 為 dependency
+    const controller = new AbortController();
+
+    fetch(`/api/search?q=${query}`, { signal: controller.signal })
+      .then((res) => res.json())
+      .then(setResults);
+
+    // Cleanup function
+    return () => controller.abort();
+  }, [query]);
+
+  return (
+    <ul>
+      {results.map((r) => (
+        <li key={r.id}>{r.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { Component, signal, effect, inject, input } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+
+@Component({
+  selector: "app-search-results",
+  standalone: true,
+  template: `
+    <ul>
+      @for (r of results(); track r.id) {
+        <li>{{ r.name }}</li>
+      }
+    </ul>
+  `,
+})
+export class SearchResultsComponent {
+  query = input.required<string>();
+  results = signal<Result[]>([]);
+
+  private http = inject(HttpClient);
+
+  constructor() {
+    effect((onCleanup) => {
+      // 自動追蹤 this.query()
+      const sub = this.http
+        .get<Result[]>(`/api/search?q=${this.query()}`)
+        .subscribe((data) => this.results.set(data));
+
+      // Cleanup
+      onCleanup(() => sub.unsubscribe());
+    });
+  }
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+<Callout type="info">`effect()` 也會自動追蹤依賴，`query` 改變時會自動重新執行</Callout>
+
+### Effect 進階用法
+
+**防抖搜尋（Debounce）**
+
+```typescript
+import { Component, signal, effect } from '@angular/core';
+import { Subject, debounceTime } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+@Component({...})
+export class SearchComponent {
+  query = signal('');
+  private search$ = new Subject<string>();
+
+  constructor() {
+    // 監聽 query 變化，推送到 Subject
+    effect(() => {
+      this.search$.next(this.query());
+    });
+
+    // RxJS 處理防抖
+    this.search$.pipe(
+      debounceTime(300),
+      takeUntilDestroyed()
+    ).subscribe(q => this.fetchResults(q));
+  }
+}
+```
+
+**localStorage 同步**
+
+```typescript
+@Component({...})
+export class ThemeComponent {
+  theme = signal<'light' | 'dark'>('light');
+
+  constructor() {
+    // 初始化：從 localStorage 讀取
+    const saved = localStorage.getItem('theme') as 'light' | 'dark';
+    if (saved) this.theme.set(saved);
+
+    // 同步：theme 變化時寫入 localStorage
+    effect(() => {
+      localStorage.setItem('theme', this.theme());
+    });
+  }
+}
+```
+
+### Effect 注意事項
+
+**1. 避免無限迴圈**
+
+```typescript
+// ❌ 無限迴圈：effect 內修改自己追蹤的 signal
+effect(() => {
+  this.count.set(this.count() + 1); // 讀取 → 修改 → 觸發 → 讀取...
+});
+
+// ✅ 使用 untracked 避免追蹤
+import { untracked } from "@angular/core";
+
+effect(() => {
+  const current = untracked(() => this.count());
+  // 做一些不會觸發重新執行的操作
+});
+```
+
+**2. allowSignalWrites**
+
+預設情況下，effect 內不建議修改 signal，如果需要，要明確聲明：
+
+```typescript
+effect(
+  () => {
+    if (this.items().length > 10) {
+      this.hasMany.set(true); // 需要 allowSignalWrites
+    }
+  },
+  { allowSignalWrites: true },
+);
+```
+
+**3. 執行時機**
+
+| 情境           | 執行時機                       |
+| -------------- | ------------------------------ |
+| 初次建立       | Component 初始化後立即執行     |
+| Signal 變更    | 下一個 change detection cycle  |
+| Component 銷毀 | 自動清理，不需手動 unsubscribe |
+
+<Callout type="tip">
+  Effect 會在 component 銷毀時自動清理，但如果在 effect 內訂閱 Observable，記得用 `onCleanup`
+  取消訂閱
+</Callout>
+
+---
+
+## 常見踩坑
+
+**1. 讀取 signal 要加 `()`**
+
+```typescript
+// ❌ Wrong - this is the signal object
+const value = this.count;
+
+// ✅ Correct - this is the value
+const value = this.count();
+```
+
+**2. Template 中也要加 `()`**
+
+```html
+<!-- ❌ Wrong -->
+<p>{{ count }}</p>
+
+<!-- ✅ Correct -->
+<p>{{ count() }}</p>
+```
+
+**3. 更新物件/陣列**
+
+```typescript
+// Array
+items = signal<string[]>([]);
+
+// ❌ 這樣不會觸發更新
+this.items().push("new item");
+
+// ✅ 使用 update
+this.items.update((arr) => [...arr, "new item"]);
+```
+
+---
+
+## SignalStore - 全域狀態管理
+
+SignalStore 來自 `@ngrx/signals`，是我目前最喜歡的 Angular 狀態管理方案，設計很像 Zustand，但整合了 Angular 的 DI 系統。
+
+### 安裝
+
+```bash
+npm install @ngrx/signals
+```
+
+### 基本用法對照
+
+<Tabs defaultValue="react">
+<TabsList>
+<TabsTrigger value="react">React (Zustand)</TabsTrigger>
+<TabsTrigger value="angular">Angular (SignalStore)</TabsTrigger>
+<TabsIndicator />
+</TabsList>
+
+<TabsContent value="react">
+
+```tsx
+import { create } from "zustand";
+
+// 定義 store
+interface CounterState {
+  count: number;
+  increment: () => void;
+  decrement: () => void;
+  reset: () => void;
+}
+
+const useCounterStore = create<CounterState>((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  decrement: () => set((state) => ({ count: state.count - 1 })),
+  reset: () => set({ count: 0 }),
+}));
+
+// 使用 store
+function Counter() {
+  const { count, increment, decrement, reset } = useCounterStore();
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+}
+```
+
+</TabsContent>
+
+<TabsContent value="angular">
+
+```typescript
+import { signalStore, withState, withMethods, patchState } from "@ngrx/signals";
+
+// 定義 store
+type CounterState = { count: number };
+
+export const CounterStore = signalStore(
+  withState<CounterState>({ count: 0 }),
+  withMethods((store) => ({
+    increment() {
+      patchState(store, { count: store.count() + 1 });
+    },
+    decrement() {
+      patchState(store, { count: store.count() - 1 });
+    },
+    reset() {
+      patchState(store, { count: 0 });
+    },
+  })),
+);
+
+// 使用 store
+@Component({
+  selector: "app-counter",
+  standalone: true,
+  providers: [CounterStore], // 可選擇 component-level 或 root-level
+  template: `
+    <div>
+      <p>Count: {{ store.count() }}</p>
+      <button (click)="store.increment()">+</button>
+      <button (click)="store.decrement()">-</button>
+      <button (click)="store.reset()">Reset</button>
+    </div>
+  `,
+})
+export class CounterComponent {
+  store = inject(CounterStore);
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### withComputed - 衍生狀態
+
+```typescript
+import { signalStore, withState, withComputed } from "@ngrx/signals";
+import { computed } from "@angular/core";
+
+type CartState = {
+  items: { name: string; price: number; qty: number }[];
+};
+
+export const CartStore = signalStore(
+  withState<CartState>({
+    items: [],
+  }),
+  withComputed((store) => ({
+    total: computed(() => store.items().reduce((sum, item) => sum + item.price * item.qty, 0)),
+    itemCount: computed(() => store.items().length),
+  })),
+);
+```
+
+### withMethods - 非同步操作
+
+```typescript
+import { signalStore, withState, withMethods, patchState } from "@ngrx/signals";
+import { inject } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { firstValueFrom } from "rxjs";
+
+type UserState = {
+  users: User[];
+  loading: boolean;
+  error: string | null;
+};
+
+export const UserStore = signalStore(
+  { providedIn: "root" }, // 全域 singleton
+  withState<UserState>({
+    users: [],
+    loading: false,
+    error: null,
+  }),
+  withMethods((store, http = inject(HttpClient)) => ({
+    async loadUsers() {
+      patchState(store, { loading: true, error: null });
+      try {
+        const users = await firstValueFrom(http.get<User[]>("/api/users"));
+        patchState(store, { users, loading: false });
+      } catch (err) {
+        patchState(store, {
+          error: "Failed to load users",
+          loading: false,
+        });
+      }
+    },
+    clearError() {
+      patchState(store, { error: null });
+    },
+  })),
+);
+```
+
+### SignalStore vs Zustand 對照
+
+| 功能     | Zustand                    | SignalStore                       |
+| -------- | -------------------------- | --------------------------------- |
+| 定義狀態 | `create((set) => ({...}))` | `withState({...})`                |
+| 衍生狀態 | 手動 `useMemo`             | `withComputed()`                  |
+| 更新狀態 | `set({ count: 1 })`        | `patchState(store, { count: 1 })` |
+| 注入服務 | 不支援                     | `inject(HttpClient)`              |
+| Scope    | 預設全域                   | 可選 component 或 root            |
+| DevTools | 需額外設定                 | 內建支援                          |
+
+<Callout type="tip">
+  SignalStore 可以直接 `inject()` Angular 服務（如 HttpClient），computed 自動追蹤依賴，和 Angular
+  生態系完美整合
+</Callout>
+
+### 何時使用 SignalStore？
+
+| 情境                 | 建議方案               |
+| -------------------- | ---------------------- |
+| Component 內部狀態   | `signal()`             |
+| 父子元件共享         | `input()` / `output()` |
+| 跨元件共享（同頁面） | Service + `signal()`   |
+| 全域狀態 + 複雜邏輯  | **SignalStore**        |
+| 需要 DevTools 除錯   | **SignalStore**        |
+
+---
+
+## 系列文章
+
+1. [專案建立與 Component](/blog/react-to-angular-basics)
+2. **Signals 響應式狀態管理** ← 目前位置
+3. [路由、資料與表單](/blog/react-to-angular-app)
+4. [效能優化與部署](/blog/react-to-angular-advanced)

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Suspense, ViewTransition } from "react";
 
 import { X_USERNAME } from "@/config/site";
-import { PostList } from "@/features/blog/components/post-list";
-import { PostListWithSearch } from "@/features/blog/components/post-list-with-search";
+import { PostCardList } from "@/features/blog/components/post-card-list";
+import { PostCardListWithSearch } from "@/features/blog/components/post-card-list-with-search";
 import { PostSearchInput } from "@/features/blog/components/post-search-input";
 import { getDocsByCategory } from "@/features/doc/data/documents";
 import { DOC_CATEGORIES } from "@/features/doc/types/document";
@@ -64,8 +64,8 @@ export default function Page() {
         </Suspense>
       </div>
 
-      <Suspense fallback={<PostList posts={allPosts} />}>
-        <PostListWithSearch posts={allPosts} />
+      <Suspense fallback={<PostCardList posts={allPosts} />}>
+        <PostCardListWithSearch posts={allPosts} />
       </Suspense>
     </div>
   );
