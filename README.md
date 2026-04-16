@@ -40,19 +40,19 @@ packages/
 
 ## Development
 
+Toolchain is [Vite+](https://viteplus.dev/) (`vp`). Avoid calling `pnpm` / `npx` directly.
+
 ```bash
 # Install dependencies
-pnpm install
+vp install
 
 # Run dev server (portfolio)
-pnpm --filter michaello-portfolio dev
+vp run michaello-portfolio#dev
 
-# Build
-pnpm --filter michaello-portfolio build
+# Build portfolio
+vp run michaello-portfolio#build
 
-# Or use vite-plus CLI
-vp run dev
-vp run -r build
+# Format + lint + types (auto-fix)
 vp check --fix
 ```
 

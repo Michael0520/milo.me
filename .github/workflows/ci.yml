@@ -19,23 +19,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Set node
-        uses: actions/setup-node@v4
+      - uses: voidzero-dev/setup-vp@v1
         with:
-          node-version: 22
-          cache: pnpm
+          cache: true
 
       - name: Install
-        run: pnpm install --frozen-lockfile
+        run: vp install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm exec vp lint
+      - name: Check
+        run: vp check
 
       - name: Type Check
-        run: pnpm --filter michaello-portfolio check-types
+        run: vp run michaello-portfolio#check-types
 
       - name: Build
-        run: pnpm --filter michaello-portfolio build
+        run: vp run michaello-portfolio#build

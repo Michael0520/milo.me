@@ -4,7 +4,20 @@ export default defineConfig({
   staged: {
     "*": "vp check --fix",
   },
-  fmt: {},
+  fmt: {
+    ignorePatterns: [
+      "**/.next/**",
+      "**/out/**",
+      "**/build/**",
+      "**/dist/**",
+      "**/next-env.d.ts",
+      "**/pnpm-lock.yaml",
+      "**/CHANGELOG.md",
+      "apps/portfolio/public/slides/**",
+      "apps/portfolio/src/__registry__/**",
+      "apps/portfolio/public/r/**",
+    ],
+  },
   lint: {
     plugins: ["typescript", "react", "nextjs", "import"],
     categories: {

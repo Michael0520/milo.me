@@ -8,18 +8,18 @@ Michael Lo's personal portfolio and blog. Monorepo with pnpm workspaces. Main ap
 
 ```bash
 # Dev server
-pnpm --filter michaello-portfolio dev
+vp run michaello-portfolio#dev
 
 # Build
-pnpm --filter michaello-portfolio build
+vp run michaello-portfolio#build
 
 # Type check
-npx tsc --noEmit --project apps/portfolio/tsconfig.json
+vp run michaello-portfolio#check-types
 
-# Lint
+# Format + lint (auto-fix)
 vp check --fix
 
-# Verify Vercel compat (simulate Vercel's install)
+# Verify Vercel compat (Vercel uses pnpm — keep as pnpm)
 cd apps/portfolio && pnpm install --frozen-lockfile
 ```
 
