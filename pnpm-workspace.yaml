@@ -10,9 +10,9 @@ allowBuilds:
 # `"<pkg>": "catalog:"` updates in one place.
 catalog:
   # Framework
-  next: 16.2.1
-  react: 19.2.4
-  react-dom: 19.2.4
+  next: 16.2.4
+  react: 19.2.5
+  react-dom: 19.2.5
 
   # React ecosystem
   "@base-ui/react": ^1.4.0
@@ -61,7 +61,7 @@ catalog:
   remark-gfm: ^4.0.1
   remark-mdx: ^3.1.1
   remark-rehype: ^11.1.2
-  shiki: 4.0.1
+  shiki: 4.0.2
   unist-builder: 3.0.0
   unist-util-visit: ^5.1.0
 
