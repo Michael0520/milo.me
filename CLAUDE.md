@@ -32,6 +32,14 @@ cd apps/portfolio && pnpm install --frozen-lockfile
 - `apps/portfolio/src/components/command-menu.tsx` — Command palette (Cmd+K)
 - `apps/portfolio/public/slides/` — Slidev presentation builds (excluded from oxlint via `ignorePatterns` in `vite.config.ts`)
 
+## Dependency Management
+
+All workspace deps are managed via pnpm catalogs (`pnpm-workspace.yaml`). Workspaces reference `"<pkg>": "catalog:"` (or `"catalog:preview"` for the experimental utils lane). **To bump a version, edit `pnpm-workspace.yaml` only** — every workspace that uses it updates in one place after `vp install`.
+
+- Default `catalog:` — production versions for `apps/portfolio` + `apps/website`
+- `catalogs.preview` — TS 6 / @types/node 25 lane for `packages/utils` only
+- Adding a new dep: add to catalog first, then reference via `"catalog:"` in the workspace's `package.json`
+
 ## Architecture Decisions
 
 ### Dev-Only Features
