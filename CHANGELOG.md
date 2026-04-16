@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.7.0](https://github.com/Michael0520/milo.me/compare/v0.6.0...v0.7.0) (2026-04-16)
+
+
+### Features
+
+* **blog:** UX improvements — Mermaid, pagination, neighbour nav, shared layouts ([#8](https://github.com/Michael0520/milo.me/issues/8)) ([ade6393](https://github.com/Michael0520/milo.me/commit/ade6393395982336640318582592b802e1610e24))
+* migrate 45 tech notes from legacy repo ([33f1ce6](https://github.com/Michael0520/milo.me/commit/33f1ce6aba913ec5af4b19cf3230c073d2531e12))
+* migrate 45 tech notes from legacy repo ([984ab4c](https://github.com/Michael0520/milo.me/commit/984ab4c4a233ab35c028a46789d02fa2bd09e898))
+* split /blog into /daily and /tech routes ([5b7be24](https://github.com/Michael0520/milo.me/commit/5b7be24b88a69fa51453edb4534cdd5c8c670766))
+* **tech:** adopt card-style list matching /talks page ([2403559](https://github.com/Michael0520/milo.me/commit/240355986a63c4e7f2cfa39b291b455a1548f385))
+* **toolchain:** adopt vite-plus + catalog-managed workspace deps ([0138c61](https://github.com/Michael0520/milo.me/commit/0138c619d1ecfd6f0f11953d4744cb81b1b7295a))
+* update shader background to FlowingGradient with logo brand color ([32d143f](https://github.com/Michael0520/milo.me/commit/32d143f73270f1f8797926fc74761e1c2bccef56))
+
+
+### Bug Fixes
+
+* **content:** use English for all post titles ([f50013b](https://github.com/Michael0520/milo.me/commit/f50013b471c483c844e95d38c3ecd6ecf6360ef7))
+* **seo:** add /talks to sitemap, remove /components, update llms.txt description ([52ad890](https://github.com/Michael0520/milo.me/commit/52ad89061f7a71093bad7b43fb0923d3bd9a3cdc))
+
 ## [0.6.0](https://github.com/Michael0520/milo.me/compare/v0.5.0...v0.6.0) (2026-04-06)
 
 
