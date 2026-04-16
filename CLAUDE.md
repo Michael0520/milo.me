@@ -30,7 +30,7 @@ cd apps/portfolio && pnpm install --frozen-lockfile
 - `apps/portfolio/src/features/doc/content/` — Blog posts (MDX)
 - `apps/portfolio/src/config/site.ts` — Nav config, site metadata
 - `apps/portfolio/src/components/command-menu.tsx` — Command palette (Cmd+K)
-- `apps/portfolio/public/slides/` — Slidev presentation builds (excluded from eslint via `.eslintignore`)
+- `apps/portfolio/public/slides/` — Slidev presentation builds (excluded from oxlint via `ignorePatterns` in `vite.config.ts`)
 
 ## Architecture Decisions
 

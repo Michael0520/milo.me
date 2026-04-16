@@ -61,8 +61,8 @@ All content lives in `src/features/doc/content/` as MDX files. Blog posts and co
 ```bash
 pnpm dev             # Dev server
 pnpm build           # Production build
-pnpm lint            # ESLint
-pnpm format:write    # Prettier
+vp lint              # Oxlint
+vp fmt --write       # Oxfmt
 pnpm check-types     # Type checking
 pnpm registry:build  # Build shadcn registry
 ```
