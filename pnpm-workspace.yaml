@@ -45,7 +45,7 @@ catalog:
   sharp: ^0.34.5
   sonner: ^2.0.7
   tailwind-merge: ^3.5.0
-  vcard-creator: ^0.7.2
+  vcard-creator: ^1.0.0
   web-haptics: ^0.0.6
 
   # Content / docs pipeline

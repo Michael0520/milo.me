@@ -217,8 +217,8 @@ catalogs:
       specifier: ^5.1.0
       version: 5.1.0
     vcard-creator:
-      specifier: ^0.7.2
-      version: 0.7.2
+      specifier: ^1.0.0
+      version: 1.0.0
     vite-plus:
       specifier: latest
       version: 0.1.18
@@ -378,7 +378,7 @@ importers:
         version: 3.5.0
       vcard-creator:
         specifier: 'catalog:'
-        version: 0.7.2
+        version: 1.0.0
       web-haptics:
         specifier: 'catalog:'
         version: 0.0.6(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -6827,8 +6827,9 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vcard-creator@0.7.2:
-    resolution: {integrity: sha512-DiZpZqie2aPoRec5bPO3WmXy/+Yh1Dl01Go5VyDnn5iV2KhN6d3S16yZoGz9iq27U6l+o6m68Ub8JQz8TnbNYA==}
+  vcard-creator@1.0.0:
+    resolution: {integrity: sha512-LunDOSct5saY+XhaA/fal/GYphrQXuQB5wa0YDy0C9NUMMwOhOaSriY/LseAPQFlh8EpB6vRX7hVxPdNvTzMbw==}
+    engines: {node: '>=18'}
 
   vfile-location@5.0.3:
     resolution: {integrity: sha512-5yXvWDEgqeiYiBe1lbxYF7UMAIm/IcopxMHrMQDq3nvKcjPKIhZklUKL+AE7J7uApI4kwe2snsK+eI6UTj9EHg==}
@@ -13895,7 +13896,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vcard-creator@0.7.2: {}
+  vcard-creator@1.0.0: {}
 
   vfile-location@5.0.3:
     dependencies:
