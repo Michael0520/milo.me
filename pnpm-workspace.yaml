@@ -40,7 +40,7 @@ catalog:
   react-markdown: ^10.1.0
   react-medium-image-zoom: ^5.4.3
   react-resizable-panels: ^4.10.0
-  schema-dts: ^1.1.5
+  schema-dts: ^2.0.0
   shaders: ^2.5.99
   sharp: ^0.34.5
   sonner: ^2.0.7
