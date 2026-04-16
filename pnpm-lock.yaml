@@ -94,8 +94,8 @@ catalogs:
       specifier: ^1.12.41
       version: 1.12.41
     libphonenumber-metadata-generator:
-      specifier: ^1.1.0
-      version: 1.1.0
+      specifier: ^2.0.4
+      version: 2.0.4
     lru-cache:
       specifier: ^11.3.5
       version: 11.3.5
@@ -421,7 +421,7 @@ importers:
         version: 4.0.3
       libphonenumber-metadata-generator:
         specifier: 'catalog:'
-        version: 1.1.0
+        version: 2.0.4
       puppeteer:
         specifier: 'catalog:'
         version: 24.41.0(typescript@5.9.3)
@@ -5275,8 +5275,8 @@ packages:
   libphonenumber-js@1.12.41:
     resolution: {integrity: sha512-lsmMmGXBxXIK/VMLEj0kL6MtUs1kBGj1nTCzi6zgQoG1DEwqwt2DQyHxcLykceIxAnfE3hya7NuIh6PpC6S3fA==}
 
-  libphonenumber-metadata-generator@1.1.0:
-    resolution: {integrity: sha512-90cRx8tdV5rPuhFLsGFDuq8X6SjU7GFfiTa/WBncnfD1Igo7qPY5RSqtTWNzC+OY9wu80RwUx04PrWtz6RDPLw==}
+  libphonenumber-metadata-generator@2.0.4:
+    resolution: {integrity: sha512-ITS+bSZAiqrT068Zk5np8u527xp4qB9scbCIIMduKN2odcFOOnDkpBQV1iUiP8LHp9ZbIiUp4hFWU+GRiniItQ==}
     hasBin: true
 
   lightningcss-android-arm64@1.32.0:
@@ -11796,7 +11796,7 @@ snapshots:
 
   libphonenumber-js@1.12.41: {}
 
-  libphonenumber-metadata-generator@1.1.0:
+  libphonenumber-metadata-generator@2.0.4:
     dependencies:
       minimist: 1.2.8
       xml2js: 0.6.2
