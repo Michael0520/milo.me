@@ -2,8 +2,8 @@
 
 import type { Doc } from "@/features/doc/types/document";
 
-import { usePageQuery } from "../hooks/use-page-query";
 import { useFilteredPosts } from "../hooks/use-filtered-posts";
+import { usePageQuery } from "../hooks/use-page-query";
 import { PostCardList, POSTS_PER_PAGE } from "./post-card-list";
 import { PostPagination } from "./post-pagination";
 

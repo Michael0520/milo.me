@@ -32,7 +32,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm --filter michaello-portfolio lint
+        run: pnpm exec vp lint
 
       - name: Type Check
         run: pnpm --filter michaello-portfolio check-types
