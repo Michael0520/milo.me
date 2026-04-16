@@ -54,6 +54,9 @@ catalogs:
     '@types/react-dom':
       specifier: 19.2.3
       version: 19.2.3
+    '@types/unist':
+      specifier: ^3.0.3
+      version: 3.0.3
     class-variance-authority:
       specifier: ^0.7.1
       version: 0.7.1
@@ -211,8 +214,8 @@ catalogs:
       specifier: ^5.9.3
       version: 5.9.3
     unist-builder:
-      specifier: 3.0.0
-      version: 3.0.0
+      specifier: ^4.0.0
+      version: 4.0.0
     unist-util-visit:
       specifier: ^5.1.0
       version: 5.1.0
@@ -410,6 +413,9 @@ importers:
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.14)
+      '@types/unist':
+        specifier: 'catalog:'
+        version: 3.0.3
       gray-matter:
         specifier: 'catalog:'
         version: 4.0.3
@@ -466,7 +472,7 @@ importers:
         version: 5.9.3
       unist-builder:
         specifier: 'catalog:'
-        version: 3.0.0
+        version: 4.0.0
       unist-util-visit:
         specifier: 'catalog:'
         version: 5.1.0
@@ -6752,8 +6758,8 @@ packages:
   unified@11.0.5:
     resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
 
-  unist-builder@3.0.0:
-    resolution: {integrity: sha512-GFxmfEAa0vi9i5sd0R2kcrI9ks0r82NasRq5QHh2ysGngrc6GiqD5CDf1FjPenY4vApmFASBIIlk/jj5J5YbmQ==}
+  unist-builder@4.0.0:
+    resolution: {integrity: sha512-wmRFnH+BLpZnTKpc5L7O67Kac89s9HMrtELpnNaE6TAobq5DTZZs5YaTQfAZBA9bFPECx2uVAPO31c+GVug8mg==}
 
   unist-util-is@6.0.1:
     resolution: {integrity: sha512-LsiILbtBETkDz8I9p1dQ0uyRUWuaQzd/cuEeS1hoRSyW5E5XGmTzlwY1OrNzzakGowI9Dr/I8HVaw4hTtnxy8g==}
@@ -13834,9 +13840,9 @@ snapshots:
       trough: 2.2.0
       vfile: 6.0.3
 
-  unist-builder@3.0.0:
+  unist-builder@4.0.0:
     dependencies:
-      '@types/unist': 2.0.11
+      '@types/unist': 3.0.3
 
   unist-util-is@6.0.1:
     dependencies:

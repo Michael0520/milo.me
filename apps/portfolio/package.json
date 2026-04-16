@@ -80,6 +80,7 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@types/unist": "catalog:",
     "gray-matter": "catalog:",
     "libphonenumber-metadata-generator": "catalog:",
     "puppeteer": "catalog:",
