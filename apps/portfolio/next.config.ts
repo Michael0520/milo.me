@@ -27,6 +27,14 @@ const nextConfig: NextConfig = {
   experimental: {
     viewTransition: true,
   },
+  compiler:
+    process.env.NODE_ENV === "production"
+      ? {
+          removeConsole: {
+            exclude: ["error"],
+          },
+        }
+      : undefined,
   async redirects() {
     return [
       {
