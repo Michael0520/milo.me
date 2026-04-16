@@ -35,11 +35,11 @@ export function ScrollToTop({ className, ...props }: React.ComponentProps<"butto
       )}
       variant="secondary"
       size="icon-sm"
+      aria-label="Scroll to top"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       {...props}
     >
       <ArrowUpIcon />
-      <span className="sr-only">Scroll to top</span>
     </Button>
   );
 }

@@ -50,10 +50,10 @@ export function ProjectItem({ className, project }: { className?: string; projec
                     <>
                       <span className="font-mono">—</span>
                       {isOngoing ? (
-                        <>
-                          <InfinityIcon className="size-4.5 translate-y-[0.5px]" />
-                          <span className="sr-only">Present</span>
-                        </>
+                        <InfinityIcon
+                          className="size-4.5 translate-y-[0.5px]"
+                          aria-label="Present"
+                        />
                       ) : (
                         <span>{end}</span>
                       )}
@@ -71,9 +71,9 @@ export function ProjectItem({ className, project }: { className?: string; projec
                     href={addQueryParams(project.link, UTM_PARAMS)}
                     target="_blank"
                     rel="noopener"
+                    aria-label="Open Project Link"
                   >
                     <LinkIcon className="pointer-events-none size-4" />
-                    <span className="sr-only">Open Project Link</span>
                   </a>
                 }
               />
