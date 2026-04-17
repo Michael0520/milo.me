@@ -121,8 +121,8 @@ catalogs:
       specifier: ^2.8.9
       version: 2.8.9
     posthog-js:
-      specifier: ^1.369.1
-      version: 1.369.1
+      specifier: ^1.369.2
+      version: 1.369.2
     puppeteer:
       specifier: ^24.41.0
       version: 24.41.0
@@ -187,8 +187,8 @@ catalogs:
       specifier: ^4.3.0
       version: 4.3.0
     shaders:
-      specifier: ^2.5.99
-      version: 2.5.99
+      specifier: ^2.5.102
+      version: 2.5.102
     sharp:
       specifier: ^0.34.5
       version: 0.34.5
@@ -211,8 +211,8 @@ catalogs:
       specifier: ^1.4.0
       version: 1.4.0
     typescript:
-      specifier: ^6.0.2
-      version: 6.0.2
+      specifier: ^6.0.3
+      version: 6.0.3
     unist-builder:
       specifier: ^4.0.0
       version: 4.0.0
@@ -236,8 +236,8 @@ catalogs:
       specifier: ^25.6.0
       version: 25.6.0
     typescript:
-      specifier: ^6.0.2
-      version: 6.0.2
+      specifier: ^6.0.3
+      version: 6.0.3
 
 overrides:
   vite: npm:@voidzero-dev/vite-plus-core@latest
@@ -252,7 +252,7 @@ importers:
         version: 1.3.0(@types/node@25.6.0)
       vite-plus:
         specifier: 'catalog:'
-        version: 0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
+        version: 0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
 
   apps/portfolio:
     dependencies:
@@ -336,7 +336,7 @@ importers:
         version: 2.8.9(next@16.2.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
       posthog-js:
         specifier: 'catalog:'
-        version: 1.369.1
+        version: 1.369.2
       radix-ui:
         specifier: 'catalog:'
         version: 1.4.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -366,10 +366,10 @@ importers:
         version: 4.10.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       schema-dts:
         specifier: 'catalog:'
-        version: 2.0.0(typescript@6.0.2)
+        version: 2.0.0(typescript@6.0.3)
       shaders:
         specifier: 'catalog:'
-        version: 2.5.99(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        version: 2.5.102(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       sharp:
         specifier: 'catalog:'
         version: 0.34.5
@@ -424,7 +424,7 @@ importers:
         version: 2.0.4
       puppeteer:
         specifier: 'catalog:'
-        version: 24.41.0(typescript@6.0.2)
+        version: 24.41.0(typescript@6.0.3)
       rehype-external-links:
         specifier: 'catalog:'
         version: 3.0.0
@@ -454,7 +454,7 @@ importers:
         version: 6.1.3
       shadcn:
         specifier: 'catalog:'
-        version: 4.3.0(@types/node@25.6.0)(typescript@6.0.2)
+        version: 4.3.0(@types/node@25.6.0)(typescript@6.0.3)
       shiki:
         specifier: 'catalog:'
         version: 4.0.2
@@ -469,7 +469,7 @@ importers:
         version: 1.4.0
       typescript:
         specifier: 'catalog:'
-        version: 6.0.2
+        version: 6.0.3
       unist-builder:
         specifier: 'catalog:'
         version: 4.0.0
@@ -481,13 +481,13 @@ importers:
     devDependencies:
       typescript:
         specifier: 'catalog:'
-        version: 6.0.2
+        version: 6.0.3
       vite:
         specifier: npm:@voidzero-dev/vite-plus-core@latest
-        version: '@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)'
+        version: '@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)'
       vite-plus:
         specifier: 'catalog:'
-        version: 0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
+        version: 0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)
 
   packages/utils:
     devDependencies:
@@ -502,10 +502,10 @@ importers:
         version: 11.0.1
       typescript:
         specifier: catalog:preview
-        version: 6.0.2
+        version: 6.0.3
       vite-plus:
         specifier: 'catalog:'
-        version: 0.1.18(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
+        version: 0.1.18(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
 
 packages:
 
@@ -2134,8 +2134,8 @@ packages:
   '@posthog/core@1.25.2':
     resolution: {integrity: sha512-h2FO7ut/BbfwpAXWpwdDHTzQgUo9ibDFEs6ZO+3cI3KPWQt5XwczK1OLAuPprcjm8T/jl0SH8jSFo5XdU4RbTg==}
 
-  '@posthog/types@1.369.1':
-    resolution: {integrity: sha512-5sUMa/gmGloazdnDZF8hfzMhGAhxtuTy3v7plnx+mR72fjDyg0aUQjmCeoxxyFOrBAO5aVYxESxPVKJepE6EfA==}
+  '@posthog/types@1.369.2':
+    resolution: {integrity: sha512-PJqkqPCFnnbCZslH2jHSvXlasRqvke6YAsYPhPALy4zy2hldor8A0O2wIlpAefEJ7fVz6wR5ZbRJzQP6nwujyw==}
 
   '@protobufjs/aspromise@1.1.2':
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
@@ -5966,8 +5966,8 @@ packages:
     resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.369.1:
-    resolution: {integrity: sha512-xerj/T3NE65H9cqUKzg2LbNmavTC/qr26CnE+yBw+yNyro6Fmvs9+CMvRc2+RkDsoOdSmrq9cwR9noZqfjC2Kg==}
+  posthog-js@1.369.2:
+    resolution: {integrity: sha512-pY+SvNvRp3C2XW80h/jwVLTgoruK15C6klo9bYYoO6DCK9EbcwS6YzjgxBHx1dIN0XBZM3KWJPmuaSimU65HQQ==}
 
   posthog-node@5.28.9:
     resolution: {integrity: sha512-iZWyAYkIAq5QqcYz4q2nXOX+Ivn04Yh8AuKqfFVw0SvBpfli49bNAjyE97qbRTLr+irrzRUELgGIkDC14NgugA==}
@@ -6339,8 +6339,8 @@ packages:
     resolution: {integrity: sha512-7vhnBh2LVLyxOd1ZQWwXv7OATCnQcxdqc8FbZdNigZriNOwDsHklQmPpvPt1jcrFK5mzMI+cyuAYv8WzERx2Og==}
     hasBin: true
 
-  shaders@2.5.99:
-    resolution: {integrity: sha512-/H0v3RwIIao4BQkXjTxb7gqBH50GwAWg1+QEYjyLgOUQfBDb8C3XFpdVDw1nzEGA45hC8HpXCAZGYDrVNXEU6Q==}
+  shaders@2.5.102:
+    resolution: {integrity: sha512-bVkg3T6S2UZehExgqjX0qRP+EyZx0ZCWjFKI45NwD7iFmKgDVcJ+YNkBCYS6hzVt/ZvKP65rpHlBBIE4sOzomA==}
     peerDependencies:
       pixi.js: ^8.0.0
       react: ^18.0.0 || ^19.0.0
@@ -6571,8 +6571,8 @@ packages:
   third-party-capital@1.0.20:
     resolution: {integrity: sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA==}
 
-  three@0.183.2:
-    resolution: {integrity: sha512-di3BsL2FEQ1PA7Hcvn4fyJOlxRRgFYBpMTcyOgkwJIaDOdJMebEFPA+t98EvjuljDx4hNulAGwF6KIjtwI5jgQ==}
+  three@0.184.0:
+    resolution: {integrity: sha512-wtTRjG92pM5eUg/KuUnHsqSAlPM296brTOcLgMRqEeylYTh/CdtvKUvCyyCQTzFuStieWxvZb8mVTMvdPyUpxg==}
 
   tiny-invariant@1.3.3:
     resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
@@ -6719,8 +6719,8 @@ packages:
       typeorm-aurora-data-api-driver:
         optional: true
 
-  typescript@6.0.2:
-    resolution: {integrity: sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ==}
+  typescript@6.0.3:
+    resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -8793,7 +8793,7 @@ snapshots:
 
   '@posthog/core@1.25.2': {}
 
-  '@posthog/types@1.369.1': {}
+  '@posthog/types@1.369.2': {}
 
   '@protobufjs/aspromise@1.1.2': {}
 
@@ -10073,7 +10073,7 @@ snapshots:
       d3-selection: 3.0.0
       d3-transition: 3.0.1(d3-selection@3.0.0)
 
-  '@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)':
+  '@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)':
     dependencies:
       '@oxc-project/runtime': 0.122.0
       '@oxc-project/types': 0.122.0
@@ -10083,10 +10083,10 @@ snapshots:
       '@types/node': 25.6.0
       fsevents: 2.3.3
       jiti: 2.6.1
-      typescript: 6.0.2
+      typescript: 6.0.3
       yaml: 2.8.3
 
-  '@voidzero-dev/vite-plus-core@0.1.18(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)':
+  '@voidzero-dev/vite-plus-core@0.1.18(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)':
     dependencies:
       '@oxc-project/runtime': 0.124.0
       '@oxc-project/types': 0.124.0
@@ -10096,7 +10096,7 @@ snapshots:
       '@types/node': 25.6.0
       fsevents: 2.3.3
       jiti: 2.6.1
-      typescript: 6.0.2
+      typescript: 6.0.3
       yaml: 2.8.3
 
   '@voidzero-dev/vite-plus-darwin-arm64@0.1.15':
@@ -10135,11 +10135,11 @@ snapshots:
   '@voidzero-dev/vite-plus-linux-x64-musl@0.1.18':
     optional: true
 
-  '@voidzero-dev/vite-plus-test@0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)':
+  '@voidzero-dev/vite-plus-test@0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@types/chai': 5.2.3
-      '@voidzero-dev/vite-plus-core': 0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-core': 0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)
       es-module-lexer: 1.7.0
       obug: 2.1.1
       pixelmatch: 7.1.0
@@ -10149,7 +10149,7 @@ snapshots:
       tinybench: 2.9.0
       tinyexec: 1.0.4
       tinyglobby: 0.2.15
-      vite: '@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)'
+      vite: '@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)'
       ws: 8.20.0
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
@@ -10175,11 +10175,11 @@ snapshots:
       - utf-8-validate
       - yaml
 
-  '@voidzero-dev/vite-plus-test@0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)':
+  '@voidzero-dev/vite-plus-test@0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@types/chai': 5.2.3
-      '@voidzero-dev/vite-plus-core': 0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-core': 0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)
       es-module-lexer: 1.7.0
       obug: 2.1.1
       pixelmatch: 7.1.0
@@ -10215,11 +10215,11 @@ snapshots:
       - utf-8-validate
       - yaml
 
-  '@voidzero-dev/vite-plus-test@0.1.18(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)':
+  '@voidzero-dev/vite-plus-test@0.1.18(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@types/chai': 5.2.3
-      '@voidzero-dev/vite-plus-core': 0.1.18(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-core': 0.1.18(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)
       es-module-lexer: 1.7.0
       obug: 2.1.1
       pixelmatch: 7.1.0
@@ -10640,14 +10640,14 @@ snapshots:
     dependencies:
       layout-base: 2.0.1
 
-  cosmiconfig@9.0.1(typescript@6.0.2):
+  cosmiconfig@9.0.1(typescript@6.0.3):
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
       js-yaml: 4.1.1
       parse-json: 5.2.0
     optionalDependencies:
-      typescript: 6.0.2
+      typescript: 6.0.3
 
   cross-spawn@7.0.6:
     dependencies:
@@ -12372,7 +12372,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.12.14(@types/node@25.6.0)(typescript@6.0.2):
+  msw@2.12.14(@types/node@25.6.0)(typescript@6.0.3):
     dependencies:
       '@inquirer/confirm': 5.1.21(@types/node@25.6.0)
       '@mswjs/interceptors': 0.41.3
@@ -12393,7 +12393,7 @@ snapshots:
       until-async: 3.0.2
       yargs: 17.7.2
     optionalDependencies:
-      typescript: 6.0.2
+      typescript: 6.0.3
     transitivePeerDependencies:
       - '@types/node'
 
@@ -12780,7 +12780,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.369.1:
+  posthog-js@1.369.2:
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/api-logs': 0.208.0
@@ -12788,7 +12788,7 @@ snapshots:
       '@opentelemetry/resources': 2.6.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/sdk-logs': 0.208.0(@opentelemetry/api@1.9.1)
       '@posthog/core': 1.25.2
-      '@posthog/types': 1.369.1
+      '@posthog/types': 1.369.2
       core-js: 3.49.0
       dompurify: 3.3.3
       fflate: 0.4.8
@@ -12874,11 +12874,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  puppeteer@24.41.0(typescript@6.0.2):
+  puppeteer@24.41.0(typescript@6.0.3):
     dependencies:
       '@puppeteer/browsers': 2.13.0
       chromium-bidi: 14.0.0(devtools-protocol@0.0.1595872)
-      cosmiconfig: 9.0.1(typescript@6.0.2)
+      cosmiconfig: 9.0.1(typescript@6.0.3)
       devtools-protocol: 0.0.1595872
       puppeteer-core: 24.41.0
       typed-query-selector: 2.12.1
@@ -13294,13 +13294,13 @@ snapshots:
 
   scheduler@0.27.0: {}
 
-  schema-dts-lib@1.0.0(typescript@6.0.2):
+  schema-dts-lib@1.0.0(typescript@6.0.3):
     dependencies:
-      typescript: 6.0.2
+      typescript: 6.0.3
 
-  schema-dts@2.0.0(typescript@6.0.2):
+  schema-dts@2.0.0(typescript@6.0.3):
     dependencies:
-      schema-dts-lib: 1.0.0(typescript@6.0.2)
+      schema-dts-lib: 1.0.0(typescript@6.0.3)
     transitivePeerDependencies:
       - typescript
 
@@ -13359,7 +13359,7 @@ snapshots:
       safe-buffer: 5.2.1
       to-buffer: 1.2.2
 
-  shadcn@4.3.0(@types/node@25.6.0)(typescript@6.0.2):
+  shadcn@4.3.0(@types/node@25.6.0)(typescript@6.0.3):
     dependencies:
       '@babel/core': 7.29.0
       '@babel/parser': 7.29.2
@@ -13370,7 +13370,7 @@ snapshots:
       '@types/validate-npm-package-name': 4.0.2
       browserslist: 4.28.2
       commander: 14.0.3
-      cosmiconfig: 9.0.1(typescript@6.0.2)
+      cosmiconfig: 9.0.1(typescript@6.0.3)
       dedent: 1.7.2
       deepmerge: 4.3.1
       diff: 8.0.4
@@ -13380,7 +13380,7 @@ snapshots:
       fuzzysort: 3.1.0
       https-proxy-agent: 7.0.6
       kleur: 4.1.5
-      msw: 2.12.14(@types/node@25.6.0)(typescript@6.0.2)
+      msw: 2.12.14(@types/node@25.6.0)(typescript@6.0.3)
       node-fetch: 3.3.2
       open: 11.0.0
       ora: 8.2.0
@@ -13402,9 +13402,9 @@ snapshots:
       - supports-color
       - typescript
 
-  shaders@2.5.99(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
+  shaders@2.5.102(react-dom@19.2.5(react@19.2.5))(react@19.2.5):
     dependencies:
-      three: 0.183.2
+      three: 0.184.0
     optionalDependencies:
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
@@ -13662,7 +13662,7 @@ snapshots:
 
   third-party-capital@1.0.20: {}
 
-  three@0.183.2: {}
+  three@0.184.0: {}
 
   tiny-invariant@1.3.3: {}
 
@@ -13771,7 +13771,7 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  typescript@6.0.2: {}
+  typescript@6.0.3: {}
 
   ufo@1.6.3: {}
 
@@ -13902,11 +13902,11 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-plus@0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3):
+  vite-plus@0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3):
     dependencies:
       '@oxc-project/types': 0.122.0
-      '@voidzero-dev/vite-plus-core': 0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
-      '@voidzero-dev/vite-plus-test': 0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-core': 0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-test': 0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(@voidzero-dev/vite-plus-core@0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3))(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)
       cac: 7.0.0
       cross-spawn: 7.0.6
       jsonc-parser: 3.3.1
@@ -13951,11 +13951,11 @@ snapshots:
       - vite
       - yaml
 
-  vite-plus@0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3):
+  vite-plus@0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3):
     dependencies:
       '@oxc-project/types': 0.122.0
-      '@voidzero-dev/vite-plus-core': 0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
-      '@voidzero-dev/vite-plus-test': 0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-core': 0.1.15(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-test': 0.1.15(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
       cac: 7.0.0
       cross-spawn: 7.0.6
       jsonc-parser: 3.3.1
@@ -14000,11 +14000,11 @@ snapshots:
       - vite
       - yaml
 
-  vite-plus@0.1.18(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3):
+  vite-plus@0.1.18(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3):
     dependencies:
       '@oxc-project/types': 0.124.0
-      '@voidzero-dev/vite-plus-core': 0.1.18(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(yaml@2.8.3)
-      '@voidzero-dev/vite-plus-test': 0.1.18(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-core': 0.1.18(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(yaml@2.8.3)
+      '@voidzero-dev/vite-plus-test': 0.1.18(@opentelemetry/api@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(typescript@6.0.3)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1)(@types/node@25.6.0)(jiti@2.6.1)(yaml@2.8.3))(yaml@2.8.3)
       oxfmt: 0.45.0
       oxlint: 1.60.0(oxlint-tsgolint@0.20.0)
       oxlint-tsgolint: 0.20.0
