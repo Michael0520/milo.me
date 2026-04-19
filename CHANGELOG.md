@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/Michael0520/milo.me/compare/v0.7.0...v0.8.0) (2026-04-19)
+
+
+### Features
+
+* **next-config:** remove console logs in production except errors ([5434198](https://github.com/Michael0520/milo.me/commit/5434198875a15bf78ebeeebf525f994f4f07ae95))
+
 ## [0.7.0](https://github.com/Michael0520/milo.me/compare/v0.6.0...v0.7.0) (2026-04-16)
 
 
