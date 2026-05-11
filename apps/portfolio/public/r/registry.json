@@ -1,12 +1,15 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "ncdai",
-  "homepage": "https://chanhdai.com/components",
+  "name": "michael0520",
+  "homepage": "https://www.michaello.me/components",
   "items": [
     {
       "name": "utils",
       "title": "Utility Functions",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
       "files": [
         {
           "path": "src/lib/utils.ts",
@@ -62,14 +65,18 @@
       "name": "theme-switcher",
       "title": "Theme Switcher",
       "description": "Toggle between system, light, and dark themes in Next.js apps.",
-      "dependencies": ["next-themes", "lucide-react", "motion"],
+      "dependencies": [
+        "next-themes",
+        "lucide-react",
+        "motion"
+      ],
       "files": [
         {
           "path": "src/registry/components/theme-switcher/theme-switcher.tsx",
           "type": "registry:component"
         }
       ],
-      "docs": "https://chanhdai.com/components/theme-switcher",
+      "docs": "https://www.michaello.me/components/theme-switcher",
       "type": "registry:component",
       "author": "Michael Lo"
     },
@@ -77,14 +84,16 @@
       "name": "text-flip",
       "title": "Text Flip",
       "description": "Animated text that cycles through items with a smooth flip transition.",
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "files": [
         {
           "path": "src/registry/components/text-flip/text-flip.tsx",
           "type": "registry:component"
         }
       ],
-      "docs": "https://chanhdai.com/components/text-flip",
+      "docs": "https://www.michaello.me/components/text-flip",
       "type": "registry:component",
       "author": "Michael Lo"
     },
@@ -92,14 +101,16 @@
       "name": "apple-hello-effect",
       "title": "Apple Hello Effect",
       "description": "SVG writing animation inspired by Apple's Hello screen.",
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "files": [
         {
           "path": "src/registry/components/apple-hello-effect/apple-hello-effect.tsx",
           "type": "registry:component"
         }
       ],
-      "docs": "https://chanhdai.com/components/apple-hello-effect",
+      "docs": "https://www.michaello.me/components/apple-hello-effect",
       "type": "registry:component",
       "author": "Michael Lo"
     },
@@ -107,21 +118,25 @@
       "name": "wheel-picker",
       "title": "Wheel Picker",
       "description": "iOS-like wheel picker for React with smooth inertia scrolling and infinite loop support.",
-      "dependencies": ["@ncdai/react-wheel-picker"],
+      "dependencies": [
+        "@ncdai/react-wheel-picker"
+      ],
       "files": [
         {
           "path": "src/registry/components/wheel-picker/wheel-picker.tsx",
           "type": "registry:component"
         }
       ],
-      "docs": "https://chanhdai.com/components/react-wheel-picker",
+      "docs": "https://www.michaello.me/components/react-wheel-picker",
       "type": "registry:component",
       "author": "Michael Lo"
     },
     {
       "name": "chevrons-up-down-icon",
       "description": "TBD",
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "files": [
         {
           "path": "src/registry/components/chevrons-up-down-icon/chevrons-up-down-icon.tsx",
@@ -135,10 +150,12 @@
       "name": "typography",
       "title": "Typography",
       "description": "Custom prose styles for headings, links, inline code, and emphasis.",
-      "devDependencies": ["@tailwindcss/typography"],
+      "devDependencies": [
+        "@tailwindcss/typography"
+      ],
       "css": {
         "@plugin @tailwindcss/typography": {},
-        "@utility prose-ncdai": {
+        "@utility prose-custom": {
           "@apply prose-headings:tracking-tight prose-headings:text-balance prose-h2:font-semibold": {},
           "@apply prose-a:font-medium prose-a:wrap-break-word prose-a:text-foreground prose-a:underline prose-a:underline-offset-4": {},
           "@apply prose-code:rounded-md prose-code:border prose-code:bg-muted/50 prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:text-sm prose-code:font-normal prose-code:before:content-none prose-code:after:content-none": {},
@@ -153,12 +170,15 @@
       "name": "work-experience",
       "title": "Work Experience",
       "description": "Display work experiences with role details, company logos, and durations.",
-      "dependencies": ["react-markdown", "lucide-react"],
+      "dependencies": [
+        "react-markdown",
+        "lucide-react"
+      ],
       "registryDependencies": [
         "collapsible",
         "separator",
-        "https://chanhdai.com/r/chevrons-up-down-icon.json",
-        "https://chanhdai.com/r/typography.json"
+        "http://localhost:3456/r/chevrons-up-down-icon.json",
+        "http://localhost:3456/r/typography.json"
       ],
       "files": [
         {
@@ -166,7 +186,7 @@
           "type": "registry:component"
         }
       ],
-      "docs": "https://chanhdai.com/components/work-experience-component",
+      "docs": "https://www.michaello.me/components/work-experience-component",
       "type": "registry:component",
       "author": "Michael Lo"
     },
@@ -174,7 +194,9 @@
       "name": "shimmering-text",
       "title": "Shimmering Text",
       "description": "Smooth, light-sweeping shimmer animation for text.",
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "files": [
         {
           "path": "src/registry/components/shimmering-text/shimmering-text.tsx",
@@ -188,15 +210,19 @@
       "name": "slide-to-unlock",
       "title": "Slide to Unlock",
       "description": "Interactive slider inspired by the classic iPhone 'slide to unlock' gesture.",
-      "dependencies": ["motion"],
-      "registryDependencies": ["https://chanhdai.com/r/shimmering-text.json"],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "http://localhost:3456/r/shimmering-text.json"
+      ],
       "files": [
         {
           "path": "src/registry/components/slide-to-unlock/slide-to-unlock.tsx",
           "type": "registry:component"
         }
       ],
-      "docs": "https://chanhdai.com/components/slide-to-unlock",
+      "docs": "https://www.michaello.me/components/slide-to-unlock",
       "type": "registry:component",
       "author": "Michael Lo"
     },
@@ -204,8 +230,11 @@
       "name": "testimonials-marquee",
       "title": "Testimonials Marquee",
       "description": "Scrolling marquee to showcase user testimonials.",
-      "registryDependencies": ["@kibo-ui/marquee", "https://chanhdai.com/r/testimonial.json"],
-      "docs": "https://chanhdai.com/components/testimonials-marquee",
+      "registryDependencies": [
+        "@kibo-ui/marquee",
+        "http://localhost:3456/r/testimonial.json"
+      ],
+      "docs": "https://www.michaello.me/components/testimonials-marquee",
       "type": "registry:component",
       "author": "Michael Lo",
       "files": []
@@ -227,7 +256,10 @@
       "name": "github-stars",
       "title": "GitHub Stars",
       "description": "Display GitHub repo star count with formatted numbers and full-count tooltip.",
-      "registryDependencies": ["button", "tooltip"],
+      "registryDependencies": [
+        "button",
+        "tooltip"
+      ],
       "files": [
         {
           "path": "src/registry/components/github-stars/github-stars.tsx",
@@ -328,8 +360,12 @@
       "name": "consent-manager",
       "title": "Consent Manager",
       "description": "Cookie and tracking consent banner for Next.js, built on c15t.",
-      "dependencies": ["@c15t/nextjs"],
-      "registryDependencies": ["button"],
+      "dependencies": [
+        "@c15t/nextjs"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "src/registry/components/consent-manager/consent-manager.tsx",
@@ -343,8 +379,13 @@
       "name": "copy-button",
       "title": "Copy Button",
       "description": "Copy text to clipboard with visual feedback and animation.",
-      "dependencies": ["lucide-react", "motion"],
-      "registryDependencies": ["button"],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "src/registry/components/copy-button/copy-button.tsx",
@@ -362,8 +403,15 @@
       "name": "code-block-command",
       "title": "Code Block Command",
       "description": "Display install commands with package manager switcher and copy button.",
-      "dependencies": ["@base-ui/react", "lucide-react", "motion", "jotai"],
-      "registryDependencies": ["https://chanhdai.com/r/copy-button.json"],
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react",
+        "motion",
+        "jotai"
+      ],
+      "registryDependencies": [
+        "http://localhost:3456/r/copy-button.json"
+      ],
       "files": [
         {
           "path": "src/registry/components/code-block-command/code-block-command.tsx",
@@ -399,7 +447,9 @@
       "name": "testimonial-spotlight",
       "title": "Testimonial Spotlight",
       "description": "Testimonial card with spotlight effect on hover.",
-      "registryDependencies": ["https://chanhdai.com/r/testimonial.json"],
+      "registryDependencies": [
+        "http://localhost:3456/r/testimonial.json"
+      ],
       "files": [
         {
           "path": "src/registry/components/testimonial-spotlight/testimonial-spotlight.tsx",
@@ -430,7 +480,13 @@
       "name": "login-01",
       "title": "Login 01",
       "description": "A simple login form.",
-      "registryDependencies": ["button", "card", "input", "label", "field"],
+      "registryDependencies": [
+        "button",
+        "card",
+        "input",
+        "label",
+        "field"
+      ],
       "files": [
         {
           "path": "src/registry/blocks/login-01/page.tsx",
@@ -442,7 +498,10 @@
           "type": "registry:component"
         }
       ],
-      "categories": ["application", "login"],
+      "categories": [
+        "application",
+        "login"
+      ],
       "type": "registry:block",
       "author": "Michael Lo"
     },
@@ -450,7 +509,10 @@
       "name": "hero-01",
       "title": "Hero 01",
       "description": "A hero section with a golden spiral background.",
-      "registryDependencies": ["button", "https://chanhdai.com/r/style.json"],
+      "registryDependencies": [
+        "button",
+        "http://localhost:3456/r/style.json"
+      ],
       "files": [
         {
           "path": "src/registry/blocks/hero-01/hero-01.tsx",
@@ -464,7 +526,10 @@
       "meta": {
         "previewClassName": "pt-8"
       },
-      "categories": ["marketing", "hero"],
+      "categories": [
+        "marketing",
+        "hero"
+      ],
       "type": "registry:block",
       "author": "Michael Lo"
     },
@@ -472,8 +537,12 @@
       "name": "blog-01",
       "title": "Blog 01",
       "description": "A blog section with a grid layout.",
-      "dependencies": ["date-fns"],
-      "registryDependencies": ["button"],
+      "dependencies": [
+        "date-fns"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
       "files": [
         {
           "path": "src/registry/blocks/blog-01/blog-01.tsx",
@@ -484,7 +553,10 @@
           "type": "registry:component"
         }
       ],
-      "categories": ["content", "blog"],
+      "categories": [
+        "content",
+        "blog"
+      ],
       "type": "registry:block",
       "author": "Michael Lo"
     },
@@ -492,8 +564,13 @@
       "name": "blog-02",
       "title": "Blog 02",
       "description": "A blog section with a lined grid layout.",
-      "dependencies": ["date-fns"],
-      "registryDependencies": ["button", "https://chanhdai.com/r/style.json"],
+      "dependencies": [
+        "date-fns"
+      ],
+      "registryDependencies": [
+        "button",
+        "http://localhost:3456/r/style.json"
+      ],
       "files": [
         {
           "path": "src/registry/blocks/blog-02/blog-02.tsx",
@@ -504,7 +581,10 @@
           "type": "registry:component"
         }
       ],
-      "categories": ["content", "blog"],
+      "categories": [
+        "content",
+        "blog"
+      ],
       "type": "registry:block",
       "author": "Michael Lo"
     },
@@ -514,7 +594,7 @@
       "description": "A testimonials section with dual marquees.",
       "registryDependencies": [
         "https://www.kibo-ui.com/r/marquee.json",
-        "https://chanhdai.com/r/testimonial-spotlight.json"
+        "http://localhost:3456/r/testimonial-spotlight.json"
       ],
       "files": [
         {
@@ -529,7 +609,10 @@
       "meta": {
         "previewClassName": "container mx-auto min-h-svh content-center-safe"
       },
-      "categories": ["marketing", "testimonials"],
+      "categories": [
+        "marketing",
+        "testimonials"
+      ],
       "type": "registry:block",
       "author": "Michael Lo"
     },
@@ -539,8 +622,8 @@
       "description": "A testimonials section with a lined layout.",
       "registryDependencies": [
         "https://www.kibo-ui.com/r/marquee.json",
-        "https://chanhdai.com/r/style.json",
-        "https://chanhdai.com/r/testimonial.json"
+        "http://localhost:3456/r/style.json",
+        "http://localhost:3456/r/testimonial.json"
       ],
       "files": [
         {
@@ -552,7 +635,10 @@
           "type": "registry:component"
         }
       ],
-      "categories": ["marketing", "testimonials"],
+      "categories": [
+        "marketing",
+        "testimonials"
+      ],
       "type": "registry:block",
       "author": "Michael Lo"
     },
@@ -561,8 +647,8 @@
       "title": "Experience 01",
       "description": "A work experience section with a lined layout.",
       "registryDependencies": [
-        "https://chanhdai.com/r/style.json",
-        "https://chanhdai.com/r/work-experience.json"
+        "http://localhost:3456/r/style.json",
+        "http://localhost:3456/r/work-experience.json"
       ],
       "files": [
         {
@@ -570,7 +656,10 @@
           "type": "registry:component"
         }
       ],
-      "categories": ["content", "portfolio"],
+      "categories": [
+        "content",
+        "portfolio"
+      ],
       "type": "registry:block",
       "author": "Michael Lo"
     },
@@ -578,15 +667,22 @@
       "name": "team-01",
       "title": "Team 01",
       "description": "A team section with glowing cards.",
-      "dependencies": ["dialkit"],
-      "registryDependencies": ["https://chanhdai.com/r/glow-card-grid.json"],
+      "dependencies": [
+        "dialkit"
+      ],
+      "registryDependencies": [
+        "http://localhost:3456/r/glow-card-grid.json"
+      ],
       "files": [
         {
           "path": "src/registry/blocks/team-01/team-01.tsx",
           "type": "registry:component"
         }
       ],
-      "categories": ["content", "team"],
+      "categories": [
+        "content",
+        "team"
+      ],
       "type": "registry:block",
       "author": "Michael Lo"
     },
