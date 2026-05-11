@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/node": "catalog:preview",
     "@typescript/native-preview": "7.0.0-dev.20260416.2",
-    "bumpp": "^11.0.1",
+    "bumpp": "^11.1.0",
     "typescript": "catalog:preview",
     "vite-plus": "catalog:"
   }
