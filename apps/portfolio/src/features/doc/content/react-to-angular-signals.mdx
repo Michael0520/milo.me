@@ -65,7 +65,7 @@ import { Component, signal } from "@angular/core";
     <div>
       <p>Count: {{ count() }}</p>
       <button (click)="count.set(count() + 1)">+</button>
-      <button (click)="count.update(c => c - 1)">-</button>
+      <button (click)="count.update((c) => c - 1)">-</button>
       <button (click)="count.set(0)">Reset</button>
     </div>
   `,
