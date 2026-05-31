@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/Michael0520/milo.me/compare/v0.8.0...v0.9.0) (2026-05-31)
+
+
+### Features
+
+* **portfolio:** add homepage sticky TOC minimap navigation ([5d5926d](https://github.com/Michael0520/milo.me/commit/5d5926d3a0e1ebbe8592bb1fac905201f3970c37))
+
 ## [0.8.0](https://github.com/Michael0520/milo.me/compare/v0.7.0...v0.8.0) (2026-04-19)
 
 
