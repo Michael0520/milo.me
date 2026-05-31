@@ -1,6 +1,10 @@
+import type { TOCItemType } from "fumadocs-core/toc";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import type { ProfilePage as PageSchema, WithContext } from "schema-dts";
 
+import { getDocsByCategory } from "@/features/doc/data/documents";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
 import { About } from "@/features/portfolio/components/about";
 import { Awards } from "@/features/portfolio/components/awards";
 import { Blog } from "@/features/portfolio/components/blog";
@@ -26,6 +30,8 @@ import { USER } from "@/features/portfolio/data/user";
 import { SPONSORS } from "@/features/sponsor/data";
 import { cn } from "@/lib/utils";
 
+const TOC = dynamic(() => import("@/features/portfolio/components/toc"));
+
 export const metadata: Metadata = {
   alternates: {
     canonical: "/",
@@ -33,8 +39,35 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  // Build the floating TOC minimap list to match exactly the sections that
+  // actually render below (same `.length > 0` / NODE_ENV gates).
+  const tocItems: TOCItemType[] = [
+    { title: "Overview", url: "#overview", depth: 2 },
+    { title: "About", url: "#about", depth: 2 },
+    ...(TESTIMONIALS_1.length > 0 || TESTIMONIALS_2.length > 0
+      ? [{ title: "Testimonials", url: "#testimonials", depth: 2 }]
+      : []),
+    { title: "GitHub", url: "#contributions", depth: 2 },
+    ...(SPONSORS.length > 0 ? [{ title: "Sponsors", url: "#sponsors", depth: 2 }] : []),
+    { title: "Stack", url: "#stack", depth: 2 },
+    ...(process.env.NODE_ENV === "development" &&
+    getDocsByCategory(DOC_CATEGORIES.components).length > 0
+      ? [{ title: "Components", url: "#components", depth: 2 }]
+      : []),
+    ...(getDocsByCategory(DOC_CATEGORIES.personal).length > 0
+      ? [{ title: "Daily", url: "#daily", depth: 2 }]
+      : []),
+    ...(EXPERIENCES.length > 0 ? [{ title: "Experience", url: "#experience", depth: 2 }] : []),
+    { title: "Projects", url: "#projects", depth: 2 },
+    ...(AWARDS.length > 0 ? [{ title: "Awards", url: "#awards", depth: 2 }] : []),
+    ...(CERTIFICATIONS.length > 0 ? [{ title: "Certifications", url: "#certs", depth: 2 }] : []),
+    ...(BOOKMARKS.length > 0 ? [{ title: "Bookmarks", url: "#bookmarks", depth: 2 }] : []),
+  ];
+
   return (
     <>
+      <TOC items={tocItems} />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -13,7 +13,7 @@ import { PhoneItem } from "./phone-item";
 
 export function Overview() {
   return (
-    <Panel className="after:content-none">
+    <Panel id="overview" className="after:content-none">
       <h2 className="sr-only">Overview</h2>
 
       <PanelContent className="space-y-2.5">

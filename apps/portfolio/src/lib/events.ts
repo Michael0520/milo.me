@@ -15,6 +15,8 @@ const eventSchema = z.object({
     "command_menu_search",
     "command_menu_action",
     "blog_search",
+    "toc_minimap_hover",
+    "toc_minimap_item_click",
   ]),
   // declare type AllowedPropertyValues = string | number | boolean | null
   properties: z.record(z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
