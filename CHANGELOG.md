@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.0](https://github.com/Michael0520/milo.me/compare/v0.9.0...v0.10.0) (2026-06-02)
+
+
+### Features
+
+* **doc:** add journal post — On the Right Track (May 2026) ([#12](https://github.com/Michael0520/milo.me/issues/12)) ([54958f1](https://github.com/Michael0520/milo.me/commit/54958f12466233c03996960621e374d07ddcdc83))
+* migrate upstream 0601-0603 improvements ([#14](https://github.com/Michael0520/milo.me/issues/14)) ([8c7e0da](https://github.com/Michael0520/milo.me/commit/8c7e0da866f7b04fcb32b18e6815c08c54c435a1))
+
 ## [0.9.0](https://github.com/Michael0520/milo.me/compare/v0.8.0...v0.9.0) (2026-05-31)
 
 
