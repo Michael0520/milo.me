@@ -43,8 +43,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <DocDetailPage
       doc={doc}
-      previous={previous}
-      next={next}
+      previous={next}
+      next={previous}
       basePath="/tech"
       listLabel="Tech"
       viewTransitionName="tech-page-heading-title"

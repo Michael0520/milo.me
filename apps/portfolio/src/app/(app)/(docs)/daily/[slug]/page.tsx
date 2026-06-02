@@ -43,8 +43,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <DocDetailPage
       doc={doc}
-      previous={previous}
-      next={next}
+      previous={next}
+      next={previous}
       basePath="/daily"
       listLabel="Daily"
       viewTransitionName="daily-page-heading-title"
