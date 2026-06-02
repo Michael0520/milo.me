@@ -1,22 +1,28 @@
+import { Icons } from "@/components/icons";
+
 import type { SocialLink } from "../types/social-links";
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    icon: "/images/link-icons/github.svg",
+    name: "github",
+    icon: <Icons.github />,
     title: "GitHub",
-    subtitle: "Michael0520",
     href: "https://github.com/Michael0520",
   },
   {
-    icon: "/images/link-icons/instagram.svg",
+    name: "instagram",
+    icon: <Icons.instagram />,
     title: "Instagram",
-    subtitle: "michaello.dev",
     href: "https://www.instagram.com/michaello.dev/",
   },
   {
-    icon: "/images/link-icons/threads.svg",
+    name: "threads",
+    icon: <Icons.threads />,
     title: "Threads",
-    subtitle: "michaello.dev",
     href: "https://www.threads.net/@michaello.dev",
   },
 ];
+
+export function getSocialLinkByName(name: string) {
+  return SOCIAL_LINKS.find((link) => link.name === name);
+}

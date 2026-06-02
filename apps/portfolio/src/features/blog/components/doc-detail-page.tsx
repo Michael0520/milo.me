@@ -2,7 +2,7 @@ import { getTableOfContents } from "fumadocs-core/content/toc";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { ViewTransition } from "react";
-import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
+import type { BreadcrumbList, BlogPosting as PageSchema, WithContext } from "schema-dts";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/base/ui/tooltip";
 import { InlineTOC } from "@/components/inline-toc";
@@ -20,6 +20,27 @@ import { PostKeyboardShortcuts } from "./post-keyboard-shortcuts";
 import { PostNeighbourNav } from "./post-neighbour-nav";
 import { LLMCopyButtonWithViewOptions } from "./post-page-actions";
 import { PostShareMenu } from "./post-share-menu";
+
+function getBreadcrumbJsonLd(
+  doc: Doc,
+  basePath: string,
+  listLabel: string,
+): WithContext<BreadcrumbList> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_INFO.url },
+      { "@type": "ListItem", position: 2, name: listLabel, item: `${SITE_INFO.url}${basePath}` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: doc.metadata.title,
+        item: `${SITE_INFO.url}${getDocPath(doc)}`,
+      },
+    ],
+  };
+}
 
 function getPageJsonLd(doc: Doc): WithContext<PageSchema> {
   return {
@@ -65,6 +86,15 @@ export function DocDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(getPageJsonLd(doc)).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(getBreadcrumbJsonLd(doc, basePath, listLabel)).replace(
+            /</g,
+            "\\u003c",
+          ),
         }}
       />
 
