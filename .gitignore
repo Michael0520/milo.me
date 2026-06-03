@@ -25,6 +25,3 @@ dist-ssr
 
 # AI agent worktrees
 .claude/worktrees/
-
-# Temporary debug artifacts
-.tmp-debug/
