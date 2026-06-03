@@ -32,7 +32,7 @@ export function TOCMinimap({
           }}
         >
           <HoverCardTrigger
-            delay={0}
+            delay={0.1}
             closeDelay={0}
             render={
               <div className="flex max-h-[80dvh] flex-col gap-3 overflow-hidden py-3 pl-6 opacity-100 transition-opacity duration-200 data-popup-open:opacity-0">
