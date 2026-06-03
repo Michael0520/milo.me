@@ -9,8 +9,8 @@
     "preview": "vp preview"
   },
   "devDependencies": {
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "vite-plus": "catalog:"
+    "typescript": "catalog:build",
+    "vite": "catalog:build",
+    "vite-plus": "catalog:build"
   }
 }

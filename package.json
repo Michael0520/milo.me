@@ -9,8 +9,8 @@
     "prepare": "vp config"
   },
   "devDependencies": {
-    "@fission-ai/openspec": "catalog:",
-    "vite-plus": "catalog:"
+    "@fission-ai/openspec": "catalog:script",
+    "vite-plus": "catalog:build"
   },
   "engines": {
     "node": ">=22.12.0"
