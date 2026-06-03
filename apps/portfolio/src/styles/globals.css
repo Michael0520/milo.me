@@ -152,6 +152,7 @@
 
   --code: var(--surface);
   --code-foreground: var(--surface-foreground);
+  --code-inline-foreground: oklch(0.55 0.18 293);
 
   /* zinc-400 */
   --code-number: oklch(0.705 0.015 286.067);
@@ -246,6 +247,7 @@
 
   --code: var(--surface);
   --code-foreground: var(--surface-foreground);
+  --code-inline-foreground: oklch(0.78 0.15 293);
 
   /* zinc-500 */
   --code-number: oklch(0.552 0.016 285.938);
@@ -448,7 +450,7 @@
 }
 
 @utility code-inline {
-  @apply rounded-md border bg-muted/50 px-1.5 py-0.5 font-mono text-[0.8125rem] whitespace-pre-wrap in-data-table-nowrap:whitespace-nowrap;
+  @apply rounded-md border bg-muted/50 px-1.5 py-0.5 font-mono text-[0.8125rem] whitespace-pre-wrap in-data-table-nowrap:whitespace-nowrap text-(--code-inline-foreground);
 }
 
 @utility prose-no-margin {
