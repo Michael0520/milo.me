@@ -5,14 +5,17 @@ import { Fragment, useEffect, useState } from "react";
 
 interface VolumeIconProps extends React.ComponentProps<"svg"> {
   isAnimating?: boolean;
+  onAnimationComplete?: () => void;
 }
 
-function VolumeIcon({ isAnimating = false, ...props }: VolumeIconProps) {
+function VolumeIcon({ isAnimating = false, onAnimationComplete, ...props }: VolumeIconProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     if (isAnimating) {
       setIsHovered(true);
+    } else {
+      setIsHovered(false);
     }
   }, [isAnimating]);
 
@@ -43,7 +46,10 @@ function VolumeIcon({ isAnimating = false, ...props }: VolumeIconProps) {
               animate={{ opacity: 1, transition: { delay: 0.2 } }}
               d="M19.364 18.364a9 9 0 0 0 0-12.728"
               initial={{ opacity: 0 }}
-              onAnimationComplete={() => setIsHovered(false)}
+              onAnimationComplete={() => {
+                setIsHovered(false);
+                onAnimationComplete?.();
+              }}
             />
           </Fragment>
         ) : (

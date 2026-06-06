@@ -20,7 +20,7 @@ export function PronounceMyName({
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handlePlayClick = () => {
-    setIsAnimating((prev) => !prev);
+    setIsAnimating(true);
     play();
     trackEvent({
       name: "play_name_pronunciation",
@@ -39,7 +39,11 @@ export function PronounceMyName({
       onPointerEnter={() => preload()}
       onClick={handlePlayClick}
     >
-      <VolumeIcon isAnimating={isAnimating} className="size-4.5" />
+      <VolumeIcon
+        isAnimating={isAnimating}
+        onAnimationComplete={() => setIsAnimating(false)}
+        className="size-4.5"
+      />
       <span className="sr-only">Pronounce my name</span>
     </button>
   );

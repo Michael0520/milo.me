@@ -40,7 +40,7 @@ function ChevronDownIcon({ duration = 0.3, isOpen, ...props }: ChevronDownIconPr
             d: "M6 15L12 9L18 15",
           },
         }}
-        initial="normal"
+        initial={isOpen ? "animate" : "normal"}
         animate={controls}
         transition={{
           duration,

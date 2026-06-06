@@ -40,7 +40,7 @@ function ChevronsUpDownIcon({ duration = 0.3, isOpen, ...props }: ChevronsUpDown
             d: "M7 20L12 15L17 20",
           },
         }}
-        initial="normal"
+        initial={isOpen ? "animate" : "normal"}
         animate={controls}
         transition={{
           duration,
@@ -56,7 +56,7 @@ function ChevronsUpDownIcon({ duration = 0.3, isOpen, ...props }: ChevronsUpDown
             d: "M7 4L12 9L17 4",
           },
         }}
-        initial="normal"
+        initial={isOpen ? "animate" : "normal"}
         animate={controls}
         transition={{
           duration,
