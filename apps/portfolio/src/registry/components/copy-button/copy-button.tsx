@@ -8,6 +8,7 @@ import type { ComponentProps } from "react";
 import { Button } from "@/components/ui/button";
 import type { CopyState } from "@/hooks/use-copy-to-clipboard";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { cn } from "@/lib/utils";
 
 export const motionIconVariants: Variants = {
   initial: { opacity: 0, scale: 0.8, filter: "blur(2px)" },
@@ -73,6 +74,7 @@ export type CopyButtonProps = ComponentProps<typeof Button> & {
 
 export function CopyButton({
   size = "icon",
+  className,
   children,
   text,
   idleIcon,
@@ -91,6 +93,7 @@ export function CopyButton({
   return (
     <Button
       size={size}
+      className={cn("will-change-transform", className)}
       onClick={(e) => {
         void copy(text);
         onClick?.(e);

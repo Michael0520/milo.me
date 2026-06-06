@@ -1,17 +1,11 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
-import type {
-  ChevronDownIconHandle,
-  ChevronDownIconProps,
-} from "@/components/animated-icons/chevron-down-icon";
+import type { ChevronDownIconProps } from "@/components/animated-icons/chevron-down-icon";
 import { ChevronDownIcon } from "@/components/animated-icons/chevron-down-icon";
 import { Collapsible as CollapsibleRoot } from "@/components/base/ui/collapsible";
-import type {
-  ChevronsUpDownIconHandle,
-  ChevronsUpDownIconProps,
-} from "@/registry/components/chevrons-up-down-icon";
+import type { ChevronsUpDownIconProps } from "@/registry/components/chevrons-up-down-icon";
 import { ChevronsUpDownIcon } from "@/registry/components/chevrons-up-down-icon";
 
 type CollapsibleContextType = {
@@ -55,33 +49,14 @@ function CollapsibleWithContext({
   );
 }
 
-function useCollapsibleAnimation<
-  T extends { startAnimation: () => void; stopAnimation: () => void },
->(ref: React.RefObject<T | null>) {
+function CollapsibleChevronsIcon(props: Omit<ChevronsUpDownIconProps, "isOpen">) {
   const { open } = useCollapsible();
-
-  useEffect(() => {
-    const controls = ref.current;
-    if (!controls) return;
-
-    if (open) {
-      controls.startAnimation();
-    } else {
-      controls.stopAnimation();
-    }
-  }, [open, ref]);
+  return <ChevronsUpDownIcon isOpen={open} {...props} />;
 }
 
-function CollapsibleChevronsIcon(props: Omit<ChevronsUpDownIconProps, "ref">) {
-  const ref = useRef<ChevronsUpDownIconHandle>(null);
-  useCollapsibleAnimation(ref);
-  return <ChevronsUpDownIcon ref={ref} {...props} />;
-}
-
-function CollapsibleChevronDownIcon(props: Omit<ChevronDownIconProps, "ref">) {
-  const ref = useRef<ChevronDownIconHandle>(null);
-  useCollapsibleAnimation(ref);
-  return <ChevronDownIcon ref={ref} {...props} />;
+function CollapsibleChevronDownIcon(props: Omit<ChevronDownIconProps, "isOpen">) {
+  const { open } = useCollapsible();
+  return <ChevronDownIcon isOpen={open} {...props} />;
 }
 
 export {
@@ -89,5 +64,4 @@ export {
   CollapsibleChevronDownIcon,
   CollapsibleChevronsIcon,
   useCollapsible,
-  useCollapsibleAnimation,
 };

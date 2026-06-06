@@ -1,79 +1,69 @@
 "use client";
 
 import { motion, useAnimation } from "motion/react";
-import { forwardRef, useImperativeHandle } from "react";
-
-export type ChevronsUpDownIconHandle = {
-  startAnimation: () => void;
-  stopAnimation: () => void;
-};
+import { useEffect } from "react";
 
 export type ChevronsUpDownIconProps = React.ComponentProps<"svg"> & {
   duration?: number;
+  isOpen?: boolean;
 };
 
-const ChevronsUpDownIcon = forwardRef<ChevronsUpDownIconHandle, ChevronsUpDownIconProps>(
-  ({ duration = 0.3, ...props }, ref) => {
-    const controls = useAnimation();
+function ChevronsUpDownIcon({ duration = 0.3, isOpen, ...props }: ChevronsUpDownIconProps) {
+  const controls = useAnimation();
 
-    useImperativeHandle(ref, () => {
-      return {
-        startAnimation: () => controls.start("animate"),
-        stopAnimation: () => controls.start("normal"),
-      };
-    });
+  useEffect(() => {
+    if (isOpen === undefined) return;
+    void controls.start(isOpen ? "animate" : "normal");
+  }, [isOpen, controls]);
 
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden
-        {...props}
-      >
-        <motion.path
-          d="M7 15L12 20L17 15"
-          variants={{
-            normal: {
-              d: "M7 15L12 20L17 15",
-            },
-            animate: {
-              d: "M7 20L12 15L17 20",
-            },
-          }}
-          initial="normal"
-          animate={controls}
-          transition={{
-            duration,
-          }}
-        />
-        <motion.path
-          d="M7 9L12 4L17 9"
-          variants={{
-            normal: {
-              d: "M7 9L12 4L17 9",
-            },
-            animate: {
-              d: "M7 4L12 9L17 4",
-            },
-          }}
-          initial="normal"
-          animate={controls}
-          transition={{
-            duration,
-          }}
-        />
-      </svg>
-    );
-  },
-);
-
-ChevronsUpDownIcon.displayName = "ChevronsUpDownIcon";
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      {...props}
+    >
+      <motion.path
+        d="M7 15L12 20L17 15"
+        variants={{
+          normal: {
+            d: "M7 15L12 20L17 15",
+          },
+          animate: {
+            d: "M7 20L12 15L17 20",
+          },
+        }}
+        initial={isOpen ? "animate" : "normal"}
+        animate={controls}
+        transition={{
+          duration,
+        }}
+      />
+      <motion.path
+        d="M7 9L12 4L17 9"
+        variants={{
+          normal: {
+            d: "M7 9L12 4L17 9",
+          },
+          animate: {
+            d: "M7 4L12 9L17 4",
+          },
+        }}
+        initial={isOpen ? "animate" : "normal"}
+        animate={controls}
+        transition={{
+          duration,
+        }}
+      />
+    </svg>
+  );
+}
 
 export { ChevronsUpDownIcon };

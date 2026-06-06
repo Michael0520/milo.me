@@ -1,4 +1,4 @@
-import { PlusIcon } from "@/components/animated-icons/plus";
+import { PlusIcon } from "@/components/animated-icons/plus-icon";
 import { SPONSORSHIP_URL } from "@/config/site";
 import { cn } from "@/lib/utils";
 

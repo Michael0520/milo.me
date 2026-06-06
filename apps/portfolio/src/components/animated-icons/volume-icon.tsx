@@ -1,25 +1,23 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { forwardRef, Fragment, useImperativeHandle, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
-export interface VolumeIconHandle {
-  startAnimation: () => void;
-  stopAnimation: () => void;
+interface VolumeIconProps extends React.ComponentProps<"svg"> {
+  isAnimating?: boolean;
+  onAnimationComplete?: () => void;
 }
 
-const VolumeIcon = forwardRef<VolumeIconHandle, React.ComponentProps<"svg">>((props, ref) => {
+function VolumeIcon({ isAnimating = false, onAnimationComplete, ...props }: VolumeIconProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const isControlledRef = useRef(false);
 
-  useImperativeHandle(ref, () => {
-    isControlledRef.current = true;
-
-    return {
-      startAnimation: () => setIsHovered(true),
-      stopAnimation: () => setIsHovered(false),
-    };
-  });
+  useEffect(() => {
+    if (isAnimating) {
+      setIsHovered(true);
+    } else {
+      setIsHovered(false);
+    }
+  }, [isAnimating]);
 
   return (
     <svg
@@ -48,7 +46,10 @@ const VolumeIcon = forwardRef<VolumeIconHandle, React.ComponentProps<"svg">>((pr
               animate={{ opacity: 1, transition: { delay: 0.2 } }}
               d="M19.364 18.364a9 9 0 0 0 0-12.728"
               initial={{ opacity: 0 }}
-              onAnimationComplete={() => setIsHovered(false)}
+              onAnimationComplete={() => {
+                setIsHovered(false);
+                onAnimationComplete?.();
+              }}
             />
           </Fragment>
         ) : (
@@ -60,8 +61,6 @@ const VolumeIcon = forwardRef<VolumeIconHandle, React.ComponentProps<"svg">>((pr
       </AnimatePresence>
     </svg>
   );
-});
-
-VolumeIcon.displayName = "VolumeIcon";
+}
 
 export { VolumeIcon };

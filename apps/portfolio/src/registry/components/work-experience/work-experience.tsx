@@ -1,13 +1,12 @@
 "use client";
 
 import { BriefcaseBusinessIcon, InfinityIcon } from "lucide-react";
-import { type ComponentProps, useCallback, useRef } from "react";
+import { type ComponentProps, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import type { ChevronsUpDownIconHandle } from "@/registry/components/chevrons-up-down-icon";
 import { ChevronsUpDownIcon } from "@/registry/components/chevrons-up-down-icon";
 
 export type ExperiencePositionItemType = {
@@ -129,26 +128,15 @@ export type ExperiencePositionItemProps = {
 };
 
 export function ExperiencePositionItem({ position }: ExperiencePositionItemProps) {
-  const chevronsIconRef = useRef<ChevronsUpDownIconHandle>(null);
-
-  const handleOpenChange = useCallback((open: boolean) => {
-    const controls = chevronsIconRef.current;
-    if (!controls) return;
-
-    if (open) {
-      controls.startAnimation();
-    } else {
-      controls.stopAnimation();
-    }
-  }, []);
+  const [isOpen, setIsOpen] = useState(position.isExpanded ?? false);
 
   const { start, end } = position.employmentPeriod;
   const isOngoing = !end;
 
   return (
     <Collapsible
-      defaultOpen={position.isExpanded}
-      onOpenChange={handleOpenChange}
+      defaultOpen={isOpen}
+      onOpenChange={setIsOpen}
       disabled={!position.description}
       asChild
     >
@@ -177,7 +165,7 @@ export function ExperiencePositionItem({ position }: ExperiencePositionItemProps
             </h4>
 
             <div className="shrink-0 text-muted-foreground group-disabled/experience-position:hidden [&_svg]:size-4">
-              <ChevronsUpDownIcon ref={chevronsIconRef} duration={0.15} />
+              <ChevronsUpDownIcon isOpen={isOpen} duration={0.15} />
             </div>
           </div>
 
