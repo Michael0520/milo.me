@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.11.0](https://github.com/Michael0520/milo.me/compare/v0.10.0...v0.11.0) (2026-06-06)
+
+
+### Features
+
+* add blog post on pnpm semantic catalogs + purple inline code style ([#17](https://github.com/Michael0520/milo.me/issues/17)) ([60a3cc1](https://github.com/Michael0520/milo.me/commit/60a3cc15c603e51c3d89c706b20a90810253edd9))
+* migrate upstream e079c99 — Applied only the TOC minimap hover delay fix from the upstream commit. Changed `delay={0}` to `delay={0.1}` on the `HoverCardTrigger` in `toc-minimap.tsx` to prevent accidental hover triggers during mouse movement. All dev-only showcase restructuring changes (layout.tsx, sidebar.tsx, doc-layout.tsx, globals.css) were intentionally skipped. ([#15](https://github.com/Michael0520/milo.me/issues/15)) ([317819e](https://github.com/Michael0520/milo.me/commit/317819e04a74f9014ecdb99387a78aca4cbd6b2c))
+* upstream sync (e2da09b) ([#18](https://github.com/Michael0520/milo.me/issues/18)) ([ab7312c](https://github.com/Michael0520/milo.me/commit/ab7312c541cb6ec113d3664e5dabb89ccb086a6d))
+
+
+### Reverts
+
+* remove .tmp-debug/ from .gitignore ([a502c14](https://github.com/Michael0520/milo.me/commit/a502c149e93723c647850d3e6bcf3aae6862351c))
+
 ## [0.10.0](https://github.com/Michael0520/milo.me/compare/v0.9.0...v0.10.0) (2026-06-02)
 
 
