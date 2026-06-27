@@ -30,16 +30,16 @@ export function ProfileHeader() {
             className="line-clamp-1 font-mono text-xs text-zinc-300 select-none max-sm:hidden dark:text-zinc-800"
             aria-hidden
           >
-            {"text-3xl "}
+            {"text-[2rem] "}
             <span className="inline dark:hidden">text-zinc-950</span>
             <span className="hidden dark:inline">text-zinc-50</span>
-            {" font-medium"}
+            {" font-semibold"}
           </div>
         </div>
 
         <div className="border-t border-line">
           <div className="flex items-center gap-2 pl-4">
-            <h1 className="-translate-y-px text-3xl font-semibold tracking-tight">
+            <h1 className="-translate-y-px text-[2rem] font-semibold tracking-tight">
               {USER.displayName}
             </h1>
 

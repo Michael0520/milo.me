@@ -1,11 +1,13 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 
 const VIEWBOX_WIDTH = 1312;
 const DEFAULT_GRADIENT_X = 656;
 
 export function SiteFooterInteractiveLogotype() {
+  const shouldReduceMotion = useReducedMotion();
+
   const gradientX1Raw = useMotionValue(DEFAULT_GRADIENT_X);
   const gradientX1 = useSpring(gradientX1Raw, {
     stiffness: 200,
@@ -14,6 +16,8 @@ export function SiteFooterInteractiveLogotype() {
   });
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion) return;
+
     const container = event.currentTarget;
     const containerRect = container.getBoundingClientRect();
     const mouseX = event.clientX - containerRect.left;
@@ -26,6 +30,7 @@ export function SiteFooterInteractiveLogotype() {
   };
 
   const handleMouseLeave = () => {
+    if (shouldReduceMotion) return;
     gradientX1Raw.set(DEFAULT_GRADIENT_X);
   };
 

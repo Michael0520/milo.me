@@ -48,6 +48,11 @@ export function SiteHeader() {
 
           <DesktopNav items={MAIN_NAV} />
 
+          <Separator
+            orientation="vertical"
+            className="mx-2 data-vertical:h-5 data-vertical:self-center max-sm:hidden"
+          />
+
           <div className="flex items-center max-sm:*:data-[slot=command-menu-trigger]:hidden">
             <CommandMenu docs={docPreviews} blocks={blocks} enabledHotkeys />
           </div>
