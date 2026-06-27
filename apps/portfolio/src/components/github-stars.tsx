@@ -13,7 +13,7 @@ export function GitHubStars({ repo, stargazersCount }: GitHubStarsProps) {
     <Tooltip>
       <TooltipTrigger
         render={
-          <Button className="gap-1.5 border-none pr-1.5 pl-2" variant="ghost" size="sm" asChild>
+          <Button className="gap-1.5 border-none px-1.5" variant="ghost" size="sm" asChild>
             <a
               href={addQueryParams(`https://github.com/${repo}`, UTM_PARAMS)}
               target="_blank"

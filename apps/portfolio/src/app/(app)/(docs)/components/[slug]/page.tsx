@@ -18,7 +18,6 @@ import { PostShareMenu } from "@/features/blog/components/post-share-menu";
 import { findNeighbour, getDocBySlug, getDocsByCategory } from "@/features/doc/data/documents";
 import type { Doc } from "@/features/doc/types/document";
 import { USER } from "@/features/portfolio/data/user";
-import { cn } from "@/lib/utils";
 
 export const revalidate = false;
 export const dynamic = "force-static";
@@ -204,12 +203,7 @@ export default async function Page({
       </div>
 
       <div className="screen-line-top screen-line-bottom">
-        <div
-          className={cn(
-            "h-8 before:absolute before:-left-[100vw] before:-z-1 before:h-full before:w-[200vw]",
-            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-line)]/56",
-          )}
-        />
+        <div className="stripe-divider" />
       </div>
 
       <Prose className="px-4">
