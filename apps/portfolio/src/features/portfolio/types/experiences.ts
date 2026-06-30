@@ -28,6 +28,10 @@ export type Experience = {
   companyLogo?: string;
   /** URL to the company's website. */
   companyWebsite?: string;
+  /** Company location (e.g., "Taipei, Taiwan"). Shown next to the company name. */
+  location?: string;
+  /** Work arrangement; only displayed when `location` is also set. */
+  locationType?: "On-site" | "Hybrid" | "Remote";
   /** Roles held at this company; keep newest first for display. */
   positions: ExperiencePosition[];
   /** Marks the company as the current employer for highlighting. */
