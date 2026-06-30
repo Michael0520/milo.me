@@ -17,7 +17,7 @@ export function Callout({
     >
       {icon}
       {title && <AlertTitle className="[&_a]:underline-offset-4">{title}</AlertTitle>}
-      <AlertDescription className="text-surface-foreground/80 [&_a]:underline-offset-4">
+      <AlertDescription className="text-surface-foreground/80 [&_a]:underline-offset-4 [&_strong]:font-medium">
         {children}
       </AlertDescription>
     </Alert>
