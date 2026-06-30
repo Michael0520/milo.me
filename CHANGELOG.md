@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.12.0](https://github.com/Michael0520/milo.me/compare/v0.11.0...v0.12.0) (2026-06-30)
+
+
+### Features
+
+* sync upstream experience location + callout polish ([#22](https://github.com/Michael0520/milo.me/issues/22)) ([01c8cf2](https://github.com/Michael0520/milo.me/commit/01c8cf270260dce58e71e05673f7819ec5ff5796))
+* sync upstream UI polish (safe ports) ([#20](https://github.com/Michael0520/milo.me/issues/20)) ([476171d](https://github.com/Michael0520/milo.me/commit/476171d8dea2d977eb0c7db8b323a5275b095c33))
+
 ## [0.11.0](https://github.com/Michael0520/milo.me/compare/v0.10.0...v0.11.0) (2026-06-06)
 
 
