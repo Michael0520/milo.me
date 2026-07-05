@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/Michael0520/milo.me/compare/v0.12.0...v0.12.1) (2026-07-05)
+
+
+### Miscellaneous Chores
+
+* release 0.12.1 ([7822667](https://github.com/Michael0520/milo.me/commit/78226674294325a0250aa4cae0f24409d50a4c55))
+
 ## [0.12.0](https://github.com/Michael0520/milo.me/compare/v0.11.0...v0.12.0) (2026-06-30)
 
 
