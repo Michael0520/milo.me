@@ -10,9 +10,9 @@ export function SiteFooterInteractiveLogotype() {
 
   const gradientX1Raw = useMotionValue(DEFAULT_GRADIENT_X);
   const gradientX1 = useSpring(gradientX1Raw, {
-    stiffness: 200,
+    stiffness: 300,
     damping: 30,
-    mass: 0.5,
+    mass: 0.1,
   });
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
