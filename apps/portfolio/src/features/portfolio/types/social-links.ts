@@ -3,4 +3,5 @@ export type SocialLink = {
   icon: React.JSX.Element;
   title: string;
   href: string;
+  handle?: string;
 };
