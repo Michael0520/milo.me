@@ -57,6 +57,10 @@ category: tech
 
 上圖是 [Vite 8 官方公告](https://vite.dev/blog/announcing-vite8)列出的實測數字，同一頁也提到用 Oxc 的語意分析幫 Rolldown 做更準的 tree-shaking。
 
+而且這股重寫潮已經燒出 JS 工具鏈的範圍，連語言層都動了，微軟在 2026 年 7 月正式發布 [TypeScript 7.0](https://devblogs.microsoft.com/typescript/)，把整個編譯器用 Go 原生重寫，type check 快了大約 10 倍，build 快 8 到 12 倍。
+
+值得玩味的是它選了 Go 而不是 Rust，這正好戳破「Rust 信仰」的說法，這一波的本質是原生重寫本身，當連 TypeScript 這種等級的基礎工具都被整個重寫，你就知道這波是玩真的。
+
 但如果你只看到「快」，就錯過了真正重要的那件事。
 
 真正的轉變不是速度，是成本。
