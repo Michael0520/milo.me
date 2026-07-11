@@ -47,7 +47,7 @@ category: tech
 第一個感受是快得誇張，[Vite 8 官方](https://vite.dev/blog/announcing-vite8)說把預設打包器換成 Rolldown 之後，生產環境的 build 比 Rollup 快了十到三十倍，而且不是實驗室數字，Linear 的 build 從 46 秒掉到 6 秒，Ramp、Mercedes-Benz、Beehiiv 這些團隊也都回報三到六成的縮短。
 
 <FramedImage
-  src="/images/blog/notes-2026-frontend-infra-map/vite8-real-world-perf.png"
+  src="/images/blog/notes-2026-frontend-infra-map/vite8-real-world-perf.webp"
   alt="Vite 8 官方公告的 Real-world performance:Linear 46s→6s、Ramp 57%、Mercedes-Benz 38%、Beehiiv 64% 的 build time 縮短"
 />
 
@@ -129,7 +129,7 @@ Knip             # 找出沒用到的檔案 / 匯出
 2026 的答案是統一化，把這十幾個工具收斂成一套，被 Cloudflare 收購的 [VoidZero](https://viteplus.dev/) 做的就是這件事，我自己在用的 vite-plus 也是，它把 Node 版本、套件管理器、加上打包測試檢查那一整套，全部收進一個 `vp` 指令底下。
 
 <FramedImage
-  src="/images/blog/notes-2026-frontend-infra-map/viteplus-landing.png"
+  src="/images/blog/notes-2026-frontend-infra-map/viteplus-landing.webp"
   alt="Vite+ 官網：用一個 vp 指令管理 runtime、套件管理器與前端工具鏈"
 />
 
@@ -140,7 +140,7 @@ Knip             # 找出沒用到的檔案 / 匯出
 它現在還是 beta、開源免費，但別小看這個階段，[VoidZero 官方的六月回顧](https://voidzero.dev/posts/whats-new-jun-2026)提到，自 alpha 以來已經合併五百多個 PR、修了一百八十幾個問題，而且已經有超過一千三百個公開專案在用它。
 
 <FramedImage
-  src="/images/blog/notes-2026-frontend-infra-map/voidzero-recap-beta.png"
+  src="/images/blog/notes-2026-frontend-infra-map/voidzero-recap-beta.webp"
   alt="VoidZero 官方回顧：Vite+ 進入 beta，超過 1300 個專案採用，並用 Vite+ 自己 build Vite+"
 />
 
@@ -310,7 +310,7 @@ flowchart LR
 如果你覺得這只是我一個人的分類，State of JS 2025 的數據其實給了佐證，Rust 底層的 Rolldown 一年內從 1% 用量跳到 10%，而受訪者寫出的 code 有將近三成是 AI 生成的、比前一年多了快一半，Rust 化跟 AI 化這兩波，數據上都真的在發生。
 
 <FramedImage
-  src="/images/blog/notes-2026-frontend-infra-map/stateofjs-2025-rolldown.png"
+  src="/images/blog/notes-2026-frontend-infra-map/stateofjs-2025-rolldown.webp"
   alt="State of JS 2025 把 Rolldown 列為年度亮點:Vite 團隊悄悄做的 Rust bundler,如今 Vite 自己也用它,興趣度排第一"
 />
 
