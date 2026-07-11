@@ -8,7 +8,9 @@ category: tech
 
 前陣子有兩樁收購案，如果你有在看前端工具鏈的消息，大概會愣一下。
 
-六月初，Cloudflare 把 VoidZero 買下來，那是尤雨溪專門做下一代前端工具鏈的公司，再早半年，2025 年底，做 Claude 的那家 AI 公司 Anthropic，把 Bun 收了。
+六月初，Cloudflare 把 VoidZero 買下來，那是尤雨溪專門做下一代前端工具鏈的公司。
+
+再早半年，2025 年底，做 Claude 的那家 AI 公司 Anthropic，把 Bun 收了。
 
 以前這種東西是不會被收購的。
 
@@ -44,7 +46,9 @@ category: tech
 | esbuild / Rollup | Rolldown        | 打包   |
 | Babel            | Oxc transformer | 轉譯   |
 
-第一個感受是快得誇張，[Vite 8 官方](https://vite.dev/blog/announcing-vite8)說把預設打包器換成 Rolldown 之後，生產環境的 build 比 Rollup 快了十到三十倍，而且不是實驗室數字，Linear 的 build 從 46 秒掉到 6 秒，Ramp、Mercedes-Benz、Beehiiv 這些團隊也都回報三到六成的縮短。
+第一個感受是快得誇張，[Vite 8 官方](https://vite.dev/blog/announcing-vite8)說把預設打包器換成 Rolldown 之後，生產環境的 build 比 Rollup 快了十到三十倍。
+
+而且這不是實驗室裡的漂亮數字，Linear 的 build 從 46 秒掉到 6 秒，Ramp、Mercedes-Benz、Beehiiv 這些團隊也都回報三到六成的縮短。
 
 <FramedImage
   src="/images/blog/notes-2026-frontend-infra-map/vite8-real-world-perf.webp"
@@ -55,7 +59,9 @@ category: tech
 
 但如果你只看到「快」，就錯過了真正重要的那件事。
 
-真正的轉變不是速度，是成本，這裡值得停下來問一句，為什麼換成 Rust 就能快這麼多，答案不只是「編譯語言比較快」這麼簡單。
+真正的轉變不是速度，是成本。
+
+這裡值得停下來問一句，為什麼換成 Rust 就能快這麼多，答案不只是「編譯語言比較快」這麼簡單。
 
 一部分原因在語言本身，Rust 沒有垃圾回收造成的停頓，記憶體用量可預測，又能吃滿多核平行，這些是 JavaScript 先天做不到的，但更關鍵的一部分，在架構。
 
@@ -98,7 +104,7 @@ flowchart LR
 
 方向很確定，但你不用今天就全部換掉。
 
-順帶埋一個之後會用到的伏筆，這些 Rust 工具除了快，還能更精準地做 tree-shaking，把沒用到的程式碼搖掉。
+在進第二波之前，先埋一個之後會用到的伏筆，這些 Rust 工具除了快，還能更精準地做 tree-shaking，把沒用到的程式碼搖掉。
 
 但有個東西會擋住它，叫循環相依，當 A 依賴 B、B 又回頭依賴 A，模組的邊界跟副作用就變得難以靜態判定，工具沒把握「刪了會不會出事」，只好保守地留著。
 
@@ -124,7 +130,9 @@ Knip             # 找出沒用到的檔案 / 匯出
 
 每一個都要單獨裝、單獨設定、單獨維護，還要想辦法讓它們彼此相容，光是把這堆黏在一起、又不打架，就是一份全職工作。
 
-那就是當年前端 Infra 的樣子，一堆工具各自為政，你自己當膠水，Vite+ 團隊的 [naokihaba](https://speakerdeck.com/naokihaba/vite-plus-unified-toolchain-for-the-web) 講過一句很到位的話，在做出產品之前，我們其實一直在做的，是工具鏈。
+那就是當年前端 Infra 的樣子，一堆工具各自為政，你自己當膠水。
+
+Vite+ 團隊的 [naokihaba](https://speakerdeck.com/naokihaba/vite-plus-unified-toolchain-for-the-web) 講過一句很到位的話，在做出產品之前，我們其實一直在做的，是工具鏈。
 
 2026 的答案是統一化，把這十幾個工具收斂成一套，被 Cloudflare 收購的 [VoidZero](https://viteplus.dev/) 做的就是這件事，我自己在用的 vite-plus 也是，它把 Node 版本、套件管理器、加上打包測試檢查那一整套，全部收進一個 `vp` 指令底下。
 
@@ -146,7 +154,9 @@ Knip             # 找出沒用到的檔案 / 匯出
 
 上圖是 VoidZero 官方回顧，Vite+ 進入 beta、一千三百多個專案採用，連 Vite+ 自己都改用 Vite+ 來 build。
 
-而且這不是一座孤島，連框架都在往同一個方向靠，Astro 7 已經內建 Vite 8，Nuxt 4 的下一個小版本也要跟上，甚至冒出一個叫 Vinext 的 Next 相容框架，底層走的也是 Vite，整個生態在收斂，不是某個小圈子的偏好。
+而且這不是一座孤島，連框架都在往同一個方向靠，Astro 7 已經內建 Vite 8，Nuxt 4 的下一個小版本也要跟上，甚至冒出一個叫 Vinext 的 Next 相容框架，底層走的也是 Vite。
+
+整個生態在收斂，不是某個小圈子的偏好。
 
 但統一化真正有意思的地方，不在「少打幾個指令」，在一個哲學上的反轉。
 
