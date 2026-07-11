@@ -104,6 +104,14 @@ flowchart LR
 
 方向很確定，但你不用今天就全部換掉。
 
+而 Vue 這塊，其實已經有人在補洞了，Vue core 的 ubugeeei 做了一個叫 [vize](https://github.com/ubugeeei-prod/vize) 的 Rust 工具鏈，一份 parser 專門吃 `.vue`，同時餵編譯、lint、格式化、型別檢查跟 LSP，把上面那套「共用 parser」的邏輯原封不動搬進 Vue。
+
+它自己的 benchmark 剛好是個乾淨的例子，lint 快了 209 倍、SFC 編譯快 55 倍，但整條 build 只快 1.1 倍。
+
+孤立的檢查快到誇張，最終 build 幾乎沒動，這正是「便宜不是快」最好的註腳。
+
+它一樣還在實驗、是個人專案，但 VOICEVOX、Misskey 已經拿去當 testbed，展示的是方向，不是叫你現在就換。
+
 在進第二波之前，先埋一個之後會用到的伏筆，這些 Rust 工具除了快，還能更精準地做 tree-shaking，把沒用到的程式碼搖掉。
 
 但有個東西會擋住它，叫循環相依，當 A 依賴 B、B 又回頭依賴 A，模組的邊界跟副作用就變得難以靜態判定，工具沒把握「刪了會不會出事」，只好保守地留著。
