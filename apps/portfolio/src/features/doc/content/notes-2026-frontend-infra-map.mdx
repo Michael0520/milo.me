@@ -37,14 +37,15 @@ category: tech
 
 過去一兩年，你大概聽過 Oxlint、Rolldown、Vite 8 這些名字，它們表面上各做各的，底層卻有一個共同點，都改用 Rust 重寫，不再是 JavaScript。
 
-把它們攤開，會發現這一波其實是一場全面的世代交替，一個舊的 JS 工具，對上一個新的 Rust 工具。
+把它們攤開，會發現這一波其實是一場全面的世代交替，一個舊的 JS 工具，對上一個新的原生語言工具。
 
-| 舊工具（JS）     | 新工具（Rust）  | 做的事 |
-| ---------------- | --------------- | ------ |
-| ESLint           | Oxlint          | 檢查   |
-| Prettier         | Oxfmt           | 格式化 |
-| esbuild / Rollup | Rolldown        | 打包   |
-| Babel            | Oxc transformer | 轉譯   |
+| 舊工具（JS）     | 新工具（原生語言）      | 做的事   |
+| ---------------- | ----------------------- | -------- |
+| ESLint           | Oxlint（Rust）          | 檢查     |
+| Prettier         | Oxfmt（Rust）           | 格式化   |
+| esbuild / Rollup | Rolldown（Rust）        | 打包     |
+| Babel            | Oxc transformer（Rust） | 轉譯     |
+| tsc              | tsgo（Go・TS 7）        | 型別檢查 |
 
 第一個感受是快得誇張，[Vite 8 官方](https://vite.dev/blog/announcing-vite8)說把預設打包器換成 Rolldown 之後，生產環境的 build 比 Rollup 快了十到三十倍。
 
