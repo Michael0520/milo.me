@@ -63,7 +63,7 @@ Copy `apps/portfolio/.env.example` to `apps/portfolio/.env.local` and fill in va
 Key variables:
 
 - `GITHUB_CONTRIBUTIONS_API_URL` — GitHub contributions graph data
-- `NEXT_PUBLIC_POSTHOG_KEY` — Analytics (optional)
+- `NEXT_PUBLIC_OPENPANEL_CLIENT_ID` — Analytics (optional)
 
 ## Dev-Only Features
 

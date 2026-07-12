@@ -24,7 +24,7 @@ A minimal, pixel-perfect dev portfolio, shadcn registry, and blog to showcase my
 - AI-ready with [/llms.txt](https://llmstxt.org)
 - Spam-protected email
 - Installable as PWA
-- Analytics with [PostHog](https://posthog.com) and [OpenPanel](https://openpanel.dev)
+- Analytics with [OpenPanel](https://openpanel.dev)
 - Consent management via [c15t](https://c15t.com)
 
 ### Content
