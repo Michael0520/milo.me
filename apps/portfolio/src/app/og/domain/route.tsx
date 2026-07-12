@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-import { clampParam } from "../params";
+import { clampParam, OG_CACHE_CONTROL } from "../params";
 
 function loadFont(filename: string) {
   const paths = [
@@ -90,7 +90,7 @@ export async function GET(request: Request) {
         },
       ],
       headers: {
-        "Cache-Control": "public, max-age=3600, s-maxage=31536000, immutable",
+        "Cache-Control": OG_CACHE_CONTROL,
       },
     },
   );
