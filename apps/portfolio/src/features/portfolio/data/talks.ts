@@ -2,6 +2,16 @@ import type { Talk } from "../types/talks";
 
 export const TALKS: Talk[] = [
   {
+    title: "Modern Frontend Infra - A 2026 Toolchain Map",
+    slug: "v-taiwan-2026",
+    date: "2026-07-18",
+    description:
+      "Why — after the Rust rewrite and the great unification — the real battleground is AI's verification.",
+    tags: ["frontend-infra", "vite", "rust", "oxc", "pnpm", "ai", "idp"],
+    event: "v-taiwan Meetup",
+    location: "Taiwan",
+  },
+  {
     title: "In the Age of AI, Development Workflows Are Being Redefined",
     slug: "code4taiwan-summit-2025",
     date: "2025-12-05",
