@@ -1,5 +1,3 @@
-"use server";
-
 import { registryItemSchema } from "shadcn/schema";
 import type { z } from "zod";
 

@@ -3,6 +3,8 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
+import { clampParam, OG_CACHE_CONTROL } from "../params";
+
 function loadFont(filename: string) {
   const paths = [
     join(process.cwd(), "src/assets/fonts", filename),
@@ -23,7 +25,7 @@ const geistSemiBold = loadFont("Geist-SemiBold.ttf");
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
-  const domain = searchParams.get("domain");
+  const domain = clampParam(searchParams.get("domain"), 120);
   const isForSale = searchParams.get("sale") === "true";
 
   return new ImageResponse(
@@ -87,6 +89,9 @@ export async function GET(request: Request) {
           weight: 600,
         },
       ],
+      headers: {
+        "Cache-Control": OG_CACHE_CONTROL,
+      },
     },
   );
 }

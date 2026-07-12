@@ -40,21 +40,7 @@ Some cookies or identifiers may be set by third‑party services (see Section 2)
 
 To understand how people use the website and to improve its content and UX, I use a small set of analytics tools.
 
-### 2.1. PostHog (Product Analytics)
-
-The site integrates **PostHog**, a product analytics platform. It is used to:
-
-- Record events such as: blog searches, opening the command menu, copying code snippets, copying the email address or phone number on the site, and similar feature‑usage actions.
-- Analyze usage trends and feature engagement to help prioritize improvements.
-
-Current configuration:
-
-- PostHog is **only fully initialized when you consent to measurement/analytics** via the consent banner or consent manager.
-- If you do not consent, tracking is disabled and PostHog runs in a restricted mode (e.g. cookieless) that avoids identifying you via cookies.
-
-For more information, please refer to PostHog’s own privacy documentation on their official website.
-
-### 2.2. OpenPanel (Analytics & Session Replay)
+### 2.1. OpenPanel (Analytics & Session Replay)
 
 The site also configures **OpenPanel** to:
 
@@ -66,7 +52,7 @@ Current configuration:
 - OpenPanel is **disabled by default** and is only activated when you **explicitly consent to measurement/analytics** in the consent manager.
 - If you decline measurement/analytics, OpenPanel remains disabled and does not send any data.
 
-### 2.3. Hosting, Infrastructure, and Other Services
+### 2.2. Hosting, Infrastructure, and Other Services
 
 The website may additionally rely on:
 

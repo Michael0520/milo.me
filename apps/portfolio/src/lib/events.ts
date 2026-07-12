@@ -1,4 +1,3 @@
-import posthog from "posthog-js";
 import { z } from "zod";
 
 import { op } from "./openpanel";
@@ -26,8 +25,5 @@ export type Event = z.infer<typeof eventSchema>;
 
 export function trackEvent(input: Event) {
   const event = eventSchema.parse(input);
-  if (event) {
-    posthog.capture(event.name, event.properties);
-    op.track(event.name, event.properties);
-  }
+  op.track(event.name, event.properties);
 }

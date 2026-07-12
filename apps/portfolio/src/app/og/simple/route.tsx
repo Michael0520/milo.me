@@ -3,6 +3,8 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
+import { clampParam, OG_CACHE_CONTROL } from "../params";
+
 function loadFont(filename: string) {
   const paths = [
     join(process.cwd(), "src/assets/fonts", filename),
@@ -23,8 +25,8 @@ const geistMonoRegular = loadFont("GeistMono-Regular.ttf");
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
-  const title = searchParams.get("title");
-  const description = searchParams.get("description");
+  const title = clampParam(searchParams.get("title"), 160);
+  const description = clampParam(searchParams.get("description"), 320);
 
   return new ImageResponse(
     <div tw="flex h-full w-full bg-black text-zinc-50">
@@ -90,6 +92,9 @@ export async function GET(request: Request) {
           weight: 400,
         },
       ],
+      headers: {
+        "Cache-Control": OG_CACHE_CONTROL,
+      },
     },
   );
 }
