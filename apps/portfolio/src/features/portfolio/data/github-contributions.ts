@@ -11,8 +11,11 @@ export const getGitHubContributions = unstable_cache(
   async () => {
     const res = await fetch(`${GITHUB_CONTRIBUTIONS_API_URL}/v4/${GITHUB_USERNAME}?y=last`);
 
+    // Throw on failure so unstable_cache skips persisting the result and the
+    // next request retries — returning [] here would cache an empty graph for
+    // the whole revalidate window. Callers decide the fallback.
     if (!res.ok) {
-      return [];
+      throw new Error(`GitHub contributions API responded ${res.status}`);
     }
 
     const data = (await res.json()) as GitHubContributionsResponse;
