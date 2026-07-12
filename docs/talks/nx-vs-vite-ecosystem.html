@@ -1,0 +1,2008 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NX vs Vite 生態比對報告 — 2026-06-08</title>
+    <style>
+      :root {
+        --bg: #0f1117;
+        --surface: #1a1d27;
+        --surface2: #222535;
+        --border: #2e3148;
+        --text: #e2e8f0;
+        --text-muted: #8892a4;
+        --green: #22c55e;
+        --green-bg: #14532d22;
+        --yellow: #eab308;
+        --yellow-bg: #71350022;
+        --red: #ef4444;
+        --red-bg: #7f1d1d22;
+        --blue: #60a5fa;
+        --blue-bg: #1e3a5f22;
+        --purple: #a78bfa;
+        --orange: #fb923c;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        padding: 0 0 80px;
+      }
+
+      /* ── HEADER ── */
+      .page-header {
+        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #1a1d27 100%);
+        border-bottom: 1px solid var(--border);
+        padding: 48px 40px 40px;
+      }
+      .page-header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .page-header h1 span {
+        color: var(--purple);
+      }
+      .page-header .subtitle {
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+      .meta-row {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .meta-tag {
+        font-size: 12px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+      }
+
+      /* ── BREAKING NEWS ── */
+      .breaking {
+        background: linear-gradient(90deg, #7c2d12 0%, #1a1d27 100%);
+        border-left: 4px solid var(--orange);
+        padding: 16px 40px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .breaking-label {
+        background: var(--orange);
+        color: #000;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+        letter-spacing: 0.05em;
+      }
+      .breaking-text {
+        font-size: 14px;
+      }
+      .breaking-text strong {
+        color: var(--orange);
+      }
+
+      /* ── LAYOUT ── */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 40px;
+      }
+
+      section {
+        margin-top: 48px;
+      }
+      section > h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 24px;
+      }
+      section > h2 .tag {
+        font-size: 11px;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-left: 10px;
+        vertical-align: middle;
+        background: var(--surface2);
+        color: var(--text-muted);
+      }
+
+      /* ── CARDS ── */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 16px;
+      }
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .card-header h3 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .card-header .badge {
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-weight: 500;
+      }
+      .badge.green {
+        background: var(--green-bg);
+        color: var(--green);
+        border: 1px solid #15803d44;
+      }
+      .badge.yellow {
+        background: var(--yellow-bg);
+        color: var(--yellow);
+        border: 1px solid #a1620044;
+      }
+      .badge.red {
+        background: var(--red-bg);
+        color: var(--red);
+        border: 1px solid #b91c1c44;
+      }
+      .badge.blue {
+        background: var(--blue-bg);
+        color: var(--blue);
+        border: 1px solid #1d4ed844;
+      }
+      .badge.purple {
+        background: #3b0764;
+        color: var(--purple);
+        border: 1px solid #6b21a844;
+      }
+
+      /* ── TWO COL ── */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 768px) {
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ── FEATURE LIST ── */
+      .feature-list {
+        list-style: none;
+      }
+      .feature-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+      .feature-list li:last-child {
+        border-bottom: none;
+      }
+      .feature-list .icon {
+        font-size: 15px;
+        margin-top: 1px;
+        flex-shrink: 0;
+      }
+      .feature-list .desc {
+        color: var(--text-muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      /* ── COMPARISON TABLE ── */
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .comparison-table th {
+        background: var(--surface2);
+        padding: 10px 16px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--border);
+      }
+      .comparison-table td {
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+      .comparison-table tr:last-child td {
+        border-bottom: none;
+      }
+      .comparison-table tr:hover td {
+        background: var(--surface2);
+      }
+      .comparison-table .feature-name {
+        font-weight: 500;
+      }
+      .check {
+        color: var(--green);
+      }
+      .partial {
+        color: var(--yellow);
+      }
+      .cross {
+        color: var(--red);
+      }
+      .na {
+        color: var(--text-muted);
+      }
+      .note {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+
+      /* ── STATUS ROW ── */
+      .tool-status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+      .status-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .status-card .tool-name {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .status-card .status-pill {
+        display: inline-block;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+      .status-card .desc {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .status-card .caveat {
+        font-size: 11px;
+        color: var(--yellow);
+        margin-top: 6px;
+        padding: 4px 8px;
+        background: var(--yellow-bg);
+        border-radius: 4px;
+      }
+
+      /* ── RISK TABLE ── */
+      .risk-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .risk-card {
+        border-radius: 10px;
+        padding: 16px;
+        border-left-width: 4px;
+        border-left-style: solid;
+      }
+      .risk-card.safe {
+        background: var(--green-bg);
+        border-left-color: var(--green);
+      }
+      .risk-card.caution {
+        background: var(--yellow-bg);
+        border-left-color: var(--yellow);
+      }
+      .risk-card.danger {
+        background: var(--red-bg);
+        border-left-color: var(--red);
+      }
+      .risk-card h4 {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .risk-card h4.green {
+        color: var(--green);
+      }
+      .risk-card h4.yellow {
+        color: var(--yellow);
+      }
+      .risk-card h4.red {
+        color: var(--red);
+      }
+      .risk-card ul {
+        list-style: none;
+      }
+      .risk-card ul li {
+        font-size: 13px;
+        padding: 4px 0;
+      }
+      .risk-card ul li::before {
+        content: "→ ";
+        color: var(--text-muted);
+      }
+
+      /* ── VERDICT ── */
+      .verdict {
+        background: linear-gradient(135deg, #1e3a5f 0%, #1a1d27 100%);
+        border: 1px solid #1d4ed844;
+        border-radius: 12px;
+        padding: 28px;
+      }
+      .verdict h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--blue);
+        margin-bottom: 16px;
+      }
+      .verdict-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      @media (max-width: 600px) {
+        .verdict-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .verdict-item h4 {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .verdict-item ul {
+        list-style: none;
+      }
+      .verdict-item ul li {
+        font-size: 13px;
+        padding: 3px 0;
+      }
+
+      /* ── TIMELINE ── */
+      .timeline {
+        position: relative;
+        padding-left: 24px;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 6px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--border);
+      }
+      .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -21px;
+        top: 6px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--purple);
+        border: 2px solid var(--bg);
+      }
+      .timeline-item .date {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-bottom: 3px;
+      }
+      .timeline-item .event {
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .timeline-item .detail {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+      .timeline-item.highlight::before {
+        background: var(--orange);
+      }
+      .timeline-item.highlight .event {
+        color: var(--orange);
+      }
+
+      /* ── SOURCE LINKS ── */
+      .sources {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .source-item {
+        font-size: 12px;
+        color: var(--blue);
+      }
+      .source-item::before {
+        content: "↗ ";
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 32px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-header">
+      <div class="container">
+        <h1>NX vs <span>Vite 生態</span> — 比對報告</h1>
+        <div class="subtitle">為 v-taiwan Meetup 2026 talk 準備的技術研究文件</div>
+        <div class="meta-row">
+          <span class="meta-tag">研究日期：2026-06-08</span>
+          <span class="meta-tag">用途：Talk 內容驗證 & Q&A 準備</span>
+          <span class="meta-tag">聽眾：Vue.js / Nuxt 開發者</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="breaking">
+      <span class="breaking-label">BREAKING</span>
+      <span class="breaking-text">
+        <strong>Cloudflare 於 2026-06-05 收購 VoidZero</strong> — Vite / Rolldown / Oxc 維持
+        open-source，Cloudflare 設立 $1M Vite 生態基金。 Talk 中應說「Vite 生態（Cloudflare
+        支援）」，不說「VoidZero 公司」。
+      </span>
+    </div>
+
+    <div class="container">
+      <!-- ── SECTION 0: Talk Agenda ── -->
+      <section>
+        <h2>Talk Agenda <span class="tag">45 min</span></h2>
+
+        <div
+          class="card"
+          style="
+            border-color: #a78bfa44;
+            background: linear-gradient(135deg, #1e1b4b 0%, #1a1d27 100%);
+            margin-bottom: 20px;
+          "
+        >
+          <div style="font-size: 18px; font-weight: 700; color: var(--purple); margin-bottom: 6px">
+            Modern Frontend Infra — 2026 年 Vue 開發者的工具鏈新地圖
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px">
+            從 Rust 化、工具鏈統一到 AI 友善——前端 infra 為什麼長成現在這樣
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted)">
+            v-taiwan Meetup &nbsp;·&nbsp; 2026-07-18 &nbsp;·&nbsp; 45 min + 10 min Q&A &nbsp;·&nbsp;
+            聽眾：Vue.js 開發者
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <!-- Intro -->
+          <div style="display: grid; grid-template-columns: 80px 1fr; gap: 0">
+            <div
+              style="
+                padding: 16px 16px 16px 0;
+                text-align: right;
+                border-right: 2px solid var(--purple);
+              "
+            >
+              <div style="font-size: 20px; font-weight: 700; color: var(--purple)">5</div>
+              <div style="font-size: 10px; color: var(--text-muted)">min</div>
+            </div>
+            <div style="padding: 16px 0 16px 20px">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px">
+                開場 — 2026：前端 infra 的轉折點
+              </div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px">
+                用時事鉤住全場：你們的 Evan You，公司剛被 Cloudflare 收購了
+              </div>
+              <ul style="list-style: none; font-size: 13px; color: var(--text-muted)">
+                <li style="padding: 2px 0">
+                  • 時間軸：VoidZero 成立（2024）→ Vite+ 發表（2025）→ Vite 8 + Rolldown
+                  預設（2026-03）→
+                  <strong style="color: var(--orange)">Cloudflare 收購（2026-06-05）</strong>
+                </li>
+                <li style="padding: 2px 0">• 這對你的 <code>vite.config.ts</code> 意味著什麼？</li>
+                <li style="padding: 2px 0">
+                  • 這些不是各自獨立的新聞——是同一場變革的三波浪潮：<strong
+                    style="color: var(--text)"
+                    >Rust 化、統一化、AI 化</strong
+                  >
+                </li>
+                <li style="padding: 2px 0">
+                  • 今天的地圖：每一波是什麼、為什麼發生、你的專案要跟進哪些
+                </li>
+              </ul>
+              <div
+                style="
+                  margin-top: 10px;
+                  padding: 8px 14px;
+                  background: #1e1b4b;
+                  border-left: 3px solid var(--purple);
+                  border-radius: 0 6px 6px 0;
+                  font-size: 12px;
+                "
+              >
+                <em
+                  >"With AI shifting the landscape, we are seeing more usage of our tools coming
+                  from AI agents. Our mission now includes building better tooling for agents."</em
+                >
+                <span style="color: var(--text-muted)"> — Evan You, 2026-06-05</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Part 1 -->
+          <div style="display: grid; grid-template-columns: 80px 1fr; gap: 0">
+            <div
+              style="
+                padding: 16px 16px 16px 0;
+                text-align: right;
+                border-right: 2px solid var(--border);
+              "
+            >
+              <div style="font-size: 20px; font-weight: 700; color: var(--text)">12</div>
+              <div style="font-size: 10px; color: var(--text-muted)">min</div>
+            </div>
+            <div style="padding: 16px 0 16px 20px">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px">
+                第一波 — Rust 化：為什麼工具都在重寫
+              </div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px">
+                feedback loop 的長度決定 DX 的上限——速度不是奢侈品，是設計前提
+              </div>
+              <ul style="list-style: none; font-size: 13px; color: var(--text-muted)">
+                <li style="padding: 2px 0">
+                  • <strong style="color: var(--text)">Oxlint</strong>：ESLint 數十秒 → 毫秒（官方
+                  benchmark 4–16x），lint 從 code review 提前到打字當下
+                </li>
+                <li style="padding: 2px 0">
+                  • <strong style="color: var(--text)">Rolldown</strong>：10–30x faster
+                  builds、記憶體下降 100x，Vite 8 已預設、plugin 完整相容
+                </li>
+                <li style="padding: 2px 0">
+                  • <strong style="color: var(--text)">對 Vue 開發者的實感</strong>：HMR、CI、lint
+                  三條 feedback loop 同時縮短
+                </li>
+                <li style="padding: 2px 0">
+                  • <strong style="color: var(--text)">實戰</strong>：Oxlint
+                  <code>import/no-cycle</code> 即時抓循環依賴（⚠️ TS path alias 邊際情況 #20551）
+                </li>
+                <li style="padding: 2px 0">
+                  • 設計邏輯：工具快到「即時」之後，整類工作流程（lint-staged、pre-commit
+                  cache）直接消失
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Part 2 -->
+          <div style="display: grid; grid-template-columns: 80px 1fr; gap: 0">
+            <div
+              style="
+                padding: 16px 16px 16px 0;
+                text-align: right;
+                border-right: 2px solid var(--border);
+              "
+            >
+              <div style="font-size: 20px; font-weight: 700; color: var(--text)">12</div>
+              <div style="font-size: 10px; color: var(--text-muted)">min</div>
+            </div>
+            <div style="padding: 16px 0 16px 20px">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px">
+                第二波 — 統一化：NX vs Vite 生態的路線之爭
+              </div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px">
+                兩條路線都在解「工具碎片化」，但哲學相反——平台 vs 組合
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px">
+                <div
+                  style="
+                    padding: 12px 14px;
+                    background: var(--bg);
+                    border: 1px solid var(--border);
+                    border-radius: 8px;
+                    border-left: 3px solid var(--purple);
+                  "
+                >
+                  <div style="font-weight: 600; color: var(--purple); margin-bottom: 4px">
+                    NX 路線 — 一個平台管所有事
+                  </div>
+                  <div style="color: var(--text-muted)">
+                    project graph、task caching、generators、CI 整合全包<br />
+                    免費功能其實很多（詳見比對矩陣），但對 Vue/Nuxt 專案是另一套心智模型
+                  </div>
+                </div>
+                <div
+                  style="
+                    padding: 12px 14px;
+                    background: var(--bg);
+                    border: 1px solid var(--border);
+                    border-radius: 8px;
+                    border-left: 3px solid var(--green);
+                  "
+                >
+                  <div style="font-weight: 600; color: var(--green); margin-bottom: 4px">
+                    Vite 生態路線 — 可組合的單一用途工具
+                  </div>
+                  <div style="color: var(--text-muted)">
+                    pnpm workspaces + semantic catalogs（<code>catalog:build</code> /
+                    <code>catalog:lint</code>，antfu 模式）<br />
+                    vite-plus <code>vp run -r</code>：依 dep order 執行 + content-based task
+                    caching<br />
+                    dependency-cruiser 作為 NX Graph 的輕量替代
+                  </div>
+                </div>
+                <div
+                  style="
+                    padding: 12px 14px;
+                    background: var(--bg);
+                    border: 1px solid var(--border);
+                    border-radius: 8px;
+                    border-left: 3px solid var(--yellow);
+                  "
+                >
+                  <div style="font-weight: 600; color: var(--yellow); margin-bottom: 4px">
+                    立場與選型結論
+                  </div>
+                  <div style="color: var(--text-muted)">
+                    Vue / Vite / Nuxt 核心貢獻者（含 antfu）都不用 NX——「對 Vue/Nuxt
+                    專案來說是過度設計」<br />
+                    Vue/Nuxt monorepo（&lt;10 packages）→ pnpm + Oxlint + dependency-cruiser 已夠
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Part 3 -->
+          <div style="display: grid; grid-template-columns: 80px 1fr; gap: 0">
+            <div
+              style="
+                padding: 16px 16px 16px 0;
+                text-align: right;
+                border-right: 2px solid var(--border);
+              "
+            >
+              <div style="font-size: 20px; font-weight: 700; color: var(--text)">10</div>
+              <div style="font-size: 10px; color: var(--text-muted)">min</div>
+            </div>
+            <div style="padding: 16px 0 16px 20px">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px">
+                第三波 — AI 化：infra 的新使用者是 agent
+              </div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px">
+                AI 改一處壞三處？那不是 AI 的問題，是 infra 的問題
+              </div>
+              <ul style="list-style: none; font-size: 13px; color: var(--text-muted)">
+                <li style="padding: 3px 0">
+                  • 糾纏的 module graph = AI 的不確定性放大器——同一個根因也讓 tree-shaking
+                  不可預測、chunk 膨脹、LCP 惡化
+                </li>
+                <li style="padding: 3px 0">
+                  • 解法是機器可驗證的邊界鏈：AI 改 A → Oxlint 確認無 cycle → TS 抓型別 → build → CI
+                </li>
+                <li style="padding: 3px 0">
+                  • <code>CLAUDE.md</code> / <code>AGENTS.md</code> = 把 boundary 規則寫成 AI
+                  看得懂的格式（antfu 也在做這件事）
+                </li>
+                <li style="padding: 3px 0">
+                  • 整個 Vite 生態（Cloudflare 收購後）的方向：讓 AI agent 成為工具的一等公民
+                </li>
+              </ul>
+              <div
+                style="
+                  margin-top: 10px;
+                  padding: 8px 14px;
+                  background: #7c2d1222;
+                  border-left: 3px solid var(--orange);
+                  border-radius: 0 6px 6px 0;
+                  font-size: 12px;
+                "
+              >
+                <em
+                  >"AI agents do not primarily fail because of reasoning limits. They fail because
+                  of <strong>environmental ambiguity</strong>."</em
+                >
+                <span style="color: var(--text-muted)"> — Harness Engineering Blog, 2026</span>
+              </div>
+              <div
+                style="
+                  margin-top: 8px;
+                  padding: 8px 14px;
+                  background: #14532d22;
+                  border-left: 3px solid var(--green);
+                  border-radius: 0 6px 6px 0;
+                  font-size: 12px;
+                "
+              >
+                <em
+                  >"Monorepo tooling provides exactly the structure AI agents need: a project graph,
+                  consistent conventions, and clear module boundaries. Violations are caught before
+                  code is even committed."</em
+                >
+                <span style="color: var(--text-muted)"> — Nx Blog, 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Takeaways -->
+          <div style="display: grid; grid-template-columns: 80px 1fr; gap: 0">
+            <div
+              style="
+                padding: 16px 16px 16px 0;
+                text-align: right;
+                border-right: 2px solid var(--border);
+              "
+            >
+              <div style="font-size: 20px; font-weight: 700; color: var(--text)">6</div>
+              <div style="font-size: 10px; color: var(--text-muted)">min</div>
+            </div>
+            <div style="padding: 16px 0 16px 20px">
+              <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px">
+                收尾 — 用我的 repo 走一遍 + Takeaways
+              </div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px">
+                三波浪潮在同一個 repo 裡的樣子：semantic catalogs →
+                <code>vp lint</code>（毫秒回饋）→ <code>vp run -r build</code>（cache replay）→
+                <code>CLAUDE.md</code>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">
+                <div
+                  style="
+                    padding: 8px 12px;
+                    background: var(--bg);
+                    border-radius: 6px;
+                    border: 1px solid var(--border);
+                  "
+                >
+                  <strong style="color: var(--green)">今天</strong>
+                  <span style="color: var(--text-muted); margin-left: 8px"
+                    >加 Oxlint <code>import/no-cycle</code>，跑一次看有幾個循環</span
+                  >
+                </div>
+                <div
+                  style="
+                    padding: 8px 12px;
+                    background: var(--bg);
+                    border-radius: 6px;
+                    border: 1px solid var(--border);
+                  "
+                >
+                  <strong style="color: var(--yellow)">本週</strong>
+                  <span style="color: var(--text-muted); margin-left: 8px"
+                    >把 shared types 搬出來；整理 <code>pnpm-workspace.yaml</code> 的 semantic
+                    catalogs</span
+                  >
+                </div>
+                <div
+                  style="
+                    padding: 8px 12px;
+                    background: var(--bg);
+                    border-radius: 6px;
+                    border: 1px solid var(--border);
+                  "
+                >
+                  <strong style="color: var(--blue)">下一步</strong>
+                  <span style="color: var(--text-muted); margin-left: 8px"
+                    >試試 vite-plus <code>vp run -r</code>；寫一份
+                    <code>CLAUDE.md</code> 把架構規則記下來</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /timeline -->
+
+        <div style="margin-top: 16px; display: flex; gap: 10px; font-size: 12px; flex-wrap: wrap">
+          <div
+            style="
+              padding: 5px 14px;
+              background: var(--surface2);
+              border-radius: 999px;
+              color: var(--text-muted);
+            "
+          >
+            5 + 12 + 12 + 10 + 6 = <strong style="color: var(--text)">45 min</strong>
+          </div>
+          <div
+            style="
+              padding: 5px 14px;
+              background: var(--surface2);
+              border-radius: 999px;
+              color: var(--text-muted);
+            "
+          >
+            Q&A：<strong style="color: var(--text)">10 min</strong>
+          </div>
+          <div
+            style="
+              padding: 5px 14px;
+              background: var(--surface2);
+              border-radius: 999px;
+              color: var(--text-muted);
+            "
+          >
+            難度：<strong style="color: var(--text)"
+              >新手友善（每波最多一個 ≤2 min 的深潛時刻，需路標化）</strong
+            >
+          </div>
+          <div
+            style="
+              padding: 5px 14px;
+              background: var(--surface2);
+              border-radius: 999px;
+              color: var(--text-muted);
+            "
+          >
+            深潛點：<strong style="color: var(--text)"
+              >pnpm symlink（demo）｜circular dep × tree-shaking（圖解）｜一個 AST
+              餵所有工具（口頭）</strong
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 1: 工具狀態速覽 ── -->
+      <section>
+        <h2>工具狀態速覽 <span class="tag">2026-06</span></h2>
+        <div class="tool-status-grid">
+          <div class="status-card">
+            <div class="tool-name">Oxlint</div>
+            <span class="status-pill badge green">生產可用</span>
+            <div class="desc">
+              Rust-based linter，ESLint 相容層。4–16x 更快（官方 benchmark）。JS Plugins alpha 已於
+              2026-03 釋出。
+            </div>
+            <div class="caveat">
+              ⚠ <code>import/no-cycle</code> 已實作，但 TypeScript path alias 有邊際情況（GitHub
+              #20551）
+            </div>
+          </div>
+
+          <div class="status-card">
+            <div class="tool-name">Rolldown</div>
+            <span class="status-pill badge green">生產可用</span>
+            <div class="desc">
+              Rust-based bundler。Vite 8（2026-03-12）預設使用，10–30x faster builds，100x
+              記憶體下降。
+            </div>
+          </div>
+
+          <div class="status-card">
+            <div class="tool-name">Vite 8</div>
+            <span class="status-pill badge green">生產可用</span>
+            <div class="desc">
+              2026-03-12 釋出。預設 bundler 改為 Rolldown，保持完整 plugin 相容性。
+            </div>
+          </div>
+
+          <div class="status-card" style="border-color: #22c55e44">
+            <div class="tool-name">vite-plus（你在用的）</div>
+            <span class="status-pill badge green">0.1.x 生產可用</span>
+            <div class="desc">
+              VoidZero Inc. 官方 monorepo CLI（即 npm 上的 <code>vite-plus</code>）。Task
+              caching（content-based）、整合 Oxlint + Rolldown + Vitest，wraps pnpm 做 task
+              execution。
+            </div>
+            <div class="caveat" style="color: var(--blue); background: var(--blue-bg)">
+              ℹ️ 這就是你 repo 的 vite-plus 0.1.24，你已在生產環境使用
+            </div>
+          </div>
+
+          <div class="status-card">
+            <div class="tool-name">NX</div>
+            <span class="status-pill badge green">生產可用</span>
+            <div class="desc">
+              老牌 monorepo 工具。核心功能全免費；NX Cloud 付費版僅用於分散式 cache。2026
+              起移除免費自架 remote cache 選項。
+            </div>
+          </div>
+
+          <div class="status-card">
+            <div class="tool-name">dependency-cruiser</div>
+            <span class="status-pill badge green">生產可用</span>
+            <div class="desc">
+              6,733 stars，最後 commit：2026-06-07。用 regex rules 做 boundary enforcement，輸出
+              HTML/SVG graph。NX graph 的輕量替代。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 2: 功能比對矩陣 ── -->
+      <section>
+        <h2>功能比對矩陣</h2>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th style="width: 220px">功能</th>
+              <th>NX（免費）</th>
+              <th>pnpm workspaces</th>
+              <th>Oxlint</th>
+              <th>dependency-cruiser</th>
+              <th>vite-plus 0.1.x</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feature-name">Package 層邊界</td>
+              <td><span class="check">✓</span></td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">結構即規則，最輕量</div>
+              </td>
+              <td><span class="na">—</span></td>
+              <td><span class="na">—</span></td>
+              <td><span class="check">✓</span></td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">File-level 循環依賴偵測</td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">@nx/eslint plugin</div>
+              </td>
+              <td><span class="cross">✗</span></td>
+              <td>
+                <span class="partial">△</span>
+                <div class="note">已實作，TS path alias 有邊際情況</div>
+              </td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">regex rules，穩定</div>
+              </td>
+              <td><span class="check">✓</span></td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">
+                Cross-project Boundary Rules<br /><small style="color: var(--text-muted)"
+                  >（tag-based enforcement）</small
+                >
+              </td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">@nx/enforce-module-boundaries，tag system</div>
+              </td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td>
+                <span class="partial">△</span>
+                <div class="note">regex path rules，無 tag system</div>
+              </td>
+              <td>
+                <span class="partial">△</span>
+                <div class="note">pnpm workspace 做 package 層邊界，無 tag system</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">Dependency Graph 視覺化</td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">互動式，可匯出 HTML/JSON</div>
+              </td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="cross">✗</span></td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">HTML/SVG，靜態</div>
+              </td>
+              <td>?</td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">Local Task Caching</td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">.nx/cache，免費</div>
+              </td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="na">—</span></td>
+              <td><span class="na">—</span></td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">
+                  content-based（file fingerprint），auto；<code>vp run -r</code>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">
+                Affected Detection<br /><small style="color: var(--text-muted)"
+                  >（git-based，跳過未受影響 package）</small
+                >
+              </td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">nx affected，git-based，跳過未改 package</div>
+              </td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="na">—</span></td>
+              <td><span class="na">—</span></td>
+              <td>
+                <span class="partial">△</span>
+                <div class="note">
+                  content-based cache（非 git-based）；<code>vp run -r</code> 跑全部，未改者 replay
+                  瞬間完成
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">Lint 速度</td>
+              <td>
+                <span class="na">—</span>
+                <div class="note">取決於底層 linter</div>
+              </td>
+              <td><span class="na">—</span></td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">Rust，4–16x vs ESLint（官方數字）</div>
+              </td>
+              <td><span class="na">—</span></td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">內建 Oxlint</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">Build 速度</td>
+              <td><span class="na">—</span></td>
+              <td><span class="na">—</span></td>
+              <td><span class="na">—</span></td>
+              <td><span class="na">—</span></td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">Rolldown，10–30x vs Rollup（Vite 8 預設）</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">Vue/Nuxt 官方 Plugin</td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">@nx/nuxt（2024-02），@nx/vue</div>
+              </td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">天生支援</div>
+              </td>
+              <td>
+                <span class="partial">△</span>
+                <div class="note">eslint-plugin-vue 架構限制</div>
+              </td>
+              <td><span class="check">✓</span></td>
+              <td><span class="check">✓</span></td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">Remote / 分散式 Cache</td>
+              <td>
+                <span class="yellow">付費</span>
+                <div class="note">NX Cloud；2026 起移除免費自架</div>
+              </td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="na">—</span></td>
+              <td><span class="na">—</span></td>
+              <td>?</td>
+            </tr>
+
+            <tr>
+              <td class="feature-name">版本一致性管理</td>
+              <td><span class="cross">✗</span></td>
+              <td>
+                <span class="check">✓</span>
+                <div class="note">semantic catalogs</div>
+              </td>
+              <td><span class="na">—</span></td>
+              <td><span class="na">—</span></td>
+              <td><span class="check">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px">
+          ✓ 支援 &nbsp; △ 部分支援 / 有邊際情況 &nbsp; ✗ 不支援 &nbsp; — 不適用 &nbsp; ? 未確認
+        </p>
+      </section>
+
+      <!-- ── SECTION 3: NX 免費功能詳解 ── -->
+      <section>
+        <h2>NX 免費功能詳解</h2>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header">
+              <h3>免費功能（無需 NX Cloud）</h3>
+              <span class="badge green">Free Tier</span>
+            </div>
+            <ul class="feature-list">
+              <li>
+                <span class="icon">🗂</span>
+                <div>
+                  <div><strong>nx graph</strong> — 互動式 dependency graph</div>
+                  <div class="desc">
+                    可匯出 HTML（<code>--file=output.html</code>）、JSON。支援 focus
+                    模式、dependency 追蹤
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">⚡</span>
+                <div>
+                  <div><strong>Local Task Caching</strong> — <code>.nx/cache</code></div>
+                  <div class="desc">相同 input → 從 cache 還原，幾乎瞬間完成。同一台機器有效</div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">🎯</span>
+                <div>
+                  <div><strong>nx affected</strong> — 只跑受影響的 package</div>
+                  <div class="desc">
+                    Git-based change detection → project graph → 遞迴找下游依賴。lockfile
+                    改動預設標記全部受影響
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">🛡</span>
+                <div>
+                  <div><strong>@nx/enforce-module-boundaries</strong></div>
+                  <div class="desc">
+                    ESLint rule，用 tag system 做 cross-project boundary enforcement。可設定
+                    sourceTag / onlyDependOnLibsWithTags
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">🔧</span>
+                <div>
+                  <div><strong>Code Generation</strong></div>
+                  <div class="desc">generators + executors，AST-level 程式碼修改</div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">🟢</span>
+                <div>
+                  <div><strong>@nx/nuxt + @nx/vue 官方 Plugin</strong></div>
+                  <div class="desc">2024-02 釋出，支援 Nuxt 3.x，整合 build / test / serve</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>NX Cloud（付費）</h3>
+              <span class="badge red">Paid Only</span>
+            </div>
+            <ul class="feature-list">
+              <li>
+                <span class="icon">☁️</span>
+                <div>
+                  <div><strong>Distributed Remote Cache</strong></div>
+                  <div class="desc">
+                    跨機器、跨 CI 共享 cache。沒有這個，CI 每次都重跑（大型 repo 差距可達 3 分鐘 →
+                    30 分鐘）
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">🔀</span>
+                <div>
+                  <div><strong>Distributed Task Execution</strong></div>
+                  <div class="desc">自動分配 task 到多台 CI agent，NX 自己做負載均衡</div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">📊</span>
+                <div>
+                  <div><strong>Insights & Analytics</strong></div>
+                  <div class="desc">CI 效能分析、cache hit rate 追蹤</div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">⚠️</span>
+                <div>
+                  <div><strong>2026 重大改動</strong></div>
+                  <div class="desc" style="color: var(--yellow)">
+                    移除免費自架 remote cache plugin（安全風險理由）。現在 remote cache = NX Cloud
+                    only
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <div
+              style="
+                margin-top: 16px;
+                padding: 12px;
+                background: var(--green-bg);
+                border-radius: 8px;
+                font-size: 13px;
+              "
+            >
+              <strong style="color: var(--green)">結論：</strong>
+              中小型團隊 / 個人 repo，<strong>不需要 NX Cloud</strong>。 Local cache + affected
+              免費就夠，遠端分散式 cache 只有大型分散團隊才划算。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 4: Vite 生態詳解 ── -->
+      <section>
+        <h2>Vite 生態詳解 <span class="tag">Cloudflare 收購後</span></h2>
+
+        <div
+          class="card"
+          style="
+            border-color: #fb923c44;
+            background: linear-gradient(135deg, #431407 0%, #1a1d27 100%);
+          "
+        >
+          <div class="card-header">
+            <h3 style="color: var(--orange)">Cloudflare 收購 VoidZero（2026-06-05）</h3>
+            <span
+              class="badge"
+              style="background: #431407; color: var(--orange); border-color: #c2410c44"
+              >最新動態</span
+            >
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 13px">
+            <div>
+              <div style="font-weight: 600; margin-bottom: 8px">發生了什麼</div>
+              <ul style="list-style: none; color: var(--text-muted)">
+                <li style="padding: 3px 0">• VoidZero（Evan You 公司）被 Cloudflare 收購</li>
+                <li style="padding: 3px 0">• Evan You 與整個團隊加入 Cloudflare</li>
+                <li style="padding: 3px 0">• 所有工具維持 open-source（MIT）</li>
+                <li style="padding: 3px 0">• Cloudflare 設立 $1M Vite 生態貢獻者基金</li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-weight: 600; margin-bottom: 8px">對 Talk 的影響</div>
+              <ul style="list-style: none; color: var(--text-muted)">
+                <li style="padding: 3px 0">• 不說「VoidZero 公司」— 它已不存在</li>
+                <li style="padding: 3px 0">• 說「Vite 生態」或「Cloudflare 支援的 Vite 工具鏈」</li>
+                <li style="padding: 3px 0">• 這是最新消息（2026-06-05），聽眾可能不知道</li>
+                <li style="padding: 3px 0">• 可作為「生態系有強力後援」的論點</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col" style="margin-top: 16px">
+          <div class="card">
+            <div class="card-header">
+              <h3>Oxlint</h3>
+              <span class="badge green">生產可用</span>
+            </div>
+            <ul class="feature-list">
+              <li>
+                <span class="icon">🦀</span>
+                <div>
+                  <div><strong>速度</strong></div>
+                  <div class="desc">
+                    官方 benchmark：4–16x faster vs ESLint。2M 行 codebase 實測 16x。<br /><em
+                      >Talk 中說「顯著更快」，不說具體倍數。</em
+                    >
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">🔌</span>
+                <div>
+                  <div><strong>ESLint 相容層</strong></div>
+                  <div class="desc">
+                    2026-03 JS Plugins alpha 釋出，大多數 ESLint plugin 可直接使用
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">⚠️</span>
+                <div>
+                  <div><strong>import/no-cycle 邊際情況</strong></div>
+                  <div class="desc" style="color: var(--yellow)">
+                    已實作（<code>import::no_cycle</code>），但：<br />
+                    1. TypeScript path aliases（tsconfig paths）不偵測 cycle<br />
+                    2. ESM + .js 副檔名組合有問題<br />
+                    來源：GitHub issue #20551, #6906
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">❌</span>
+                <div>
+                  <div><strong>eslint-plugin-vue 相容性有限</strong></div>
+                  <div class="desc">架構限制，Vue template 處理方式不同</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Rolldown + Vite 8</h3>
+              <span class="badge green">生產可用</span>
+            </div>
+            <ul class="feature-list">
+              <li>
+                <span class="icon">📅</span>
+                <div>
+                  <div><strong>Vite 8.0 — 2026-03-12</strong></div>
+                  <div class="desc">
+                    預設 bundler 改為 Rolldown，可驗證：<a
+                      href="https://vite.dev/blog/announcing-vite8"
+                      style="color: var(--blue)"
+                      >vite.dev/blog/announcing-vite8</a
+                    >
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">🚀</span>
+                <div>
+                  <div><strong>效能提升</strong></div>
+                  <div class="desc">
+                    10–30x faster production builds，100x 記憶體下降（官方數字）<br /><em
+                      >Talk 中引用時說「官方數字，未自測」</em
+                    >
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">🔄</span>
+                <div>
+                  <div><strong>Deterministic output</strong></div>
+                  <div class="desc">
+                    Bundle 結果可重複驗證，AI agent 的建議可被 reproducible 地確認
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">✅</span>
+                <div>
+                  <div><strong>Tree-shaking 改善</strong></div>
+                  <div class="desc">
+                    清晰 module boundary → Rolldown 能更準確做 dead code elimination → chunk size
+                    縮小
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="card"
+          style="
+            margin-top: 16px;
+            border-color: #22c55e44;
+            background: linear-gradient(135deg, #14532d22 0%, #1a1d27 100%);
+          "
+        >
+          <div class="card-header">
+            <h3>vite-plus（你正在用的）</h3>
+            <span class="badge green">0.1.x 生產可用</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 13px">
+            <div>
+              <div style="color: var(--green); font-weight: 600; margin-bottom: 8px">
+                ✓ 實際功能（vp CLI）
+              </div>
+              <ul style="list-style: none; color: var(--text-muted)">
+                <li style="padding: 3px 0">
+                  • <code>vp run -r</code>：依 dep order 跑全部 package
+                </li>
+                <li style="padding: 3px 0">
+                  • <strong style="color: var(--text)">Content-based task caching</strong>（file
+                  fingerprint，非 git-based）
+                </li>
+                <li style="padding: 3px 0">• 未改變的 package：cache replay，幾乎瞬間完成</li>
+                <li style="padding: 3px 0">• 整合 Oxlint、Rolldown、tsdown、Vitest</li>
+                <li style="padding: 3px 0">• 作者：VoidZero Inc.（現 Cloudflare）</li>
+              </ul>
+            </div>
+            <div>
+              <div style="color: var(--yellow); font-weight: 600; margin-bottom: 8px">
+                ⚠ 與 NX affected 的關鍵差異
+              </div>
+              <ul style="list-style: none; color: var(--text-muted)">
+                <li style="padding: 3px 0">
+                  • <strong style="color: var(--text)">vite-plus</strong>：全部 package
+                  都執行，cache replay 讓未改的瞬間完成
+                </li>
+                <li style="padding: 3px 0">
+                  •
+                  <strong style="color: var(--text)">NX affected</strong
+                  >：git-based，直接跳過未受影響的 package，根本不執行
+                </li>
+                <li style="padding: 3px 0">• 這個差異在 Q&A 可能被追問，要說清楚</li>
+                <li style="padding: 3px 0">
+                  • 版本 0.1.x（pre-1.0），但你已在 production 使用 0.1.24
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 5: antfu & Vite 核心團隊立場 ── -->
+      <section>
+        <h2>Vite 生態的立場 — antfu & 核心團隊 <span class="tag">Q&A 強力支持論點</span></h2>
+
+        <div
+          class="card"
+          style="
+            border-color: #a78bfa44;
+            background: linear-gradient(135deg, #1e1b4b 0%, #1a1d27 100%);
+          "
+        >
+          <div class="card-header">
+            <h3 style="color: var(--purple)">核心觀點：Vue 生態根本不用 NX</h3>
+            <span class="badge purple">Ecosystem Signal</span>
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px">
+            Vue / Vite / Nuxt 的核心貢獻者（包含 Anthony Fu / antfu）都用
+            <strong style="color: var(--text)">pnpm workspace</strong>，沒有人在用 NX。 這不是偶然 —
+            而是生態的默契：<strong style="color: var(--text)">輕量、可組合的工具 > 重型框架</strong
+            >。 antfu 的哲學：每個工具只做一件事，composable，不綁定，可替換。
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 13px">
+            <div>
+              <div style="font-weight: 600; margin-bottom: 10px; color: var(--text)">
+                主要開源 repo 的 monorepo 工具
+              </div>
+              <table style="width: 100%; border-collapse: collapse; font-size: 12px">
+                <thead>
+                  <tr style="color: var(--text-muted); border-bottom: 1px solid var(--border)">
+                    <th style="text-align: left; padding: 4px 8px; font-weight: 500">Repo</th>
+                    <th style="text-align: center; padding: 4px 8px; font-weight: 500">pnpm</th>
+                    <th style="text-align: center; padding: 4px 8px; font-weight: 500">NX</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom: 1px solid var(--border)">
+                    <td style="padding: 5px 8px">vuejs/core</td>
+                    <td style="text-align: center; padding: 5px 8px; color: var(--green)">✓</td>
+                    <td style="text-align: center; padding: 5px 8px; color: var(--red)">✗</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--border)">
+                    <td style="padding: 5px 8px">vitejs/vite</td>
+                    <td style="text-align: center; padding: 5px 8px; color: var(--green)">✓</td>
+                    <td style="text-align: center; padding: 5px 8px; color: var(--red)">✗</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid var(--border)">
+                    <td style="padding: 5px 8px">nuxt/nuxt</td>
+                    <td style="text-align: center; padding: 5px 8px; color: var(--green)">✓</td>
+                    <td style="text-align: center; padding: 5px 8px; color: var(--red)">✗</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 5px 8px">antfu/eslint-config</td>
+                    <td style="text-align: center; padding: 5px 8px; color: var(--green)">✓</td>
+                    <td style="text-align: center; padding: 5px 8px; color: var(--red)">✗</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <div style="font-weight: 600; margin-bottom: 10px; color: var(--text)">
+                antfu 建的 pnpm 輔助工具（不是 NX 替代品，是加強層）
+              </div>
+              <ul style="list-style: none; color: var(--text-muted)">
+                <li style="padding: 5px 0; border-bottom: 1px solid var(--border)">
+                  <strong style="color: var(--text)">eslint-plugin-pnpm</strong><br />
+                  <span style="font-size: 11px"
+                    >enforce catalog usage — 讓 ESLint 抓到手動寫版本號的 dep（應改用
+                    <code>catalog:</code>）</span
+                  >
+                </li>
+                <li style="padding: 5px 0; border-bottom: 1px solid var(--border)">
+                  <strong style="color: var(--text)">taze</strong><br />
+                  <span style="font-size: 11px">輕量 dep update tool，互動式選擇要升的版本</span>
+                </li>
+                <li style="padding: 5px 0; border-bottom: 1px solid var(--border)">
+                  <strong style="color: var(--text)">ni</strong><br />
+                  <span style="font-size: 11px"
+                    >package manager agnostic wrapper（<code>ni</code> = install、<code>nr</code> =
+                    run）</span
+                  >
+                </li>
+                <li style="padding: 5px 0">
+                  <strong style="color: var(--text)">@antfu/eslint-config</strong><br />
+                  <span style="font-size: 11px"
+                    ><code>eslint-plugin-import-x</code> 做 workspace-aware import rules，不需要
+                    NX</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 16px">
+          <div class="card-header">
+            <h3>antfu：「Categorize Your Dependencies」</h3>
+            <span class="badge purple">antfu.me/posts/categorize-deps</span>
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px">
+            antfu 的文章推廣 semantic catalog 命名模式 — 把依賴按用途分類，讓
+            <code>pnpm-workspace.yaml</code>
+            本身就是文件。這正是你的 repo（milo-vite-plus）採用的設計。
+          </div>
+          <div
+            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 12px"
+          >
+            <div
+              style="
+                background: var(--bg);
+                padding: 10px 12px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div style="color: var(--green); font-weight: 600; margin-bottom: 5px">
+                catalog:（default）
+              </div>
+              <div style="color: var(--text-muted)">Production shared deps — Vue, React, Zod…</div>
+            </div>
+            <div
+              style="
+                background: var(--bg);
+                padding: 10px 12px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div style="color: var(--blue); font-weight: 600; margin-bottom: 5px">
+                catalog:build
+              </div>
+              <div style="color: var(--text-muted)">
+                Build tools — vite, rollup, tsup, vite-plus
+              </div>
+            </div>
+            <div
+              style="
+                background: var(--bg);
+                padding: 10px 12px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div style="color: var(--purple); font-weight: 600; margin-bottom: 5px">
+                catalog:lint
+              </div>
+              <div style="color: var(--text-muted)">Linting — oxlint, eslint, prettier</div>
+            </div>
+            <div
+              style="
+                background: var(--bg);
+                padding: 10px 12px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div style="color: var(--yellow); font-weight: 600; margin-bottom: 5px">
+                catalog:test
+              </div>
+              <div style="color: var(--text-muted)">Testing — vitest, @testing-library</div>
+            </div>
+            <div
+              style="
+                background: var(--bg);
+                padding: 10px 12px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div style="color: var(--orange); font-weight: 600; margin-bottom: 5px">
+                catalog:script
+              </div>
+              <div style="color: var(--text-muted)">Dev scripts — tsx, jiti, zx</div>
+            </div>
+            <div
+              style="
+                background: var(--bg);
+                padding: 10px 12px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+              "
+            >
+              <div style="color: var(--text-muted); font-weight: 600; margin-bottom: 5px">
+                catalog:preview
+              </div>
+              <div style="color: var(--text-muted)">Experimental — TS 6 beta、@types/node 25</div>
+            </div>
+          </div>
+          <div
+            style="
+              margin-top: 12px;
+              padding: 10px 14px;
+              background: var(--green-bg);
+              border: 1px solid #15803d44;
+              border-radius: 8px;
+              font-size: 12px;
+            "
+          >
+            <strong style="color: var(--green)">你的 repo 就是活的範例：</strong>
+            Q&A 時可現場開 <code>pnpm-workspace.yaml</code> 給聽眾看 semantic catalog 設計。
+          </div>
+        </div>
+
+        <div
+          style="
+            padding: 14px 18px;
+            background: var(--surface2);
+            border-radius: 10px;
+            font-size: 13px;
+            margin-top: 12px;
+            border-left: 4px solid var(--purple);
+          "
+        >
+          <strong style="color: var(--purple)">Q&A 強力論點：</strong>
+          「如果連 Vite / Nuxt 的核心維護者都用 pnpm workspace + eslint rules 而不是 NX，
+          代表這套組合確實夠用。NX 適合更大規模的 enterprise monorepo， 但對大多數 Vue/Nuxt
+          專案來說是過度設計。」
+        </div>
+      </section>
+
+      <!-- ── SECTION 6: dependency-cruiser ── -->
+      <section>
+        <h2>dependency-cruiser — NX Graph 的輕量替代</h2>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header">
+              <h3>功能與定位</h3>
+              <span class="badge green">6,733 stars · 活躍維護</span>
+            </div>
+            <ul class="feature-list">
+              <li>
+                <span class="icon">🗺</span>
+                <div><div>Dependency graph 視覺化（HTML / SVG 輸出）</div></div>
+              </li>
+              <li>
+                <span class="icon">🚫</span>
+                <div><div>Circular dependency 偵測</div></div>
+              </li>
+              <li>
+                <span class="icon">📐</span>
+                <div>
+                  <div>Regex-based boundary rules（path patterns）</div>
+                  <div class="desc">
+                    類似 NX tag system，但用 file path 定義，不需要額外設定 tags
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="icon">⚡</span>
+                <div><div>輕量，不需要 daemon 或 cloud</div></div>
+              </li>
+              <li>
+                <span class="icon">🟢</span>
+                <div><div>Vue / Vite 完整支援</div></div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>範例設定</h3>
+            </div>
+            <pre
+              style="
+                background: var(--bg);
+                padding: 16px;
+                border-radius: 8px;
+                font-size: 12px;
+                overflow: auto;
+                color: var(--text-muted);
+                line-height: 1.5;
+              "
+            ><code><span style="color:#94a3b8">// .dependency-cruiserrc.json</span>
+{
+  <span style="color:#86efac">"forbidden"</span>: [
+    {
+      <span style="color:#86efac">"name"</span>: <span style="color:#fbbf24">"no-circular"</span>,
+      <span style="color:#86efac">"severity"</span>: <span style="color:#fbbf24">"error"</span>,
+      <span style="color:#86efac">"from"</span>: {},
+      <span style="color:#86efac">"to"</span>: { <span style="color:#86efac">"circular"</span>: <span style="color:#c084fc">true</span> }
+    },
+    {
+      <span style="color:#86efac">"name"</span>: <span style="color:#fbbf24">"no-app-cross-import"</span>,
+      <span style="color:#86efac">"severity"</span>: <span style="color:#fbbf24">"error"</span>,
+      <span style="color:#86efac">"from"</span>: { <span style="color:#86efac">"path"</span>: <span style="color:#fbbf24">"^apps/([^/]+)"</span> },
+      <span style="color:#86efac">"to"</span>: { <span style="color:#86efac">"path"</span>: <span style="color:#fbbf24">"^apps/(?!\\1)"</span> }
+    },
+    {
+      <span style="color:#86efac">"name"</span>: <span style="color:#fbbf24">"no-packages-to-apps"</span>,
+      <span style="color:#86efac">"severity"</span>: <span style="color:#fbbf24">"error"</span>,
+      <span style="color:#86efac">"from"</span>: { <span style="color:#86efac">"path"</span>: <span style="color:#fbbf24">"^packages/"</span> },
+      <span style="color:#86efac">"to"</span>: { <span style="color:#86efac">"path"</span>: <span style="color:#fbbf24">"^apps/"</span> }
+    }
+  ]
+}</code></pre>
+            <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted)">
+              <code style="background: var(--bg); padding: 2px 6px; border-radius: 4px"
+                >npx depcruise --validate .dependency-cruiserrc.json apps/</code
+              ><br />
+              <code
+                style="
+                  background: var(--bg);
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                  margin-top: 6px;
+                  display: inline-block;
+                "
+                >npx depcruise --output-type html --output-to report.html apps/</code
+              >
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            padding: 16px;
+            background: var(--blue-bg);
+            border: 1px solid #1d4ed844;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-top: 4px;
+          "
+        >
+          <strong>何時選 dependency-cruiser vs NX：</strong>
+          中小型 Vue/Nuxt 專案（&lt;10 packages）→ dependency-cruiser + Oxc 已夠。 大型
+          monorepo（10+ packages，需要 tag-based governance + CI affected）→ NX Free。
+        </div>
+      </section>
+
+      <!-- ── SECTION 6: Vite 生態工具演進時間軸 ── -->
+      <section>
+        <h2>Vite 生態工具演進時間軸</h2>
+        <div class="card">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="date">2024-10</div>
+              <div class="event">ViteConf 2024 — Evan You 宣布 VoidZero 公司成立</div>
+              <div class="detail">Oxc、Rolldown 統一工具鏈方向確立；Rolldown 進入 beta</div>
+            </div>
+            <div class="timeline-item">
+              <div class="date">2024-11</div>
+              <div class="event">Vite 6 釋出</div>
+              <div class="detail">Environment API，Rolldown 作為實驗性選項可用</div>
+            </div>
+            <div class="timeline-item">
+              <div class="date">2025-10</div>
+              <div class="event">ViteConf 2025 — Vite+ 官方 CLI 宣布</div>
+              <div class="detail">整合 Oxlint、Rolldown、tsdown；monorepo task runner 功能</div>
+            </div>
+            <div class="timeline-item">
+              <div class="date">2026-03-11</div>
+              <div class="event">Oxlint JS Plugins alpha 釋出</div>
+              <div class="detail">大多數 ESLint plugin 可直接在 Oxlint 使用</div>
+            </div>
+            <div class="timeline-item">
+              <div class="date">2026-03-12</div>
+              <div class="event">Vite 8.0 正式釋出 — Rolldown 成預設 bundler</div>
+              <div class="detail">10–30x faster builds；100x 記憶體下降；完整 plugin 相容性</div>
+            </div>
+            <div class="timeline-item">
+              <div class="date">2026-03</div>
+              <div class="event">vite-plus 0.1.x — Content-based Task Caching</div>
+              <div class="detail">
+                作者 VoidZero Inc.；<code>vp run -r</code> 依 dep order 跑全部，content-based cache
+                讓未改 package 瞬間完成
+              </div>
+            </div>
+            <div class="timeline-item highlight">
+              <div class="date">2026-06-05</div>
+              <div class="event">🔥 Cloudflare 宣布收購 VoidZero</div>
+              <div class="detail">
+                Evan You 全隊加入 Cloudflare；$1M Vite 生態基金；所有工具維持 open-source
+              </div>
+            </div>
+            <div class="timeline-item" style="opacity: 0.6">
+              <div class="date">未來</div>
+              <div class="event">Vite+ 公開預覽 + Cloudflare 平台整合</div>
+              <div class="detail">
+                Vite / Rolldown / Oxc 深度整合進 Cloudflare 部署平台（roadmap 未確認）
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 7: Q&A 風險評估 ── -->
+      <section>
+        <h2>Q&A 風險評估 <span class="tag">Talk 專用</span></h2>
+        <div class="risk-section">
+          <div class="risk-card safe">
+            <h4 class="green">✓ 安全可講（自己親身用過，可當場開 code）</h4>
+            <ul>
+              <li>pnpm workspace 結構 / semantic catalogs — 這個 portfolio repo 就是活的例子</li>
+              <li>循環依賴 → chunk size → Web Vitals 的因果鏈 — 邏輯清楚，可推論</li>
+              <li>CLAUDE.md / AGENTS.md 作為 machine-readable context — 自己有用</li>
+              <li>dependency-cruiser boundary rules — 設定檔可展示</li>
+              <li>「過去 infra 為人設計 vs. 現代 infra 為 AI agent 設計」的框架論述</li>
+            </ul>
+          </div>
+
+          <div class="risk-card caution">
+            <h4 class="yellow">△ 可講，但要加免責聲明</h4>
+            <ul>
+              <li>
+                Oxc no-cycle — 說「已實作，但 TypeScript path alias 有邊際情況，使用前要測試」
+              </li>
+              <li>
+                Rolldown / Vite 8 效能 — 說「Vite 8 已使用 Rolldown（2026-03），官方說 10–30x faster
+                builds」，強調「官方數字，未自測」
+              </li>
+              <li>
+                NX 免費功能邊界 — 說「目前本地 cache / affected / graph 免費」，加「NX
+                版本可能調整」
+              </li>
+              <li>Oxc 比 ESLint 快 — 說「顯著更快（官方 benchmark 4–16x）」，不說 100x</li>
+              <li>
+                Cloudflare 收購 VoidZero — 可提，說「最新消息（2026-06-05）」，但說明工具仍
+                open-source
+              </li>
+              <li>
+                vite-plus task caching vs NX affected — 要說清楚：<code>vp run -r</code> 跑全部
+                package，content-based cache 讓未改的瞬間完成（replay），這跟 NX affected
+                直接跳過不同。混淆了容易被追問
+              </li>
+            </ul>
+          </div>
+
+          <div class="risk-card danger">
+            <h4 class="red">✗ 高風險，完全不提或跳過</h4>
+            <ul>
+              <li>NX Cloud 具體定價 — 不提，pricing 可能變</li>
+              <li>NX vs Turbo 哪個更好 — 不評論，說「各有定位」</li>
+              <li>具體效能數字（非自己測的）— 一律說「官方數字」或不說</li>
+              <li>eslint-plugin-vue 在 Oxlint 的相容性細節 — 複雜，容易說錯</li>
+              <li>Cloudflare 收購後的具體 roadmap — 尚未官方確認</li>
+              <li>vite-plus 是否有 remote cache — 尚不確定，不提</li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--surface2);
+            border-radius: 10px;
+            font-size: 13px;
+            border-left: 4px solid var(--purple);
+          "
+        >
+          <strong style="color: var(--purple)">萬用收尾句（被問到不熟的問題）：</strong><br />
+          「這個細節我自己的 repo 沒有實際跑過，我不想在這邊亂說。建議你直接看官方的 changelog 或
+          benchmark，比我的記憶準確。」
+        </div>
+      </section>
+
+      <!-- ── SECTION 8: 決策建議 ── -->
+      <section>
+        <h2>使用情境建議</h2>
+        <div class="verdict">
+          <h3>你的情況（milo-vite-plus 規模）應該選什麼？</h3>
+          <div class="verdict-grid">
+            <div class="verdict-item">
+              <h4>中小型 Vue/Nuxt monorepo（&lt;10 packages）</h4>
+              <ul>
+                <li style="color: var(--green)">✓ pnpm workspaces（結構即邊界）</li>
+                <li style="color: var(--green)">✓ Oxlint no-cycle（快速偵測）</li>
+                <li style="color: var(--green)">✓ dependency-cruiser（graph 視覺化）</li>
+                <li style="color: var(--green)">✓ Vite 8 + Rolldown（production）</li>
+                <li style="color: var(--text-muted)">○ NX 非必要</li>
+              </ul>
+            </div>
+            <div class="verdict-item">
+              <h4>大型 monorepo（10+ packages，需要 CI governance）</h4>
+              <ul>
+                <li style="color: var(--green)">✓ NX Free（affected + boundary tags）</li>
+                <li style="color: var(--green)">✓ @nx/nuxt plugin</li>
+                <li style="color: var(--green)">✓ nx graph（互動式，可匯出）</li>
+                <li style="color: var(--text-muted)">○ NX Cloud 視需要（distributed cache）</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SOURCES ── -->
+      <section>
+        <h2>來源</h2>
+        <div class="sources">
+          <div class="source-item">
+            vite.dev/blog/announcing-vite8 — Vite 8 official release notes
+          </div>
+          <div class="source-item">
+            voidzero.dev/posts/announcing-rolldown-vite — Rolldown 整合宣告
+          </div>
+          <div class="source-item">
+            voidzero.dev/posts/voidzero-cloudflare — Cloudflare 收購聲明
+          </div>
+          <div class="source-item">
+            voidzero.dev/posts/announcing-vite-plus-alpha — Vite+ alpha 功能清單
+          </div>
+          <div class="source-item">
+            oxc.rs/blog/2026-03-11-oxlint-js-plugins-alpha — Oxlint JS Plugins alpha
+          </div>
+          <div class="source-item">
+            github.com/oxc-project/oxc/discussions/6906 — import/no-cycle TypeScript ESM edge cases
+          </div>
+          <div class="source-item">
+            github.com/oxc-project/oxc/issues/20551 — TS path alias cycle detection
+          </div>
+          <div class="source-item">
+            nx.dev/docs/features/enforce-module-boundaries — @nx/enforce-module-boundaries 文件
+          </div>
+          <div class="source-item">
+            nx.dev/blog/2024-02-06-nuxt-js-support-in-nx — @nx/nuxt plugin 釋出
+          </div>
+          <div class="source-item">github.com/sverweij/dependency-cruiser — dependency-cruiser</div>
+          <div class="source-item">
+            antfu.me/posts/categorize-deps — antfu「Categorize Your Dependencies」semantic catalog
+            命名模式
+          </div>
+          <div class="source-item">
+            github.com/antfu/eslint-plugin-pnpm — eslint-plugin-pnpm（enforce catalog usage）
+          </div>
+          <div class="source-item">
+            github.com/vuejs/core — Vue 3 monorepo（pnpm workspace，無 NX）
+          </div>
+          <div class="source-item">
+            github.com/vitejs/vite — Vite monorepo（pnpm workspace，無 NX）
+          </div>
+          <div class="source-item">
+            github.com/nuxt/nuxt — Nuxt 3 monorepo（pnpm workspace，無 NX）
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- /container -->
+
+    <div style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 12px">
+      研究日期：2026-06-08 · 用途：v-taiwan Meetup 2026-07-18 talk 準備 · 非公開文件
+    </div>
+  </body>
+</html>
