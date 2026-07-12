@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.13.0](https://github.com/Michael0520/milo.me/compare/v0.12.1...v0.13.0) (2026-07-12)
+
+
+### Features
+
+* **doc:** add "2026 前端 Infra 新地圖" tech article ([#30](https://github.com/Michael0520/milo.me/issues/30)) ([c13ba60](https://github.com/Michael0520/milo.me/commit/c13ba6085362fb158faccee1f32f6deddb119a22))
+* **footer:** snappier spring for interactive logotype ([#27](https://github.com/Michael0520/milo.me/issues/27)) ([d08f88f](https://github.com/Michael0520/milo.me/commit/d08f88f8aa15abe5b8a924943f631869c9c190c2))
+* **social-links:** show handle in tooltip ([#29](https://github.com/Michael0520/milo.me/issues/29)) ([5ca78f0](https://github.com/Michael0520/milo.me/commit/5ca78f0d9de5b91b89b23aa580b72b6627f0f98f))
+
 ## [0.12.1](https://github.com/Michael0520/milo.me/compare/v0.12.0...v0.12.1) (2026-07-05)
 
 
