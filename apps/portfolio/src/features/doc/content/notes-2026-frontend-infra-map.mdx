@@ -103,13 +103,13 @@ flowchart LR
 
 <Callout title="現實檢查：方向確定，但還沒到終點">
 
-日本團隊 ANDPAD 把這些工具真的[放進生產環境用過](https://speakerdeck.com/andpad/vue-nuxt-oxc-in-production)，結論是格式化工具 Oxfmt 可以現在就換掉 Prettier、一點問題都沒有，但 linter 那支 Oxlint 還沒辦法完全取代 ESLint，尤其 Vue 的 `.vue` 單檔元件還吃不太下，所以務實的做法是格式化先換、檢查混著用。
+日本團隊 ANDPAD 把這些工具真的[放進生產環境用過](https://speakerdeck.com/andpad/vue-nuxt-oxc-in-production)，結論是格式化工具 Oxfmt 可以現在就換掉 Prettier、一點問題都沒有，但 linter 那支 Oxlint 還沒辦法完全取代 ESLint，`.vue` 它只吃得下 script 那一半，template 還讀不懂，所以務實的做法是格式化先換、檢查混著用。
 
 </Callout>
 
 方向很確定，但你不用今天就全部換掉。
 
-而 Vue 這塊，其實已經有人在補洞了，Vue core 的 ubugeeei 做了一個叫 [vize](https://github.com/ubugeeei-prod/vize) 的 Rust 工具鏈，一份 parser 專門吃 `.vue`，同時餵編譯、lint、格式化、型別檢查跟 LSP，把上面那套「共用 parser」的邏輯原封不動搬進 Vue。
+而 Vue 這塊，其實已經有人在補洞了，Vue core 的 ubugeeei 做了一個叫 [vize](https://github.com/ubugeeei-prod/vize) 的 Rust 工具鏈，一份 parser 專門吃 `.vue`，同時餵編譯、lint、格式化、型別檢查跟 LSP，把上面那套「共用 parser」的邏輯原封不動搬進 Vue，甚至做了 oxlint plugin 能掛進 Oxlint 一起跑，兩邊是互補而不是對打。
 
 它自己的 benchmark 剛好是個乾淨的例子，lint 快了 209 倍、SFC 編譯快 55 倍，但整條 build 只快 1.1 倍。
 
