@@ -28,3 +28,6 @@ dist-ssr
 
 # git worktrees
 .worktrees/
+
+# scratch / debug artifacts
+.tmp-debug/
