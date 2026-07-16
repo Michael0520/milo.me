@@ -51,6 +51,15 @@ category: tech
 
 這個定義先擺著，因為他那篇 2023 年的文章，剛好就是我們今天要拿來對照的「過去」，而在 2023 年，Infra 攔的是人的錯，這句話你先收著，等一下會回來繼續解析。
 
+接下來就順著三波走，先給你一張路線圖，你會發現這三波其實都在對同一件事下手，就是「驗證」。
+
+```mermaid
+flowchart LR
+  W1["第一波 · Rust 化<br/>讓驗證變便宜"] --> W2["第二波 · 統一化<br/>讓驗證跑滿當護欄"] --> W3["第三波 · AI 化<br/>讓驗證拿去攔 AI"]
+```
+
+第一波讓驗證變便宜到你敢一直跑，第二波把跑滿的驗證變成沒缺口的護欄，第三波把這片護欄轉過來對準真正的目標，AI 的錯，一路讀下來你就會看到「驗證」怎麼一步步被推成戰場。
+
 ---
 
 ## 第一波：Rust 化，重點不是快，是便宜
@@ -319,17 +328,106 @@ flowchart LR
 
 講到這裡都還是趨勢跟觀念，你可能會想，講得很好，但真的有人這樣做嗎？有，我自己就在做。
 
-我是個閒不下來的人（這點認識我的人大概都知道），這些東西我不會只是看看，會手癢把它真的做出來，剛好有三個，各自對應今天的三波，這裡先講個感覺，完整的做法我留到下一篇再聊。
+我是個閒不下來的人（這點認識我的人大概都知道），這些東西我不會只是看看，會手癢把它真的做出來，這裡挑兩個跟你分享，一個是客製化的 linter，一個是後端驅動的 code-gen，第一個先講個感覺，第二個想多講一點，因為它剛好把今天兩條軸都打中了。
 
-第一個對應第一波的 Rust 化，我用 Rust 的生態直接打造內部工具，這在以前我們大概會覺得那是寫系統的人才碰的東西、跟前端無關，但現在前端工程師也能自己用 cargo 造工具了。
+第一個是我自己做的一個客製化 linter，對應的是錯誤那條軸，我把「只有我們團隊才懂的眉角」寫成規則讓機器自動攔，這正好就是通用工具永遠攔不到、但 AI 幾乎一定會犯的那種錯，你得把規矩變成護欄，它才接得住。
 
-第二個對應錯誤軸，我做了一個客製化的 linter，把「只有我們團隊才懂的眉角」寫成規則讓機器自動攔，這正好就是通用工具永遠攔不到、但 AI 幾乎一定會犯的那種錯，你得把規矩變成護欄，它才接得住。
+第二個是我自己最得意的，對應第三波的 AI 化，是一條後端驅動的程式碼生成 pipeline，先講那個大家應該都很痛的場景，後端改了 API，前端就得跟著改，一個欄位動了，前端的型別、介面、呼叫的地方全都要手動對，又重複、又無聊、又超容易漏，而且常常是上線了才發現對不上。
 
-第三個是我自己最得意的，對應第三波的 AI 化，一個後端驅動的程式碼生成，後端 repo 一更新，系統就自動發一個 MR 到前端、自動重新產生型別跟介面，再讓 AI 去分析「這次後端的改動前端哪裡要跟著調」，把改動也一起放進那個 MR。
+我的做法是把這件事整條自動化，CI 每次都盯著後端的 `openapi.yaml`，一有變動就用 [Hey API](https://heyapi.dev/) 的 `@hey-api/openapi-ts` 重新產生 TypeScript 型別，然後自動發一個 code-gen MR 到前端 repo。
 
-這個東西剛好同時打中兩條軸，自動發 MR、自動 gen 介面是消滅重複，讓 AI 判斷哪裡要改、外面再包一層我的 pipeline 當護欄是攔錯誤，而且攔的是 AI 自己的錯。
+<FlowDiagram
+  title="後端驅動的 code-gen pipeline"
+  nodes={[
+    { label: "後端 repo merge", type: "start" },
+    { label: "openapi.yaml 更新" },
+    {
+      type: "decision",
+      label: "CI 偵測 spec 有變?",
+      branches: [
+        { condition: "沒變", steps: [{ label: "跳過" }] },
+        {
+          condition: "有變",
+          steps: [
+            { label: "Hey API codegen", annotation: "@hey-api/openapi-ts" },
+            { label: "自動發 code-gen MR", annotation: "到前端 repo" },
+          ],
+        },
+      ],
+    },
+    { label: "AI 分析前端要改哪", annotation: "補進同一個 MR" },
+    { label: "pipeline 護欄", annotation: "lint · type · test" },
+    { label: "高風險由人看最後一眼", type: "end" },
+  ]}
+/>
 
-AI 負責生產，我做的 infra 負責接住它，這句話已經活生生跑在我自己的工作裡了。
+這條 pipeline 剛好同時打中今天兩條軸，把型別自動生出來是消滅重複，確保前端有正確跟著改到是攔錯誤，我先講重複那半，再回頭講錯誤那半。
+
+先講重複那半，我會挑 Hey API，是因為它的輸出是確定性的，同一份 spec 進去、每次出來的 code 都一樣，所以前端的型別永遠跟後端是同一個來源，沒人手抄、也不會兩邊各寫一份慢慢漂掉，光這一步，就把「對型別」這件重複勞動整個收掉了。
+
+錯誤那半，關鍵其實在前端的架構，如果那個 interface 很複雜，我不會讓畫面元件直接去用生成出來的型別，而是在前端 repo 疊一層 UI model，元件只認這層 model，整個前端只有 model 這一個地方碰生成的原始型別。
+
+```ts title="ui-model/user.ts — 整個前端唯一 import 生成型別的地方"
+import type { UserDTO } from "@/api/__generated__"; // codegen 產物，raw
+
+// 畫面只認這個乾淨的 model
+export interface UserVM {
+  id: string;
+  name: string;
+  isActive: boolean;
+}
+
+export function toUserVM(dto: UserDTO): UserVM {
+  return {
+    id: dto.uuid,
+    name: dto.full_name ?? dto.email,
+    isActive: dto.status === "ACTIVE",
+  };
+}
+```
+
+<ArchitectureDiagram
+  layers={[
+    {
+      name: "後端 Spec",
+      tech: "openapi.yaml",
+      icon: "backend",
+      items: [{ name: "openapi.yaml", description: "API 形狀的單一來源" }],
+    },
+    {
+      name: "生成層",
+      tech: "@hey-api/openapi-ts",
+      icon: "storage",
+      items: [{ name: "raw interface", description: "不直接給元件用" }],
+    },
+    {
+      name: "UI Model",
+      tech: "adapter",
+      icon: "frontend",
+      items: [{ name: "toUserVM()", description: "唯一碰 raw 的邊界" }],
+    },
+    {
+      name: "元件層",
+      tech: "React Components",
+      icon: "frontend",
+      items: ["元件 A", "元件 B", "元件 …"],
+    },
+  ]}
+/>
+
+會這樣多疊一層，是想把 TypeScript 的優勢整個榨出來，因為依賴變得乾淨又單向，`openapi.yaml` 一改，型別錯誤就會沿著這條鏈自己冒出來，raw 一動，UI model 先紅，用到那個欄位的元件跟著紅，TS 會把每個受影響的點都幫你標出來，想漏改都難。
+
+這剛好就是我第一波埋的那句話，在這裡真的發生了，結構越乾淨、機器越幫得上忙，依賴夠乾淨、夠單向，TS 這台機器才追得到底。
+
+<Callout title="但這條保證有前提">
+
+這條型別鏈只有在「大家真的都走 UI model」的時候才成立，只要有人圖方便繞過去、直接 import 生成型別，保證就破了，所以我會再加一條 lint 規則守住這個邊界，禁止 model 以外的地方 import raw，這剛好又接回上面那個客製 linter，另外 type check 一定要是 CI 擋 merge 的關卡，不然自動發的 MR 只會變成一堆沒人理的紅點，這就是第二波「CI 從省變守」在撐著。
+
+</Callout>
+
+不過型別鏈能保證的只有「結構」對不對，萬一後端把一個欄位型別沒變、但語意偷偷換了，TS 就不會紅了，這種改動還是得靠後半那段，讓 AI 去判斷前端邏輯要怎麼跟，外面再包測試跟 pipeline 當護欄，這也剛好呼應第三波那句，AI 失敗常常是因為環境太模糊，而我這層乾淨的結構，等於先幫 AI 把環境理乾淨了。
+
+所以這個案例剛好同時打中兩條軸，codegen 把重複收掉是消滅重複，型別鏈加上 AI 加上護欄是攔錯誤，而且攔的是 AI 自己的錯，說到底就一句，AI 負責生產，我做的 infra 負責接住它，這句話已經活生生跑在我自己的工作裡了。
 
 ---
 

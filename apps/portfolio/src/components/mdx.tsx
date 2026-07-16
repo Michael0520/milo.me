@@ -28,8 +28,10 @@ import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
 import { remarkCodeImport } from "@/lib/remark-code-import";
 import { cn } from "@/lib/utils";
 
+import { ArchitectureDiagram } from "./architecture-diagram";
 import { Callout } from "./callout";
 import { CodeTabs } from "./code-tabs";
+import { FlowDiagram } from "./flow-diagram";
 import { ComponentPreviewV2 as ComponentPreview } from "./component-preview-v2";
 import { FramedImage, IframeEmbed, YouTubeEmbed } from "./embed";
 import { mdxCodeBlockComponents } from "./mdx-code-block";
@@ -150,9 +152,15 @@ const components: MDXRemoteProps["components"] = {
   Testimonial,
   PhotoCarousel,
   Photo,
+  FlowDiagram,
+  ArchitectureDiagram,
 };
 
 const options: MDXRemoteProps["options"] = {
+  // Allow JSX attribute expressions (e.g. nodes={[...]}) in our own trusted MDX content.
+  // next-mdx-remote v6 strips all JS expressions by default (blockJS: true);
+  // blockDangerousJS stays on and still blocks eval-like calls.
+  blockJS: false,
   mdxOptions: {
     remarkPlugins: [remarkGfm, remarkCodeImport],
     rehypePlugins: [
