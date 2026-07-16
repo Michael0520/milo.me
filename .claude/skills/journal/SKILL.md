@@ -226,6 +226,13 @@ Components available in blog posts (defined in `src/components/mdx.tsx`):
 - `<Tabs>` + `<TabsList>` + `<TabsTrigger>` + `<TabsContent>` — tabbed content. Note the 4 separate components, not a single `<Tab>`.
 - `<Testimonial>` — quote card with author.
 
+### Diagrams (prefer over mermaid — matches site design)
+
+- `<FlowDiagram title="..." nodes={[...]} />` — vertical flowchart. Node: `{ label, annotation?, type?: "start"|"process"|"decision"|"end" }`; decision node: `{ type: "decision", label, branches: [{ condition, steps: [...] }, { condition, steps: [...] }] }`.
+- `<ArchitectureDiagram layers={[...]} />` — layered architecture. Layer: `{ name, tech, items: (string | { name, description })[], icon?: "frontend"|"backend"|"storage" }`.
+- Array/object props work because `blockJS: false` is set in `mdx.tsx` (next-mdx-remote v6 strips JS expressions by default — do not remove that option).
+- Fallback ` ```mermaid ` only for shapes these can't express (e.g. side-by-side path comparison).
+
 ### Media
 
 - `<YouTubeEmbed id="..." />` — YouTube video
@@ -242,7 +249,6 @@ Components available in blog posts (defined in `src/components/mdx.tsx`):
 ### NOT available (do not use)
 
 - `<Tab>` (old single-component format) — use the 4 Tabs components instead
-- `<FlowDiagram>` / `<ArchitectureDiagram>` — use ```mermaid code block or markdown
 - `<Files>` / `<Folder>` / `<File>` — use plaintext code block
 - `<CodeBlockCommand>` — not wired up (npm variant switcher)
 
