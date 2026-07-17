@@ -106,18 +106,33 @@ Oxlint 取代 ESLint 也是同一個路數，官方 benchmark 是五十到一百
 
 你想想以前的專案，ESLint 解析一次程式碼、Prettier 再解析一次、tsc 又解析一次，同一份檔案被拆成語法樹拆了三四遍，每個工具都在重造輪子，Oxc 這類工具反過來，讓 parser、linter、formatter、transformer 共用同一套解析跟語意分析，一份 code 只拆一次、後面大家接著用，省下來的就是那幾十倍。
 
-```mermaid
-flowchart LR
-  src1["原始碼"] --> o1["ESLint 解析"]
-  src1 --> o2["Prettier 解析"]
-  src1 --> o3["tsc 解析"]
-  src2["原始碼"] --> ast["Oxc 解析一次"]
-  ast --> n1["lint"]
-  ast --> n2["format"]
-  ast --> n3["transform"]
-```
+<ArchitectureDiagram
+  layers={[
+    {
+      name: "舊世代",
+      tech: "同一份 code 被 parse 三遍",
+      icon: "backend",
+      items: [
+        { name: "ESLint", description: "自己 parse 一次" },
+        { name: "Prettier", description: "再 parse 一次" },
+        { name: "tsc", description: "又 parse 一次" },
+      ],
+    },
+    {
+      name: "Oxc 世代",
+      tech: "parse 一次，大家共用",
+      icon: "frontend",
+      items: [
+        { name: "parser", description: "只拆一次" },
+        { name: "lint" },
+        { name: "format" },
+        { name: "transform" },
+      ],
+    },
+  ]}
+/>
 
-上排是舊世代，同一份 code 被 parse 三遍，下排是 Oxc，只 parse 一次、三個工具共用同一份結果，說穿了，infra 的第一軸「消滅重複」，這次是用在了 infra 自己身上。
+上層是舊世代，同一份 code 被 parse 三遍，下層是 Oxc，只 parse 一次、三個工具共用同一份結果，說穿了，infra 的第一軸「消滅重複」，這次是用在了 infra 自己身上。
 
 所以快只是表面，底下真正發生的是，跑一次完整驗證的成本整個被顛覆了，以前跑一輪完整的 lint、type check、build，是要精打細算的，吃 CPU、吃時間、吃 CI 費用，算力在過去是稀缺資源，每次驗證都要評估成本負擔值不值得。
 
@@ -174,17 +189,26 @@ flowchart LR
 
 我們回來看 Kyle 2023 年那篇文章，裡面有一張圖我印象很深，是他幫一個專案建 infra 時，要親手接的工具。
 
-```plaintext title="2023：一個專案的前端工具鏈"
-ESLint           # 檢查
-Prettier         # 格式化
-husky            # git hooks
-lint-staged      # 只檢查改動的檔案
-Renovate         # 依賴更新
-bundle analyzer  # 打包體積分析
-madge            # 循環相依偵測
-Knip             # 找出沒用到的檔案 / 匯出
-…                # 還有十幾個
-```
+<ArchitectureDiagram
+  layers={[
+    {
+      name: "2023・一個專案的前端工具鏈",
+      tech: "每一個都要自己裝、自己設定、自己接",
+      icon: "backend",
+      items: [
+        { name: "ESLint", description: "檢查" },
+        { name: "Prettier", description: "格式化" },
+        { name: "husky", description: "git hooks" },
+        { name: "lint-staged", description: "只檢查改動的檔案" },
+        { name: "Renovate", description: "依賴更新" },
+        { name: "bundle analyzer", description: "打包體積分析" },
+        { name: "madge", description: "循環相依偵測" },
+        { name: "Knip", description: "找出沒用到的檔案" },
+        { name: "…還有十幾個" },
+      ],
+    },
+  ]}
+/>
 
 每一個都要單獨裝、單獨設定、單獨維護，還要想辦法讓它們彼此相容，光是把這堆黏在一起又不打架，就是一份全職工作了，這就是當年前端 Infra 的樣子，一堆工具各自維護，自己則是要將它們組裝起來使用。
 
