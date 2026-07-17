@@ -31,10 +31,22 @@ category: tech
 
 那要怎麼看懂這張地圖，我自己是抓一個很簡單的框架，前端 Infra 從以前到現在，一直只在解決兩件事，一是重複，那些每次都要做、又很容易漏掉的事交給機器做，二是錯誤，在問題進到正式環境之前先把它擋下來。
 
-| 兩條軸     | 在做的事       | 這些年的變化                   |
-| ---------- | -------------- | ------------------------------ |
-| **重複性** | 自動化重複勞動 | 幾十年沒變                     |
-| **錯誤**   | 攔截錯誤       | 從攔「人」到攔「AI」，正在反轉 |
+<ArchitectureDiagram
+  layers={[
+    {
+      name: "重複性",
+      tech: "自動化重複勞動",
+      icon: "backend",
+      items: [{ name: "幾十年沒變", description: "你本來就懂的那一半" }],
+    },
+    {
+      name: "錯誤",
+      tech: "攔截錯誤",
+      icon: "storage",
+      items: [{ name: "正在反轉", description: "從攔「人」到攔「AI」" }],
+    },
+  ]}
+/>
 
 這兩條你先記著就好，因為等一下你會發現，其中一條幾十年來幾乎沒變過，另一條，正在我們眼前整個翻過來，而今天的主角就是後面那條。
 
@@ -75,13 +87,22 @@ category: tech
 
 過去一兩年，你可能有聽過 Oxlint、Rolldown、Vite 8 這些名字，它們表面上各做各的，底層卻藏著同一件事，都改用 Rust 重寫，不再是 JavaScript 了，把它們攤開來看，這一波其實是一場滿全面的世代交替，每一個舊的 JS 工具，都被一個新的原生語言工具接手。
 
-| 舊工具（JS）     | 新工具（原生語言）      | 做的事   |
-| ---------------- | ----------------------- | -------- |
-| ESLint           | Oxlint（Rust）          | 檢查     |
-| Prettier         | Oxfmt（Rust）           | 格式化   |
-| esbuild / Rollup | Rolldown（Rust）        | 打包     |
-| Babel            | Oxc transformer（Rust） | 轉譯     |
-| tsc              | tsgo（Go・TS 7）        | 型別檢查 |
+<ArchitectureDiagram
+  layers={[
+    {
+      name: "世代交替",
+      tech: "JS 工具 → 原生語言工具",
+      icon: "frontend",
+      items: [
+        { name: "ESLint → Oxlint", description: "檢查・Rust" },
+        { name: "Prettier → Oxfmt", description: "格式化・Rust" },
+        { name: "esbuild / Rollup → Rolldown", description: "打包・Rust" },
+        { name: "Babel → Oxc transformer", description: "轉譯・Rust" },
+        { name: "tsc → tsgo", description: "型別檢查・Go" },
+      ],
+    },
+  ]}
+/>
 
 第一個感受當然是快，而且快得有點誇張。
 
