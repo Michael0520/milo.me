@@ -101,3 +101,10 @@ Talk cards come from `apps/portfolio/src/features/portfolio/data/talks.ts`. Each
 - Node engine warning (`wanted node 22.x`) on install is benign.
 - `apps/slides` intentionally stays on real `vite` (not `vite-plus`) and its own `catalog:slides` lane in `pnpm-workspace.yaml`.
 - The `workshop/code4taiwan-2026` branch still holds a deck in the **old** `drafts/.../slidev/` layout — when it merges, migrate it into the `apps/slides/<date>/` structure above and add its build script.
+- **Stray "Goto" slide-list overlay after a rebuild** — a numbered list of all slides (untitled ones show `undefined`) fixed at the top-right, visible on load. Root cause: Slidev's built-in `Goto.vue` renders its autocomplete with `v-if="result.length > 0"` and does **not** guard on `showGotoDialog`; `fuse.js` ≥ 7.5 returns _all_ items for `search("")`, so the empty/closed goto shows its full list. Decks whose published build predates the fuse bump don't show it — only freshly rebuilt decks do. Fix (in each deck's `style.css`, no dep changes so no Vercel lockfile risk):
+  ```css
+  .fixed.right-5.-top-20 .autocomplete-list {
+    display: none !important;
+  }
+  ```
+  This hides the dropdown only while the goto is collapsed (`-top-20`); it still works when the goto is actually opened (`top-5`). Add this when creating or rebuilding any deck.
