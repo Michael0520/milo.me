@@ -31,3 +31,8 @@ dist-ssr
 
 # scratch / debug artifacts
 .tmp-debug/
+
+# Slidev build output must go to apps/portfolio/public/slides, never nested in a deck
+apps/slides/*/portfolio/
+apps/slides/*/dist/
+apps/slides/*/src/dist/
