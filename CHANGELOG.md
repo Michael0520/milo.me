@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.14.0](https://github.com/Michael0520/milo.me/compare/v0.13.0...v0.14.0) (2026-07-18)
+
+
+### Features
+
+* **blog:** flesh out code-gen case with FlowDiagram/ArchitectureDiagram components ([3837ab5](https://github.com/Michael0520/milo.me/commit/3837ab5900a5c135d1d6c6304a4b7dec1c05036d))
+* **blog:** rewrite infra-map article in personal voice, embed talk slides ([21083aa](https://github.com/Michael0520/milo.me/commit/21083aa9cc03d3a44fcfc52069e74b175134b91a))
+* **slides:** migrate Slidev workspace into monorepo ([#33](https://github.com/Michael0520/milo.me/issues/33)) ([fe92f9b](https://github.com/Michael0520/milo.me/commit/fe92f9b17dcf9c2d6a44605493c0567a5c9f2f7b))
+* **talk:** deck rebuild — case-1 catalog 2x2 grid ([ce1963f](https://github.com/Michael0520/milo.me/commit/ce1963f95d1ba1a3f06ed61ea6fa5ccd16c6b5a2))
+* **talk:** deck rebuild — case-section redesign (38 slides) ([2ed7bbe](https://github.com/Michael0520/milo.me/commit/2ed7bbed5f5b3f48631ea229f3ab68366727d921))
+* **talk:** deck rebuild — plain titles for deep-dive slides, Kyle ref relocated ([88fd83e](https://github.com/Michael0520/milo.me/commit/88fd83ef0a576e9c3e4feefb03d78085b7497b74))
+* **talk:** deck rebuild — TS7 Go visual on the cheap slide ([5a6163f](https://github.com/Michael0520/milo.me/commit/5a6163f251d8d7394cc72b1c8b9950fe169bf6ec))
+* **talk:** rebuild v-taiwan deck — add opening agenda slide ([329d18b](https://github.com/Michael0520/milo.me/commit/329d18b9c0b8eefdc8c095c55dc83c2ef8100e8d))
+* **talk:** rebuild v-taiwan deck — Code for Taiwan + event slides, three-wave roadmap ([bc685bb](https://github.com/Michael0520/milo.me/commit/bc685bb96577366ca4e0da1ef6f40304e2c87da9))
+* **talk:** rebuild v-taiwan deck — two cases, Fortes layer, hand-drawn diagrams ([65342be](https://github.com/Michael0520/milo.me/commit/65342be3ed54ab585b6114a7f8bcb3a8d4393f86))
+* **talk:** restructure article, deck, and script around two mirrored loops ([d61502e](https://github.com/Michael0520/milo.me/commit/d61502e2da07c61fd4bb24d106786f34f0da9ce6))
+* upstream sync (44571d8) ([#31](https://github.com/Michael0520/milo.me/issues/31)) ([aed67ae](https://github.com/Michael0520/milo.me/commit/aed67ae0d8c7c67ab961e1ae3e3eedf8a70f3516))
+
+
+### Bug Fixes
+
+* **slides:** serve SPA fallback for deep deck routes on Vercel ([#35](https://github.com/Michael0520/milo.me/issues/35)) ([31d997c](https://github.com/Michael0520/milo.me/commit/31d997c03617d1881e5875058790c3d56117726b))
+
 ## [0.13.0](https://github.com/Michael0520/milo.me/compare/v0.12.1...v0.13.0) (2026-07-12)
 
 
