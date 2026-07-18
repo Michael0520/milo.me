@@ -21,6 +21,10 @@ vp check --fix
 
 # Verify Vercel compat (Vercel uses pnpm — keep as pnpm)
 cd apps/portfolio && pnpm install --frozen-lockfile
+
+# Slidev decks (source in apps/slides — see /slides skill)
+cd apps/slides && pnpm dev           # default deck (2026-07-18) on :3030
+cd apps/slides && pnpm build         # build all → apps/portfolio/public/slides/<slug>/
 ```
 
 ## Key Directories
@@ -30,7 +34,8 @@ cd apps/portfolio && pnpm install --frozen-lockfile
 - `apps/portfolio/src/features/doc/content/` — Blog posts (MDX)
 - `apps/portfolio/src/config/site.ts` — Nav config, site metadata
 - `apps/portfolio/src/components/command-menu.tsx` — Command palette (Cmd+K)
-- `apps/portfolio/public/slides/` — Slidev presentation builds (excluded from oxlint via `ignorePatterns` in `vite.config.ts`)
+- `apps/slides/` — Slidev deck **sources**, one folder per talk (`YYYY-MM-DD/src/slides.md`); build outputs to portfolio `public/slides/<slug>/`
+- `apps/portfolio/public/slides/` — Slidev presentation **builds** (excluded from oxlint via `ignorePatterns` in `vite.config.ts`)
 
 ## Dependency Management
 
@@ -53,9 +58,10 @@ Components showcase and Blocks are development tools, hidden in production:
 
 ### Talks & Slides
 
-- Talk data is static in `data/talks.ts` (no Slidev dependency at runtime)
-- Slidev HTML builds live in `public/slides/{slug}/` with internal paths rewritten to match slug
-- `slug` is semantic (e.g., `jsdc-2025`), not date-based
+- **Deck sources** live in `apps/slides/<YYYY-MM-DD>/src/slides.md` (Slidev workspace, pnpm). Edit + preview there; the portfolio has no Slidev dependency at runtime.
+- **Build → publish**: `apps/slides` build scripts compile each deck with `--base /slides/<slug>/` straight into `apps/portfolio/public/slides/<slug>/`. The `slug` is semantic (e.g. `jsdc-2025`), not date-based — the date folder → slug mapping lives in `apps/slides/package.json`.
+- **Talk data** is static in `apps/portfolio/.../data/talks.ts`, which references the published `slug`. Keep a slug stable once live.
+- Full workflow (new deck, dev, build, publish, wire into `talks.ts`) is codified in the **`/slides` skill** (`.claude/skills/slides/`).
 
 ## Upstream Tracking
 
