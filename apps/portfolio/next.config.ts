@@ -66,6 +66,15 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      // SPA fallback for Slidev decks: deep routes like /slides/<slug>/3 have no
+      // static file on disk, so serve the deck's index.html and let Slidev's
+      // client router resolve the slide. Runs in the afterFiles phase, so real
+      // assets (index.html, assets/*, images/*) are served directly and never
+      // hit this rule. Replaces Slidev's _redirects, which Vercel ignores.
+      {
+        source: "/slides/:slug/:path*",
+        destination: "/slides/:slug/index.html",
+      },
       {
         source: "/:section(daily|tech|components)/:slug.mdx",
         destination: "/doc.mdx/:slug",
