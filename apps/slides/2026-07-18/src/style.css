@@ -444,3 +444,14 @@ h2 {
   border-image: var(--gradient-instagram) 1;
   padding-left: 1rem;
 }
+
+/*
+ * Fix: the built-in "Goto" quick-nav autocomplete leaves its dropdown rendered
+ * even while the input is collapsed (wrapper still at `-top-20`), so a stray
+ * slide list (with `undefined` rows for untitled slides) overlays the deck on
+ * load. Hide the dropdown while the goto is in its collapsed/inactive position;
+ * it still shows normally once the goto is opened.
+ */
+.fixed.right-5.-top-20 .autocomplete-list {
+  display: none !important;
+}
