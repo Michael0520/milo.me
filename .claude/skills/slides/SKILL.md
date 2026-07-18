@@ -62,6 +62,23 @@ Each `build:<date>` runs `slidev build --base /slides/<slug>/ --out ../portfolio
 
 Optional PDF: `pnpm export:2026-07-18` → `dist/<date>.pdf`.
 
+### Deep-link routing on Vercel (do not remove)
+
+Slidev decks are history-mode SPAs: reloading a deep route like `/slides/<slug>/3`
+has no file on disk, and Vercel **ignores** Slidev's generated `_redirects`
+(Netlify/Cloudflare only). Without a fallback the reload hits the portfolio's 404.
+
+`apps/portfolio/next.config.ts` handles this with one `afterFiles` rewrite:
+
+```ts
+{ source: "/slides/:slug/:path*", destination: "/slides/:slug/index.html" }
+```
+
+It is generic (`:slug`), so **every current and future deck is covered automatically —
+no per-deck action needed**. Do not delete it, or deep-link reloads 404 again. Real
+assets (`assets/*`, `images/*`) are served directly because the rewrite runs in the
+afterFiles phase.
+
 ## Wire into the Talks page
 
 Talk cards come from `apps/portfolio/src/features/portfolio/data/talks.ts`. Each entry's `slug` must match a published `public/slides/<slug>/`. Keep a slug **stable once live** (it's a public URL).
