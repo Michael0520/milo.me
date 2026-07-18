@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/Michael0520/milo.me/compare/v0.14.0...v0.14.1) (2026-07-18)
+
+
+### Bug Fixes
+
+* migrate upstream theme-toggle + code-highlight fixes ([#37](https://github.com/Michael0520/milo.me/issues/37)) ([bb21bda](https://github.com/Michael0520/milo.me/commit/bb21bda06ea877ada4cbeb4c83e11e93d60fa8ed))
+
 ## [0.14.0](https://github.com/Michael0520/milo.me/compare/v0.13.0...v0.14.0) (2026-07-18)
 
 
