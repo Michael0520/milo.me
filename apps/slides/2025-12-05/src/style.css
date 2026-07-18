@@ -1,0 +1,446 @@
+/**
+ * Instagram-inspired theme for JSDC 2025 presentation
+ * Modern web style with gradient colors + Glow Effects
+ */
+
+/* Slidev Code Block Config */
+:root {
+  --slidev-code-padding: 8px 10px;
+  --slidev-code-background: #16161690 !important;
+}
+
+/* Typography Reset */
+h6 {
+  text-transform: initial !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Dark Mode Background */
+.dark #slide-content {
+  background-color: black !important;
+}
+
+/* V-Click Transitions */
+.slidev-vclick-target {
+  transition: opacity 400ms ease;
+}
+
+.slidev-vclick-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Iframe Background */
+iframe {
+  background: black;
+}
+
+/* Rough Annotation Fix */
+.rough-annotation > path[stroke-width="2"] {
+  stroke-width: calc(2px * var(--slidev-slide-scale));
+}
+
+/* Enhanced Code Block */
+.slidev-code {
+  backdrop-filter: blur(10px);
+  border: 1px solid #eee1;
+}
+
+/* Inline code styling (antfu style) */
+:not(pre) > code {
+  background: rgba(196, 181, 253, 0.1);
+  border: 1px solid rgba(196, 181, 253, 0.25);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.9em;
+  color: #c4b5fd;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Instagram Theme Variables */
+:root {
+  /* Instagram signature gradients */
+  --gradient-instagram: linear-gradient(
+    135deg,
+    #833ab4 0%,
+    #fd1d1d 50%,
+    #fcb045 100%
+  );
+  --gradient-purple-pink: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-pink-orange: linear-gradient(135deg, #f77062 0%, #fe5196 100%);
+  --gradient-sunset: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  --gradient-soft: linear-gradient(135deg, #ffe6fa 0%, #d299c2 100%);
+  --gradient-blue-purple: linear-gradient(135deg, #4776e6 0%, #8e54e9 100%);
+  --gradient-warm: linear-gradient(135deg, #ff6b6b 0%, #ffe66d 100%);
+
+  /* Primary colors */
+  --color-instagram-purple: #833ab4;
+  --color-instagram-pink: #fd1d1d;
+  --color-instagram-orange: #fcb045;
+  --color-instagram-blue: #667eea;
+  --color-instagram-rose: #fe5196;
+
+  /* Soft backgrounds */
+  --bg-gradient-subtle: linear-gradient(
+    135deg,
+    rgba(131, 58, 180, 0.05) 0%,
+    rgba(253, 29, 29, 0.05) 50%,
+    rgba(252, 176, 69, 0.05) 100%
+  );
+  --bg-purple-soft: rgba(131, 58, 180, 0.08);
+  --bg-pink-soft: rgba(253, 29, 29, 0.08);
+  --bg-orange-soft: rgba(252, 176, 69, 0.08);
+
+  /* Shadows */
+  --shadow-soft: 0 10px 40px rgba(131, 58, 180, 0.15);
+  --shadow-hover: 0 15px 50px rgba(131, 58, 180, 0.25);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
+
+  /* Border radius */
+  --radius-card: 20px;
+  --radius-button: 12px;
+  --radius-small: 8px;
+}
+
+/* Global slide styles */
+.slidev-layout {
+  background: var(--bg-gradient-subtle) !important;
+}
+
+/* Gradient text effect */
+.gradient-text,
+.text-gradient {
+  background: var(--gradient-instagram);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.gradient-text-purple {
+  background: var(--gradient-purple-pink);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-pink {
+  background: var(--gradient-pink-orange);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Instagram-style cards */
+.instagram-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
+  border-radius: var(--radius-card);
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(131, 58, 180, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.instagram-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-instagram);
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.instagram-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+  border-color: rgba(131, 58, 180, 0.2);
+}
+
+.instagram-card:hover::before {
+  opacity: 1;
+}
+
+/* Gradient backgrounds for sections */
+.bg-instagram-gradient {
+  background: var(--gradient-instagram);
+}
+
+.bg-purple-gradient {
+  background: var(--gradient-purple-pink);
+}
+
+.bg-pink-gradient {
+  background: var(--gradient-pink-orange);
+}
+
+/* Modern button styles */
+.instagram-button {
+  background: var(--gradient-instagram);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-button);
+  font-weight: 600;
+  transition: all 300ms ease;
+  box-shadow: 0 4px 15px rgba(131, 58, 180, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+.instagram-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(131, 58, 180, 0.4);
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 600ms ease-out forwards;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Code block styling */
+.slidev-code {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.05) 0%,
+    rgba(118, 75, 162, 0.05) 100%
+  ) !important;
+  border: 1px solid rgba(131, 58, 180, 0.2) !important;
+  border-radius: var(--radius-small) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Code block filename tab styling */
+.slidev-code-file-name {
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important;
+  color: #e0e0e0 !important;
+  padding: 8px 16px !important;
+  font-size: 0.85em !important;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: var(--radius-small) var(--radius-small) 0 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.slidev-code-file-name::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: #4ade80;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Shiki code wrapper */
+.shiki-container {
+  border-radius: var(--radius-small) !important;
+  overflow: hidden !important;
+}
+
+/* Table styling */
+table {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+table thead {
+  background: var(--gradient-instagram);
+  color: white;
+}
+
+table tbody tr {
+  transition: all 300ms ease;
+}
+
+table tbody tr:hover {
+  background: var(--bg-purple-soft);
+}
+
+/* Emphasis styling */
+em,
+strong {
+  background: linear-gradient(
+    135deg,
+    var(--color-instagram-purple) 0%,
+    var(--color-instagram-pink) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+/* Custom layout enhancements */
+.cover-gradient {
+  background: var(--gradient-instagram);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Responsive grid for cards */
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+/* Glassmorphism effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+}
+
+/* SVG color overrides */
+svg circle[stroke="#86efac"],
+svg rect[stroke="#86efac"],
+svg line[stroke="#86efac"],
+svg path[fill="#86efac"] {
+  stroke: var(--color-instagram-purple) !important;
+  fill: var(--color-instagram-purple) !important;
+}
+
+svg circle[stroke="#a78bfa"],
+svg rect[stroke="#a78bfa"],
+svg path[fill="#a78bfa"] {
+  stroke: var(--color-instagram-pink) !important;
+  fill: var(--color-instagram-pink) !important;
+}
+
+svg circle[stroke="#f87171"],
+svg rect[stroke="#f87171"],
+svg path[fill="#f87171"] {
+  stroke: var(--color-instagram-orange) !important;
+  fill: var(--color-instagram-orange) !important;
+}
+
+/* Slide transitions */
+.slidev-page-enter-active,
+.slidev-page-leave-active {
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slidev-page-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.slidev-page-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+/* Custom utility classes */
+.text-instagram-purple {
+  color: var(--color-instagram-purple);
+}
+.text-instagram-pink {
+  color: var(--color-instagram-pink);
+}
+.text-instagram-orange {
+  color: var(--color-instagram-orange);
+}
+.text-instagram-blue {
+  color: var(--color-instagram-blue);
+}
+.text-instagram-rose {
+  color: var(--color-instagram-rose);
+}
+
+.bg-instagram-purple {
+  background-color: var(--color-instagram-purple);
+}
+.bg-instagram-pink {
+  background-color: var(--color-instagram-pink);
+}
+.bg-instagram-orange {
+  background-color: var(--color-instagram-orange);
+}
+
+/* Glow effects */
+.instagram-glow {
+  box-shadow:
+    0 0 20px rgba(131, 58, 180, 0.5),
+    0 0 40px rgba(253, 29, 29, 0.3),
+    0 0 60px rgba(252, 176, 69, 0.2);
+}
+
+/* Typography enhancements */
+h1 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Special effects for speaker notes */
+.slidev-note {
+  background: var(--bg-gradient-subtle);
+  border-left: 3px solid;
+  border-image: var(--gradient-instagram) 1;
+  padding-left: 1rem;
+}

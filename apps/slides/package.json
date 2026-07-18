@@ -1,0 +1,40 @@
+{
+  "name": "slides",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Slidev presentations for michaello.me — built into apps/portfolio/public/slides/<slug>",
+  "scripts": {
+    "dev": "slidev 2026-07-18/src/slides.md --port 3030",
+    "dev:2025-06-29": "slidev 2025-06-29/src/slides.md --port 3030",
+    "dev:2025-11-29": "slidev 2025-11-29/src/slides.md --port 3030",
+    "dev:2025-12-05": "slidev 2025-12-05/src/slides.md --port 3030",
+    "dev:2026-07-18": "slidev 2026-07-18/src/slides.md --port 3030",
+    "build": "pnpm run build:2025-06-29 && pnpm run build:2025-11-29 && pnpm run build:2025-12-05 && pnpm run build:2026-07-18",
+    "build:2025-06-29": "slidev build 2025-06-29/src/slides.md --base /slides/jsdc-meetup-2025/ --out ../portfolio/public/slides/jsdc-meetup-2025",
+    "build:2025-11-29": "slidev build 2025-11-29/src/slides.md --base /slides/jsdc-2025/ --out ../portfolio/public/slides/jsdc-2025",
+    "build:2025-12-05": "slidev build 2025-12-05/src/slides.md --base /slides/code4taiwan-summit-2025/ --out ../portfolio/public/slides/code4taiwan-summit-2025",
+    "build:2026-07-18": "slidev build 2026-07-18/src/slides.md --base /slides/v-taiwan-2026/ --out ../portfolio/public/slides/v-taiwan-2026",
+    "export:2025-06-29": "slidev export 2025-06-29/src/slides.md --output dist/2025-06-29.pdf",
+    "export:2025-11-29": "slidev export 2025-11-29/src/slides.md --output dist/2025-11-29.pdf",
+    "export:2025-12-05": "slidev export 2025-12-05/src/slides.md --output dist/2025-12-05.pdf",
+    "export:2026-07-18": "slidev export 2026-07-18/src/slides.md --output dist/2026-07-18.pdf"
+  },
+  "dependencies": {
+    "@iconify-json/carbon": "catalog:slides",
+    "@iconify-json/logos": "catalog:slides",
+    "@iconify-json/material-symbols": "catalog:slides",
+    "@iconify-json/ph": "catalog:slides",
+    "@iconify-json/ri": "catalog:slides",
+    "@iconify-json/simple-icons": "catalog:slides",
+    "@iconify-json/twemoji": "catalog:slides",
+    "@slidev/cli": "catalog:slides",
+    "@slidev/client": "catalog:slides",
+    "@slidev/theme-default": "catalog:slides",
+    "seedrandom": "catalog:slides",
+    "unocss": "catalog:slides",
+    "vis-timeline": "catalog:slides"
+  },
+  "devDependencies": {
+    "playwright-chromium": "catalog:slides"
+  }
+}
