@@ -27,11 +27,16 @@
         "zod",
         "@hookform/resolvers",
         "@types/node",
-        "sharp",
         "puppeteer",
         "pnpm"
       ],
       "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "sharp — 0.x package, so a minor bump (0.34 -> 0.35) is a breaking change that Renovate mislabels as 'minor' and would otherwise slip past the held-major lock. Next.js's image pipeline depends on it. Lock minor AND major; only patch within the current 0.34.x is allowed.",
+      "matchPackageNames": ["sharp"],
+      "matchUpdateTypes": ["major", "minor"],
       "enabled": false
     },
     {
