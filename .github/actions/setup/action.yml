@@ -1,0 +1,11 @@
+name: Setup vite-plus
+description: Set up the vite-plus toolchain (with cache) and install dependencies from the frozen lockfile.
+runs:
+  using: composite
+  steps:
+    - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
+      with:
+        cache: true
+    - name: Install
+      shell: bash
+      run: vp install --frozen-lockfile

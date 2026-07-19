@@ -1,6 +1,6 @@
 name: CI
 
-# A: least-privilege default token (was implicit read/write). Jobs opt into more.
+# Least-privilege default token; jobs opt into more.
 permissions:
   contents: read
 
@@ -14,7 +14,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
-  # B: never cancel an in-progress build on main; only supersede PR-branch runs.
+  # Never cancel an in-progress build on main; only supersede PR-branch runs.
   cancel-in-progress: ${{ github.ref_name != 'main' }}
 
 defaults:
@@ -22,10 +22,7 @@ defaults:
     shell: bash
 
 jobs:
-  # C: skip the heavy build when a change touches only non-build paths.
-  # `predicate-quantifier: every` + negation filters = code is 'true' when ANY
-  # changed file is real code, and 'false' only when EVERY change is in the
-  # excluded set. Conservative by design: unknown paths count as code → build runs.
+  # Skip the heavy jobs when a change touches only non-build paths.
   detect-changes:
     runs-on: ubuntu-latest
     permissions:
@@ -54,35 +51,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
-
-      - uses: voidzero-dev/setup-vp@250f29ce396baf5e8f24498e17c0dfdebabc26eb # v1.15.0
-        with:
-          cache: true
-
-      - name: Install
-        run: vp install --frozen-lockfile
-
+      - uses: ./.github/actions/setup
       - name: Check
         run: vp check
-
       - name: Type Check
         run: vp run michaello-portfolio#check-types
-
       - name: Build
         run: vp run michaello-portfolio#build
 
-  # Aggregation gate: the single status check for branch protection. Passes when
-  # build succeeds OR was skipped (docs/slides-only change); fails if build fails.
+  e2e:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.code-changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - uses: ./.github/actions/setup
+      - name: Install Playwright browser
+        run: vp run michaello-portfolio#test:e2e:install
+      - name: Build
+        run: vp run michaello-portfolio#build
+      - name: Run e2e tests
+        run: vp run michaello-portfolio#test:e2e
+
+  # Single aggregation gate: passes when build & e2e succeed OR are skipped
+  # (docs/slides-only change); fails if either fails.
   done:
-    needs: [detect-changes, build]
+    needs: [detect-changes, build, e2e]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: CI result
         run: |
-          result='${{ needs.build.result }}'
-          if [ "$result" = 'failure' ] || [ "$result" = 'cancelled' ]; then
-            echo "CI failed (build: $result)"
-            exit 1
-          fi
-          echo "CI passed (build: $result, code-changed: ${{ needs.detect-changes.outputs.code-changed }})"
+          for pair in "build:${{ needs.build.result }}" "e2e:${{ needs.e2e.result }}"; do
+            name=${pair%%:*}
+            result=${pair##*:}
+            if [ "$result" = 'failure' ] || [ "$result" = 'cancelled' ]; then
+              echo "CI failed ($name: $result)"
+              exit 1
+            fi
+          done
+          echo "CI passed (build: ${{ needs.build.result }}, e2e: ${{ needs.e2e.result }})"
