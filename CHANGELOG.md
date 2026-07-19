@@ -2,10 +2,24 @@
 
 ## [0.15.0](https://github.com/Michael0520/milo.me/compare/v0.14.2...v0.15.0) (2026-07-19)
 
+Milestone release: adopts the applicable subset of [voidzero-dev/vite-plus](https://github.com/voidzero-dev/vite-plus)'s CI/DX patterns.
+
+### Continuous Integration
+
+* path-filtered CI — skip heavy jobs on docs/slides-only changes ([#46](https://github.com/Michael0520/milo.me/issues/46))
+* shared `checkout + setup-vp + install` composite action ([#52](https://github.com/Michael0520/milo.me/issues/52))
+* pin all GitHub Actions to commit SHAs ([#51](https://github.com/Michael0520/milo.me/issues/51)), bumped to node24 majors ([#54](https://github.com/Michael0520/milo.me/issues/54))
+* least-privilege permissions, concurrency guard, and PR cache cleanup ([#46](https://github.com/Michael0520/milo.me/issues/46))
+* Dependabot (GitHub Actions) + Renovate (npm/pnpm catalogs) dependency automation ([#49](https://github.com/Michael0520/milo.me/issues/49), [#55](https://github.com/Michael0520/milo.me/issues/55))
+
+### Tests
+
+* Playwright e2e smoke tests + CI job ([#52](https://github.com/Michael0520/milo.me/issues/52))
 
 ### Miscellaneous Chores
 
-* release v0.15.0 ([7933bf7](https://github.com/Michael0520/milo.me/commit/7933bf768f9ff4f99236d904ac125101e3a054b7))
+* refresh in-range dependencies, drop empty `tools/*` glob, sync docs ([#43](https://github.com/Michael0520/milo.me/issues/43), [#44](https://github.com/Michael0520/milo.me/issues/44), [#45](https://github.com/Michael0520/milo.me/issues/45))
+* replace leftover `bun` with `vp dlx tsx` in dev scripts ([#53](https://github.com/Michael0520/milo.me/issues/53))
 
 ## [0.14.2](https://github.com/Michael0520/milo.me/compare/v0.14.1...v0.14.2) (2026-07-18)
 
