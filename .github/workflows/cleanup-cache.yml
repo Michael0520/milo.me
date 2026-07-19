@@ -1,0 +1,30 @@
+name: Cleanup PR caches
+
+# D: when a PR closes, delete the GitHub Actions caches it created so stale
+# branch caches don't eat into the repo's 10 GB cache budget.
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions: {}
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Delete caches for this PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
+        run: |
+          echo "Fetching cache keys for $BRANCH"
+          keys=$(gh cache list --ref "$BRANCH" --limit 100 --json id --jq '.[].id')
+          set +e  # keep going even if a delete fails
+          for key in $keys; do
+            gh cache delete "$key"
+          done
+          echo "Done"

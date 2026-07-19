@@ -1,20 +1,56 @@
 name: CI
 
+# A: least-privilege default token (was implicit read/write). Jobs opt into more.
+permissions:
+  contents: read
+
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  # B: never cancel an in-progress build on main; only supersede PR-branch runs.
+  cancel-in-progress: ${{ github.ref_name != 'main' }}
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  lint:
+  # C: skip the heavy build when a change touches only non-build paths.
+  # `predicate-quantifier: every` + negation filters = code is 'true' when ANY
+  # changed file is real code, and 'false' only when EVERY change is in the
+  # excluded set. Conservative by design: unknown paths count as code → build runs.
+  detect-changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      code-changed: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          predicate-quantifier: every
+          filters: |
+            code:
+              - '!apps/slides/**'
+              - '!apps/portfolio/public/slides/**'
+              - '!.claude/**'
+              - '!docs/**'
+              - '!openspec/**'
+              - '!**/*.md'
+
+  build:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.code-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -34,3 +70,19 @@ jobs:
 
       - name: Build
         run: vp run michaello-portfolio#build
+
+  # Aggregation gate: the single status check for branch protection. Passes when
+  # build succeeds OR was skipped (docs/slides-only change); fails if build fails.
+  done:
+    needs: [detect-changes, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: CI result
+        run: |
+          result='${{ needs.build.result }}'
+          if [ "$result" = 'failure' ] || [ "$result" = 'cancelled' ]; then
+            echo "CI failed (build: $result)"
+            exit 1
+          fi
+          echo "CI passed (build: $result, code-changed: ${{ needs.detect-changes.outputs.code-changed }})"
