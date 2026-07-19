@@ -1,0 +1,57 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommitTypeAll(chore)",
+    "group:monorepos"
+  ],
+  "labels": ["dependencies"],
+  "minimumReleaseAge": "3 days",
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "github-actions": {
+    "description": "Dependabot owns GitHub Actions updates (.github/dependabot.yml) — avoid duplicate PRs.",
+    "enabled": false
+  },
+  "packageRules": [
+    {
+      "description": "Group non-major npm/catalog updates into a single PR to cut noise.",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "npm minor & patch"
+    },
+    {
+      "description": "Held majors — kept back on purpose (see project memory / CLAUDE.md).",
+      "matchPackageNames": [
+        "zod",
+        "@hookform/resolvers",
+        "@types/node",
+        "sharp",
+        "puppeteer",
+        "pnpm"
+      ],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Next.js pinned to 16.1.7 (16.2.x dev-server memory leak) — no updates.",
+      "matchPackageNames": ["next"],
+      "enabled": false
+    },
+    {
+      "description": "Slidev held at 52.6.0 — 52.15+ ships Vite 8, which breaks the shared-asset symlinks in apps/slides.",
+      "matchPackageNames": ["@slidev/cli", "@slidev/client", "@slidev/theme-default"],
+      "enabled": false
+    },
+    {
+      "description": "vite-plus toolchain — bumped deliberately, not automatically.",
+      "matchPackageNames": [
+        "vite-plus",
+        "@voidzero-dev/vite-plus-core",
+        "@voidzero-dev/vite-plus-test"
+      ],
+      "enabled": false
+    }
+  ]
+}
