@@ -23,13 +23,7 @@
     },
     {
       "description": "Held majors — kept back on purpose (see project memory / CLAUDE.md).",
-      "matchPackageNames": [
-        "zod",
-        "@hookform/resolvers",
-        "@types/node",
-        "puppeteer",
-        "pnpm"
-      ],
+      "matchPackageNames": ["zod", "@hookform/resolvers", "@types/node", "puppeteer", "pnpm"],
       "matchUpdateTypes": ["major"],
       "enabled": false
     },
