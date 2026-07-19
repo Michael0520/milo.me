@@ -10,8 +10,8 @@ allowBuilds:
 catalog:
   # Framework
   next: 16.1.7
-  react: 19.2.6
-  react-dom: 19.2.6
+  react: 19.2.7
+  react-dom: 19.2.7
 
   # React ecosystem
   "@base-ui/react": ^1.6.0
@@ -59,7 +59,7 @@ catalog:
   remark-gfm: ^4.0.1
   remark-mdx: ^3.1.1
   remark-rehype: ^11.1.2
-  shiki: 4.0.2
+  shiki: 4.3.1
   unist-builder: ^4.0.0
   unist-util-visit: ^5.1.0
 
@@ -91,7 +91,7 @@ catalogs:
     "@total-typescript/ts-reset": ^0.6.1
     "@types/hast": ^3.0.5
     "@types/node": ^25.9.5
-    "@types/react": 19.2.14
+    "@types/react": 19.2.17
     "@types/react-dom": 19.2.3
     "@types/unist": ^3.0.3
 
@@ -104,13 +104,13 @@ catalogs:
 
   # Slidev presentation toolchain (apps/slides). Bun → pnpm; real vite 7 (see overrides).
   slides:
-    "@iconify-json/carbon": 1.2.14
-    "@iconify-json/logos": 1.2.10
-    "@iconify-json/material-symbols": 1.2.48
+    "@iconify-json/carbon": 1.2.24
+    "@iconify-json/logos": 1.2.11
+    "@iconify-json/material-symbols": 1.2.85
     "@iconify-json/ph": 1.2.2
-    "@iconify-json/ri": 1.2.6
-    "@iconify-json/simple-icons": 1.2.60
-    "@iconify-json/twemoji": 1.2.4
+    "@iconify-json/ri": 1.2.10
+    "@iconify-json/simple-icons": 1.2.90
+    "@iconify-json/twemoji": 1.2.5
     "@slidev/cli": 52.6.0
     "@slidev/client": 52.6.0
     "@slidev/theme-default": 0.25.0
