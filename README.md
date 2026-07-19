@@ -32,7 +32,8 @@ apps/
       lib/          # Utilities
     public/
       images/       # Static assets
-      slides/       # Slidev presentation builds
+      slides/       # Slidev presentation builds (published, per-slug)
+  slides/           # Slidev deck sources (per-talk YYYY-MM-DD/), built into portfolio/public/slides/
   website/          # Landing page (Vite)
 packages/
   utils/            # Shared utilities

@@ -23,7 +23,7 @@ Michael is speaking at the **v-taiwan Meetup on 2026-07-18** (45 min + 10 min Q&
 
 ## Impact
 
-- **Content/docs:** `docs/talks/2026-vtaiwan-modern-infra-script.md`, `docs/talks/nx-vs-vite-ecosystem.html` (this repo, PR #19 → main).
-- **Slides source:** `milo` repo `apps/slides/2026-07-18/` (separate clone; Slidev toolchain lives there). Tracked on branch `feat/talk-v-taiwan-2026`.
-- **Deploy target (later):** `apps/portfolio/public/slides/v-taiwan-2026/` once content is final.
+- **Content/docs:** `docs/talks/nx-vs-vite-ecosystem.html` (this repo). The spoken-script draft (`2026-vtaiwan-modern-infra-script.md`) and the deck's in-slide presenter notes were later removed once the deck was finalized; PR #19 was closed unmerged.
+- **Slides source:** `apps/slides/2026-07-18/` — the Slidev workspace was migrated into this monorepo (see the `/slides` skill); it no longer lives in the separate `milo` clone.
+- **Deploy target:** live at `apps/portfolio/public/slides/v-taiwan-2026/` (published and verified on prod).
 - No production code, APIs, or dependencies affected.
