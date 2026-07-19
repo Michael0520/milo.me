@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.2](https://github.com/Michael0520/milo.me/compare/v0.14.1...v0.14.2) (2026-07-18)
+
+
+### Bug Fixes
+
+* **slides:** hide stuck Slidev Goto autocomplete overlay on v-taiwan ([#41](https://github.com/Michael0520/milo.me/issues/41)) ([4a28677](https://github.com/Michael0520/milo.me/commit/4a28677ffbcfc36ebee2e4aa2802130bf01b091c))
+
 ## [0.14.1](https://github.com/Michael0520/milo.me/compare/v0.14.0...v0.14.1) (2026-07-18)
 
 
