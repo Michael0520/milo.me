@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.16.0](https://github.com/Michael0520/milo.me/compare/v0.15.0...v0.16.0) (2026-07-20)
+
+Milestone release: hardens the CI/deps pipeline (Renovate lockfile automation, workflow security scanning, least-privilege) and moves the runtime to Node 24.
+
+### Continuous Integration
+
+* Renovate lockfile automation — a GitHub App + `renovate-lockfiles.yml` regenerate `pnpm-lock.yaml` on every `renovate/**` push, so catalog PRs that self-bump pnpm no longer break frozen install ([#64](https://github.com/Michael0520/milo.me/issues/64))
+* zizmor workflow security audit + `permissions: {}` default on every workflow ([#65](https://github.com/Michael0520/milo.me/issues/65))
+* lock sharp's 0.x minor bumps (semver leak past the held-major rule) and hold TypeScript on 6.x ([#64](https://github.com/Michael0520/milo.me/issues/64))
+
+### Dependencies
+
+* Node.js 22 → 24 ([#63](https://github.com/Michael0520/milo.me/issues/63))
+* shaders v2 → v3 ([#61](https://github.com/Michael0520/milo.me/issues/61))
+* refresh npm/catalog minor & patch — react, shiki, @types/react, iconify, pnpm ([#57](https://github.com/Michael0520/milo.me/issues/57))
+
+### Documentation
+
+* sync CLAUDE.md CI/CD section + dependabot comment with the new automation ([#66](https://github.com/Michael0520/milo.me/issues/66))
+
 ## [0.15.0](https://github.com/Michael0520/milo.me/compare/v0.14.2...v0.15.0) (2026-07-19)
 
 Milestone release: adopts the applicable subset of [voidzero-dev/vite-plus](https://github.com/voidzero-dev/vite-plus)'s CI/DX patterns.
