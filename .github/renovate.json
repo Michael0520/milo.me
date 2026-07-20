@@ -10,6 +10,8 @@
   "minimumReleaseAge": "3 days",
   "prConcurrentLimit": 5,
   "prHourlyLimit": 2,
+  "skipArtifactsUpdate": true,
+  "gitIgnoredAuthors": ["307198022+milo-renovate-guard-ml[bot]@users.noreply.github.com"],
   "github-actions": {
     "description": "Dependabot owns GitHub Actions updates (.github/dependabot.yml) — avoid duplicate PRs.",
     "enabled": false
@@ -31,6 +33,12 @@
       "description": "sharp — 0.x package, so a minor bump (0.34 -> 0.35) is a breaking change that Renovate mislabels as 'minor' and would otherwise slip past the held-major lock. Next.js's image pipeline depends on it. Lock minor AND major; only patch within the current 0.34.x is allowed.",
       "matchPackageNames": ["sharp"],
       "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    },
+    {
+      "description": "TypeScript held on 6.x — 7.0 is the native (Go) compiler rewrite; the build fails on it today (PR #62). Allow 6.x minor/patch, block the 7.0 major.",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
       "enabled": false
     },
     {

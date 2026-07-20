@@ -1,0 +1,83 @@
+name: Renovate Lockfiles
+
+# Renovate's in-clone lockfile refresh is unreliable here: a catalog PR that
+# also self-bumps pnpm (packageManager) breaks its lockfile-artifact step, so
+# the PR ships without a refreshed pnpm-lock.yaml and CI's frozen install fails
+# with ERR_PNPM_LOCKFILE_CONFIG_MISMATCH (see PR #57). skipArtifactsUpdate is
+# set in .github/renovate.json and this workflow regenerates pnpm-lock.yaml on
+# every Renovate branch push instead. Renovate ignores the resulting commits
+# via gitIgnoredAuthors in .github/renovate.json, so it keeps managing the
+# branch. Pattern adopted from voidzero-dev/vite-plus.
+
+permissions: {}
+
+on:
+  push:
+    branches:
+      - renovate/**
+
+# Queue instead of cancel: this workflow's own lockfile push retriggers it in
+# the same group, and cancel-in-progress would cancel the effective run at its
+# final step, leaving a misleading "cancelled" conclusion.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update-lockfile:
+    # Skip forks (no secrets) and the retriggered run for the bot's own commit.
+    if: github.event.repository.fork == false && github.actor != 'milo-renovate-guard-ml[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version-file: apps/portfolio/.nvmrc
+          cache: pnpm
+
+      # Resolution does not need lifecycle scripts; keep dependency scripts from
+      # running in a workflow that later pushes with a write token.
+      - name: Regenerate pnpm-lock.yaml
+        env:
+          npm_config_ignore_scripts: "true"
+        run: |
+          pnpm install --lockfile-only --no-frozen-lockfile
+          pnpm dedupe --check || pnpm dedupe
+
+      - name: Detect lockfile changes
+        id: diff
+        run: |
+          git diff --stat -- pnpm-lock.yaml
+          if git diff --quiet -- pnpm-lock.yaml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        if: steps.diff.outputs.changed == 'true'
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Commit and push lockfile
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          # Committer identity MUST match gitIgnoredAuthors in
+          # .github/renovate.json so Renovate keeps managing the branch.
+          git config user.name "milo-renovate-guard-ml[bot]"
+          git config user.email "307198022+milo-renovate-guard-ml[bot]@users.noreply.github.com"
+          git add pnpm-lock.yaml
+          git commit -m "chore: update lockfile"
+          git push "https://x-access-token:${APP_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/${BRANCH}"
