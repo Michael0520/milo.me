@@ -67,6 +67,8 @@ jobs:
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          # Scope the minted token to only what the push needs (least privilege).
+          permission-contents: write
 
       - name: Commit and push lockfile
         if: steps.diff.outputs.changed == 'true'

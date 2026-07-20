@@ -1,0 +1,40 @@
+name: Zizmor
+
+# Static security analysis of our GitHub Actions workflows + composite actions
+# (zizmor.sh). Catches credential-persistence, over-broad permissions, template
+# injection, and dangerous token use. Runs offline for determinism — no token,
+# no network flakiness; the offline audits already cover our threat model since
+# every action is SHA-pinned.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - ".github/workflows/**"
+      - ".github/actions/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - ".github/actions/**"
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.ref_name != 'main' }}
+
+jobs:
+  zizmor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+      - name: Run zizmor
+        run: uvx zizmor@1.27.0 --persona=regular --no-online-audits .github/workflows/ .github/actions/
