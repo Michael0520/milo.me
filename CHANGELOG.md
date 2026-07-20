@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/Michael0520/milo.me/compare/v0.15.0...v0.16.0) (2026-07-20)
+
+
+### Miscellaneous Chores
+
+* release v0.16.0 ([f9d1464](https://github.com/Michael0520/milo.me/commit/f9d14640a1eb4b2d0c6ff4c8681579018d7c4c10))
+
 ## [0.15.0](https://github.com/Michael0520/milo.me/compare/v0.14.2...v0.15.0) (2026-07-19)
 
 Milestone release: adopts the applicable subset of [voidzero-dev/vite-plus](https://github.com/voidzero-dev/vite-plus)'s CI/DX patterns.
