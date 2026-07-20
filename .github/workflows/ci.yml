@@ -1,8 +1,7 @@
 name: CI
 
-# Least-privilege default token; jobs opt into more.
-permissions:
-  contents: read
+# Zero permissions by default; each job opts into exactly what it needs.
+permissions: {}
 
 on:
   push:
@@ -32,6 +31,8 @@ jobs:
       code-changed: ${{ steps.filter.outputs.code }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
       - uses: dorny/paths-filter@7b450fff21473bca461d4b92ce414b9d0420d706 # v4.0.2
         id: filter
         with:
@@ -49,8 +50,12 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.code-changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
       - uses: ./.github/actions/setup
       - name: Check
         run: vp check
@@ -63,8 +68,12 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.code-changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
       - uses: ./.github/actions/setup
       - name: Install Playwright browser
         run: vp run michaello-portfolio#test:e2e:install
