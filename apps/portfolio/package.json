@@ -105,7 +105,7 @@
     "unist-util-visit": "catalog:"
   },
   "engines": {
-    "node": "22.x",
+    "node": "24.x",
     "pnpm": ">=9"
   },
   "packageManager": "pnpm@10.34.5"
