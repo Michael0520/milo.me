@@ -1,0 +1,50 @@
+name: CodeQL
+
+# Static analysis for JavaScript/TypeScript. voidzero-dev/vite-plus itself does
+# not use CodeQL (it's a Rust project — cargo-deny in its security.yml), so this
+# mirrors their *style* — committed, SHA-pinned, permissions: {}, zizmor-audited
+# — rather than copying a file. Free on public repos; closes the last security
+# gap alongside zizmor (workflows) and secret scanning.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "30 2 * * 1" # weekly, Monday 02:30 UTC
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.ref_name != 'main' }}
+
+jobs:
+  analyze:
+    name: Analyze (javascript-typescript)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write # upload results to code scanning
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      # JS/TS needs no build step — CodeQL analyzes source directly. Skip the
+      # built Slidev decks (minified vendor bundles) and deck sources (not app
+      # code) to cut noise.
+      - uses: github/codeql-action/init@7188fc363630916deb702c7fdcf4e481b751f97a # v4
+        with:
+          languages: javascript-typescript
+          config: |
+            paths-ignore:
+              - apps/portfolio/public/slides
+              - apps/slides
+
+      - uses: github/codeql-action/analyze@7188fc363630916deb702c7fdcf4e481b751f97a # v4
+        with:
+          category: "/language:javascript-typescript"
