@@ -89,11 +89,13 @@ Use `/journal` skill to create blog posts. Writing conventions, MDX components, 
 - **CI** (`.github/workflows/ci.yml`): `detect-changes` (dorny/paths-filter) skips the heavy jobs when a PR touches only non-build paths (`apps/slides`, `public/slides`, `.claude`, `docs`, `openspec`, `*.md`); otherwise `build` (`vp check` + type-check + build) and `e2e` (Playwright smoke, `apps/portfolio/e2e/`) run. A `done` job aggregates them into one gate. Shared checkout+setup+install is a composite action (`.github/actions/setup`). All actions are pinned to commit SHAs.
 - **cleanup-cache** (`.github/workflows/cleanup-cache.yml`): deletes a PR's Actions caches on close.
 - **Release** (`.github/workflows/release.yml`): Release Please auto-generates CHANGELOG, version bump, and GitHub Release.
-- **Least-privilege**: workflows declare explicit `permissions`; `concurrency` never cancels an in-progress `main` build.
-- **Dependency automation**: `taze` (manual, catalog-aware — see [[reference_toolchain_baseline]]), Dependabot for **GitHub Actions** (`.github/dependabot.yml`), and Renovate for **npm + pnpm catalogs** (`.github/renovate.json`, held majors locked). Renovate and Dependabot are split so they don't open duplicate PRs.
+- **Renovate lockfiles** (`.github/workflows/renovate-lockfiles.yml`): Renovate's in-clone lockfile refresh breaks on catalog PRs that self-bump pnpm, so `renovate.json` sets `skipArtifactsUpdate` and this workflow regenerates `pnpm-lock.yaml` on every `renovate/**` push, committing it back via a scoped GitHub App token (`gitIgnoredAuthors` keeps Renovate managing the branch). Adopted from voidzero-dev/vite-plus — see [[reference_ci_deps_infra]].
+- **Security** (`.github/workflows/zizmor.yml`): [zizmor](https://zizmor.sh) statically audits workflows + composite actions on every `.github/**` change (offline mode). Secret scanning is GitGuardian.
+- **Least-privilege**: every workflow defaults to `permissions: {}` with jobs opting into exactly what they need; all actions are SHA-pinned; `concurrency` never cancels an in-progress `main` build.
+- **Dependency automation**: Renovate owns automated **npm + pnpm catalog** updates (`.github/renovate.json`, held majors locked; lockfiles refreshed by the workflow above); `taze` is the manual catalog-aware lane (see [[reference_toolchain_baseline]]); Dependabot owns **GitHub Actions** only (`.github/dependabot.yml`). Split so they don't open duplicate PRs.
 - **e2e tests**: `vp run michaello-portfolio#test:e2e` (Playwright; `test:e2e:install` fetches chromium). Unit tests are **not** wired yet — `vp test` is blocked by an upstream version lag (`@voidzero-dev/vite-plus-test` behind `vite-plus`).
 - **Auto-delete branches**: Enabled in GitHub settings.
-- **Note (private + free plan)**: branch protection and CodeQL/code-scanning need a paid tier for private repos, so neither is active; the `done` gate is future-proofing for when protection can be enabled.
+- **Note (private + free plan)**: branch protection and CodeQL/code-scanning need a paid tier (GHAS) for private repos. zizmor (workflow static analysis) and GitGuardian (secrets) cover the rest, so **CodeQL is the only remaining security gap** — revisit if the repo goes public or gets GHAS. The `done` gate is future-proofing for when branch protection can be enabled.
 
 ## Conventions
 

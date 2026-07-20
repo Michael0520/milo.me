@@ -1,11 +1,11 @@
 version: 2
 updates:
-  # Keep GitHub Actions versions fresh — the one dependency surface taze does
-  # not cover (taze handles npm packages via the pnpm catalog).
+  # Dependabot owns GitHub Actions version updates only.
   #
   # npm is intentionally omitted: every workspace dep is a `catalog:` reference
   # resolved in pnpm-workspace.yaml, which Dependabot's npm ecosystem does not
-  # read reliably — `taze` (catalog-aware) owns dependency updates.
+  # read reliably. Renovate (catalog-aware) owns automated npm/catalog updates
+  # and `taze` is the manual lane — splitting them avoids duplicate PRs.
   #
   # CodeQL / code scanning is not configured: it requires GitHub Advanced
   # Security on private repositories. Revisit if this repo goes public or gets GHAS.
