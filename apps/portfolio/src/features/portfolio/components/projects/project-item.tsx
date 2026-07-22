@@ -6,7 +6,6 @@ import { CollapsibleContent, CollapsibleTrigger } from "@/components/base/ui/col
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/base/ui/tooltip";
 import { Markdown } from "@/components/markdown";
 import { Tag } from "@/components/ui/tag";
-import { ProseMono } from "@/components/ui/typography";
 import { UTM_PARAMS } from "@/config/site";
 import { addQueryParams } from "@/utils/url";
 
@@ -92,9 +91,9 @@ export function ProjectItem({ className, project }: { className?: string; projec
       <CollapsibleContent className="overflow-hidden">
         <div className="space-y-4 border-t border-line p-4">
           {project.description && (
-            <ProseMono>
+            <div className="typeset typeset-description">
               <Markdown>{project.description}</Markdown>
-            </ProseMono>
+            </div>
           )}
 
           {project.skills.length > 0 && (

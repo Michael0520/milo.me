@@ -6,7 +6,6 @@ import { CollapsibleContent, CollapsibleTrigger } from "@/components/base/ui/col
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/base/ui/tooltip";
 import { Markdown } from "@/components/markdown";
 import { Separator } from "@/components/ui/separator";
-import { ProseMono } from "@/components/ui/typography";
 
 import type { Award } from "../../types/awards";
 
@@ -89,9 +88,9 @@ export function AwardItem({ className, award }: { className?: string; award: Awa
 
       {canExpand && (
         <CollapsibleContent className="overflow-hidden">
-          <ProseMono className="border-t border-line p-4">
+          <div className="typeset typeset-description border-t border-line p-4">
             <Markdown>{award.description}</Markdown>
-          </ProseMono>
+          </div>
         </CollapsibleContent>
       )}
     </Collapsible>

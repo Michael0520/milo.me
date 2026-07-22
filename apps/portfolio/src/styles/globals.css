@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./typeset.css";
 @import "./scroll-fade-effect.css";
 
 @plugin "@tailwindcss/typography";
@@ -57,6 +58,11 @@
 
 @utility link {
   @apply font-medium underline underline-offset-4;
+}
+
+/* Referenced by .typeset anchors (see typeset.css). */
+@utility link-underline {
+  @apply underline decoration-current/30 decoration-1 underline-offset-3 transition-colors hover:decoration-current;
 }
 
 @utility screen-line-top {
@@ -566,4 +572,10 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.typeset-description {
+  --typeset-size: 15px;
+  --typeset-leading: 1.6;
+  --typeset-flow: 1em;
 }
