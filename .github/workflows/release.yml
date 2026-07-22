@@ -5,16 +5,35 @@ on:
     branches:
       - main
 
-# Zero permissions by default; the release job opts into what it needs.
+# Zero permissions by default. The release job needs none: it drives the API
+# with a GitHub App token instead of GITHUB_TOKEN (see below).
 permissions: {}
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
+      # Release Please MUST NOT use GITHUB_TOKEN. Anything GITHUB_TOKEN creates
+      # is treated as "made by Actions", and GitHub refuses to trigger workflows
+      # from it (anti-recursion). The release PR's checks therefore sit at
+      # `action_required` forever, and since branch protection on main requires
+      # `done` + `Analyze (javascript-typescript)`, the PR can never satisfy its
+      # own gate — every release needs a manual run approval or an admin
+      # override (hit while shipping v0.16.1).
+      #
+      # An App token is a distinct identity, so its PRs trigger workflows
+      # normally. Same app as renovate-lockfiles.yml; that one only mints
+      # contents:write, this one also needs pull-requests:write to open and
+      # update the release PR.
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          # Scope the minted token to only what Release Please needs.
+          permission-contents: write
+          permission-pull-requests: write
+
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
