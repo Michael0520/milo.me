@@ -91,6 +91,16 @@ jobs:
     steps:
       - name: CI result
         run: |
+          # detect-changes has no `if:` guard, so success is its only healthy
+          # outcome. If it fails, build & e2e are skipped for want of their
+          # gating output — indistinguishable below from a legitimate
+          # docs-only skip. Without this check `done` reports green and
+          # branch protection lets the PR merge with nothing verified.
+          if [ "${{ needs.detect-changes.result }}" != 'success' ]; then
+            echo "CI failed (detect-changes: ${{ needs.detect-changes.result }})"
+            exit 1
+          fi
+
           for pair in "build:${{ needs.build.result }}" "e2e:${{ needs.e2e.result }}"; do
             name=${pair%%:*}
             result=${pair##*:}
