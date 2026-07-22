@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.1](https://github.com/Michael0520/milo.me/compare/v0.16.0...v0.16.1) (2026-07-22)
+
+
+### Bug Fixes
+
+* **registry:** interpolate item name in generated lazy factory ([#70](https://github.com/Michael0520/milo.me/issues/70)) ([f5c5fee](https://github.com/Michael0520/milo.me/commit/f5c5feee1e5723bdd7afdccd6cf9cf5f7781d9b4))
+
 ## [0.16.0](https://github.com/Michael0520/milo.me/compare/v0.15.0...v0.16.0) (2026-07-20)
 
 Milestone release: hardens the CI/deps pipeline (Renovate lockfile automation, workflow security scanning, least-privilege) and moves the runtime to Node 24.
