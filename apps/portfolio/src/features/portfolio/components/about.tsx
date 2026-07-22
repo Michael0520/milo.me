@@ -1,5 +1,4 @@
 import { Markdown } from "@/components/markdown";
-import { ProseMono } from "@/components/ui/typography";
 import { USER } from "@/features/portfolio/data/user";
 
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel";
@@ -12,9 +11,9 @@ export function About() {
       </PanelHeader>
 
       <PanelContent className="py-6">
-        <ProseMono>
+        <div className="typeset typeset-description">
           <Markdown>{USER.about}</Markdown>
-        </ProseMono>
+        </div>
       </PanelContent>
     </Panel>
   );

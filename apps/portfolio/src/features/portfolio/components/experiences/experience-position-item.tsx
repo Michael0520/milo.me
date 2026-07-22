@@ -5,7 +5,6 @@ import { CollapsibleContent, CollapsibleTrigger } from "@/components/base/ui/col
 import { Markdown } from "@/components/markdown";
 import { Separator } from "@/components/ui/separator";
 import { Tag } from "@/components/ui/tag";
-import { ProseMono } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 
 import type { ExperiencePosition } from "../../types/experiences";
@@ -79,9 +78,9 @@ export function ExperiencePositionItem({ position }: { position: ExperiencePosit
 
       <CollapsibleContent className="overflow-hidden">
         {position.description && (
-          <ProseMono className="pt-2 pl-9">
+          <div className="typeset typeset-description pt-2 pl-9">
             <Markdown>{position.description}</Markdown>
-          </ProseMono>
+          </div>
         )}
       </CollapsibleContent>
 
