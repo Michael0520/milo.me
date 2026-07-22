@@ -95,7 +95,8 @@ Use `/journal` skill to create blog posts. Writing conventions, MDX components, 
 - **Dependency automation**: Renovate owns automated **npm + pnpm catalog** updates (`.github/renovate.json`, held majors locked; lockfiles refreshed by the workflow above); `taze` is the manual catalog-aware lane (see [[reference_toolchain_baseline]]); Dependabot owns **GitHub Actions** only (`.github/dependabot.yml`). Split so they don't open duplicate PRs.
 - **e2e tests**: `vp run michaello-portfolio#test:e2e` (Playwright; `test:e2e:install` fetches chromium). Unit tests are **not** wired yet — `vp test` is blocked by an upstream version lag (`@voidzero-dev/vite-plus-test` behind `vite-plus`).
 - **Auto-delete branches**: Enabled in GitHub settings.
-- **Note (private + free plan)**: branch protection and CodeQL/code-scanning need a paid tier (GHAS) for private repos. zizmor (workflow static analysis) and GitGuardian (secrets) cover the rest, so **CodeQL is the only remaining security gap** — revisit if the repo goes public or gets GHAS. The `done` gate is future-proofing for when branch protection can be enabled.
+- **Branch protection**: the repo is **public**, so protection and code scanning are free and both are on. `main` requires `done` + `Analyze (javascript-typescript)` to pass. CodeQL (`.github/workflows/codeql.yml`) closes the last security gap alongside zizmor (workflows) and GitGuardian (secrets).
+- **Bot PRs must not use `GITHUB_TOKEN`**: GitHub refuses to trigger workflows from anything `GITHUB_TOKEN` creates, so such a PR's checks stay at `action_required` and can never satisfy the required-checks gate above. Automation that opens PRs against `main` mints a GitHub App token instead (`actions/create-github-app-token`, `secrets.APP_ID` / `APP_PRIVATE_KEY`) — see `release.yml` and `renovate-lockfiles.yml`. Scope the token per workflow via `permission-*` inputs.
 
 ## Conventions
 
