@@ -37,4 +37,9 @@ jobs:
           persist-credentials: false
       - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
       - name: Run zizmor
-        run: uvx zizmor@1.27.0 --persona=regular --no-online-audits .github/workflows/ .github/actions/
+        # renovate: datasource=pypi depName=zizmor
+        # 1.27.0 was yanked (GHSA-f42p-wjw5-97qh: debug logging could print
+        # credentials in cleartext). A bare version in a run block is invisible
+        # to Dependabot (github-actions only) and Renovate (github-actions
+        # disabled); the datasource comment above lets Renovate manage it.
+        run: uvx zizmor@1.28.0 --persona=regular --no-online-audits .github/workflows/ .github/actions/
