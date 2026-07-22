@@ -50,7 +50,7 @@ export const Index: Record<string, any> = {`;
       .join(",")}],
     component: React.lazy(async () => {
       const mod = await import("${componentPath}")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || "${item.name}"
       return { default: mod.default || mod[exportName] }
     }),
     categories: ${JSON.stringify(item.categories)},
