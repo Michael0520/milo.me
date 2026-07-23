@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
 import { SITE_INFO } from "@/config/site";
-import { getAllDocs } from "@/features/doc/data/documents";
+import { getAllDocs, getDocPath } from "@/features/doc/data/documents";
 import { getLLMText } from "@/features/doc/lib/get-llm-text";
 import { AWARDS } from "@/features/portfolio/data/awards";
 import { CERTIFICATIONS } from "@/features/portfolio/data/certifications";
@@ -67,7 +67,7 @@ async function getBlogContent() {
   const text = await Promise.all(
     allPosts.map(
       async (item) =>
-        `---\ntitle: "${item.metadata.title}"\ndescription: "${item.metadata.description}"\nlast_updated: "${format(new Date(item.metadata.updatedAt), "MMMM d, yyyy")}"\nsource: "${SITE_INFO.url}/blog/${item.slug}"\n---\n\n${await getLLMText(item)}`,
+        `---\ntitle: "${item.metadata.title}"\ndescription: "${item.metadata.description}"\nlast_updated: "${format(new Date(item.metadata.updatedAt), "MMMM d, yyyy")}"\nsource: "${SITE_INFO.url}${getDocPath(item)}"\n---\n\n${await getLLMText(item)}`,
     ),
   );
   return text.join("\n\n");
