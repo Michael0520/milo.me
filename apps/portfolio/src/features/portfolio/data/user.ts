@@ -27,7 +27,6 @@ Outside of code, I'm someone who's constantly trying new things and figuring out
 
 > Coding is my way of making tomorrow a little lazier.`,
   avatar: "/images/avatar.webp",
-  ogImage: "/images/og-image.png",
   namePronunciationUrl: "",
   timeZone: "Asia/Taipei",
   keywords: [

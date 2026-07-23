@@ -80,9 +80,12 @@ function getPageJsonLd(doc: Doc): WithContext<PageSchema> {
     "@type": "BlogPosting",
     headline: doc.metadata.title,
     description: doc.metadata.description,
-    image:
+    // JSON-LD is hand-serialized, so metadataBase does not apply — these must
+    // be absolute or Google's Rich Results parser drops the image.
+    image: `${SITE_INFO.url}${
       doc.metadata.image ||
-      `/og/simple?title=${encodeURIComponent(doc.metadata.title)}&description=${encodeURIComponent(doc.metadata.description)}`,
+      `/og/simple?title=${encodeURIComponent(doc.metadata.title)}&description=${encodeURIComponent(doc.metadata.description)}`
+    }`,
     url: `${SITE_INFO.url}/components/${doc.slug}`,
     datePublished: new Date(doc.metadata.createdAt).toISOString(),
     dateModified: new Date(doc.metadata.updatedAt).toISOString(),
@@ -90,7 +93,7 @@ function getPageJsonLd(doc: Doc): WithContext<PageSchema> {
       "@type": "Person",
       name: USER.displayName,
       identifier: USER.username,
-      image: USER.avatar,
+      image: `${SITE_INFO.url}${USER.avatar}`,
     },
   };
 }

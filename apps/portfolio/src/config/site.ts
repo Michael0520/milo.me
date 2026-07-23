@@ -4,7 +4,10 @@ import type { NavItem } from "@/types/nav";
 export const SITE_INFO = {
   name: USER.displayName,
   url: process.env.APP_URL || "https://www.michaello.me",
-  ogImage: USER.ogImage,
+  // Rendered on demand by the /og/simple route (same card every post uses),
+  // so there is no static asset to keep in sync. Title mirrors the homepage
+  // <title> default.
+  ogImage: `/og/simple?title=${encodeURIComponent(`${USER.displayName} – ${USER.jobTitle}`)}&description=${encodeURIComponent(USER.bio)}`,
   description: USER.bio,
   keywords: USER.keywords,
 };
