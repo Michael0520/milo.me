@@ -6,13 +6,10 @@ import {
   BoxIcon,
   CornerDownLeftIcon,
   LayersIcon,
-  MoonStarIcon,
   PresentationIcon,
   RssIcon,
-  SunMediumIcon,
   TextInitialIcon,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
@@ -143,8 +140,6 @@ export function CommandMenu({
 }) {
   const router = useRouter();
 
-  const { setTheme } = useTheme();
-
   const [open, setOpen] = useState(false);
 
   useHotkeys(
@@ -188,23 +183,6 @@ export function CommandMenu({
       }
     },
     [router],
-  );
-
-  const createThemeHandler = useCallback(
-    (theme: "light" | "dark" | "system") => () => {
-      setOpen(false);
-
-      trackEvent({
-        name: "command_menu_action",
-        properties: {
-          action: "change_theme",
-          theme: theme,
-        },
-      });
-
-      setTheme(theme);
-    },
-    [setTheme],
   );
 
   const { componentLinks, dailyLinks, techLinks } = useMemo(
@@ -302,21 +280,6 @@ export function CommandMenu({
             links={SOCIAL_LINK_ITEMS}
             onLinkSelect={handleOpenLink}
           />
-
-          <CommandGroup heading="Theme">
-            <CommandItem keywords={["theme"]} onSelect={createThemeHandler("light")}>
-              <SunMediumIcon />
-              Light
-            </CommandItem>
-            <CommandItem keywords={["theme"]} onSelect={createThemeHandler("dark")}>
-              <MoonStarIcon />
-              Dark
-            </CommandItem>
-            <CommandItem keywords={["theme"]} onSelect={createThemeHandler("system")}>
-              <Icons.contrast />
-              Auto
-            </CommandItem>
-          </CommandGroup>
 
           <CommandLinkGroup
             heading="Other"
@@ -442,10 +405,6 @@ type CommandMetaMap = Map<
 
 function buildCommandMetaMap() {
   const commandMetaMap: CommandMetaMap = new Map();
-
-  commandMetaMap.set("Light", { commandKind: "command" });
-  commandMetaMap.set("Dark", { commandKind: "command" });
-  commandMetaMap.set("Auto", { commandKind: "command" });
 
   SOCIAL_LINK_ITEMS.forEach((item) => {
     commandMetaMap.set(item.title, {

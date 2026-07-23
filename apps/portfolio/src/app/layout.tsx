@@ -22,14 +22,11 @@ function getWebSiteJsonLd(): WithContext<WebSite> {
   };
 }
 
+// The site is dark-only (forcedTheme="dark"), so theme-color is set to the dark
+// value statically in `viewport` below — no runtime adjustment needed. This
+// script only tags Apple platforms for the .os-macos Cmd/Ctrl affordance.
 // Thanks @shadcn-ui, @tailwindcss
 const darkModeScript = String.raw`
-  try {
-    if (localStorage.theme === 'dark' || ((!('theme' in localStorage) || localStorage.theme === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', '${META_THEME_COLORS.dark}')
-    }
-  } catch (_) {}
-
   try {
     if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
       document.documentElement.classList.add('os-macos')
@@ -90,7 +87,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: META_THEME_COLORS.light,
+  themeColor: META_THEME_COLORS.dark,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
