@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.3](https://github.com/Michael0520/milo.me/compare/v0.16.2...v0.16.3) (2026-07-23)
+
+
+### Bug Fixes
+
+* **doc:** validate frontmatter at load instead of trusting a cast ([#83](https://github.com/Michael0520/milo.me/issues/83)) ([a3e20d6](https://github.com/Michael0520/milo.me/commit/a3e20d60aebbad6f80cdc0908eadc55b792dc84d))
+
 ## [0.16.2](https://github.com/Michael0520/milo.me/compare/v0.16.1...v0.16.2) (2026-07-23)
 
 
