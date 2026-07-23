@@ -3,6 +3,8 @@ import { join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
+import { ML_MARK_PATH, ML_MARK_VIEWBOX } from "@/components/ml-mark-path";
+
 import { clampParam, OG_CACHE_CONTROL } from "../params";
 
 function loadFont(filename: string) {
@@ -36,11 +38,8 @@ export async function GET(request: Request) {
       <div tw="absolute inset-x-0 bottom-12 flex h-px border border-zinc-800" />
 
       <div tw="absolute top-18 left-18 flex">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 256" width={128} height={64}>
-          <path
-            fill="currentColor"
-            d="M192 256H64v-64h128v64ZM448 64H320v128h128v64H256V0h192v64ZM64 192H0V64h64v128ZM512 192h-64V64h64v128ZM192 64H64V0h128v64Z"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox={ML_MARK_VIEWBOX} width={140} height={70}>
+          <path fill="currentColor" d={ML_MARK_PATH} />
         </svg>
       </div>
 
