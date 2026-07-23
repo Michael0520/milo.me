@@ -9,6 +9,14 @@ on:
 # with a GitHub App token instead of GITHUB_TOKEN (see below).
 permissions: {}
 
+# Serialize releases. Two PRs merged to main within seconds would otherwise run
+# two release jobs in parallel, both racing to force-push the release branch and
+# open a PR — the loser 422s, or a changelog drops one of the commits. Queue,
+# never cancel: a half-run release must finish, not be superseded.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest

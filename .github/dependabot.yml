@@ -6,9 +6,6 @@ updates:
   # resolved in pnpm-workspace.yaml, which Dependabot's npm ecosystem does not
   # read reliably. Renovate (catalog-aware) owns automated npm/catalog updates
   # and `taze` is the manual lane — splitting them avoids duplicate PRs.
-  #
-  # CodeQL / code scanning is not configured: it requires GitHub Advanced
-  # Security on private repositories. Revisit if this repo goes public or gets GHAS.
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

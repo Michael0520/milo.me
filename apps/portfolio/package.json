@@ -1,6 +1,7 @@
 {
   "name": "michaello-portfolio",
   "version": "0.1.0",
+  "private": true,
   "description": "Michael Lo's personal portfolio website.",
   "homepage": "https://www.michaello.me",
   "license": "MIT",
