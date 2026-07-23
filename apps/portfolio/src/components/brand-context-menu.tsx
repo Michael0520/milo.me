@@ -1,7 +1,6 @@
 "use client";
 
 import { TypeIcon } from "lucide-react";
-import { useTheme } from "next-themes";
 import { toast } from "sonner";
 
 import { copyText } from "@/utils/copy";
@@ -16,7 +15,11 @@ import {
 } from "./ui/context-menu";
 
 export function BrandContextMenu({ children }: { children: React.ReactNode }) {
-  const { resolvedTheme } = useTheme();
+  // The site is dark-only (forcedTheme="dark" in providers), so the mark is
+  // always shown on dark — copy the light-on-dark (#fff) SVG unconditionally.
+  // Keying this off resolvedTheme let stale localStorage.theme="light" copy a
+  // black mark onto a dark site.
+  const markColor = "#fff";
 
   return (
     <ContextMenu>
@@ -25,7 +28,7 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
       <ContextMenuContent className="w-fit">
         <ContextMenuItem
           onClick={() => {
-            const svg = getMarkSVG(resolvedTheme === "light" ? "#000" : "#fff");
+            const svg = getMarkSVG(markColor);
             void copyText(svg);
             toast.success("Mark as SVG copied");
           }}
@@ -36,7 +39,7 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
 
         <ContextMenuItem
           onClick={() => {
-            const svg = getWordmarkSVG(resolvedTheme === "light" ? "#000" : "#fff");
+            const svg = getWordmarkSVG(markColor);
             void copyText(svg);
             toast.success("Logotype as SVG copied");
           }}
