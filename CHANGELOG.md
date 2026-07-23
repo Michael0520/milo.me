@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.4](https://github.com/Michael0520/milo.me/compare/v0.16.3...v0.16.4) (2026-07-23)
+
+
+### Bug Fixes
+
+* **og:** use the ML signature on share cards, not the upstream mark ([#85](https://github.com/Michael0520/milo.me/issues/85)) ([98a87a6](https://github.com/Michael0520/milo.me/commit/98a87a61a53f2b8adeeddd802c5dadae5a93558a))
+
 ## [0.16.3](https://github.com/Michael0520/milo.me/compare/v0.16.2...v0.16.3) (2026-07-23)
 
 
