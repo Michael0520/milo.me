@@ -7,8 +7,18 @@ import { ButtonGroup } from "@/components/ui/button-group";
 
 import { usePageQuery } from "../hooks/use-page-query";
 
-export function PostPagination({ totalPages }: { totalPages: number }) {
-  const { page, setPage } = usePageQuery();
+export function PostPagination({
+  totalPages,
+  currentPage,
+}: {
+  totalPages: number;
+  // The clamped page from the parent — reconciled against the filtered result
+  // set. The raw `page` in the URL may exceed totalPages after a search
+  // narrows results; highlighting/disabled state must track the clamped value
+  // or the bar shows nothing selected on a page that is rendering content.
+  currentPage: number;
+}) {
+  const { setPage } = usePageQuery();
 
   if (totalPages <= 1) return null;
 
@@ -30,8 +40,8 @@ export function PostPagination({ totalPages }: { totalPages: number }) {
         <Button
           variant="outline"
           size="icon-sm"
-          onClick={() => goTo(page - 1)}
-          disabled={page <= 1}
+          onClick={() => goTo(currentPage - 1)}
+          disabled={currentPage <= 1}
           aria-label="Previous page"
           className="cursor-pointer"
         >
@@ -41,10 +51,10 @@ export function PostPagination({ totalPages }: { totalPages: number }) {
         {pages.map((p) => (
           <Button
             key={p}
-            variant={p === page ? "default" : "outline"}
+            variant={p === currentPage ? "default" : "outline"}
             size="sm"
             onClick={() => goTo(p)}
-            aria-current={p === page ? "page" : undefined}
+            aria-current={p === currentPage ? "page" : undefined}
             className="font-mono w-8 cursor-pointer"
           >
             {p}
@@ -54,8 +64,8 @@ export function PostPagination({ totalPages }: { totalPages: number }) {
         <Button
           variant="outline"
           size="icon-sm"
-          onClick={() => goTo(page + 1)}
-          disabled={page >= totalPages}
+          onClick={() => goTo(currentPage + 1)}
+          disabled={currentPage >= totalPages}
           aria-label="Next page"
           className="cursor-pointer"
         >

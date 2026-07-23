@@ -19,7 +19,7 @@ export function PostCardListWithSearch({ posts }: { posts: Doc[] }) {
   return (
     <>
       <PostCardList posts={paginatedPosts} />
-      <PostPagination totalPages={totalPages} />
+      <PostPagination totalPages={totalPages} currentPage={currentPage} />
     </>
   );
 }
