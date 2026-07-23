@@ -25,7 +25,12 @@ export function PostShareMenu({ title, url }: { title: string; url: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="size-7 border-none active:scale-none" variant="secondary" size="icon-sm">
+        <Button
+          className="size-7 border-none active:scale-none"
+          variant="secondary"
+          size="icon-sm"
+          aria-label="Share this post"
+        >
           <ShareIcon />
         </Button>
       </DropdownMenuTrigger>

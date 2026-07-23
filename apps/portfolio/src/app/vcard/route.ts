@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 import VCard from "vcard-creator";
@@ -38,21 +41,14 @@ export async function GET() {
   });
 }
 
-async function getVCardPhoto(url: string) {
+// The route is force-static, so this runs at build time when nothing is
+// serving the site. Read the avatar off disk from public/ — fetch() on the
+// relative USER.avatar path throws (Node requires an absolute URL) and the
+// old catch swallowed it, so the vCard never carried a photo.
+async function getVCardPhoto(publicPath: string) {
   try {
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      return null;
-    }
-
-    const buffer = Buffer.from(await res.arrayBuffer());
+    const buffer = await readFile(join(process.cwd(), "public", publicPath));
     if (buffer.length === 0) {
-      return null;
-    }
-
-    const contentType = res.headers.get("Content-Type") || "";
-    if (!contentType.startsWith("image/")) {
       return null;
     }
 
