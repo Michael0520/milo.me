@@ -106,10 +106,10 @@ catalogs:
   slides:
     "@iconify-json/carbon": 1.2.24
     "@iconify-json/logos": 1.2.11
-    "@iconify-json/material-symbols": 1.2.85
+    "@iconify-json/material-symbols": 1.2.86
     "@iconify-json/ph": 1.2.2
     "@iconify-json/ri": 1.2.10
-    "@iconify-json/simple-icons": 1.2.90
+    "@iconify-json/simple-icons": 1.2.91
     "@iconify-json/twemoji": 1.2.5
     "@slidev/cli": 52.6.0
     "@slidev/client": 52.6.0
