@@ -2,8 +2,37 @@ import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
 import { cache } from "react";
+import { z } from "zod";
 
 import type { Doc, DocMetadata } from "@/features/doc/types/document";
+import { DOC_CATEGORIES } from "@/features/doc/types/document";
+
+// Frontmatter was previously trusted via `file.data as DocMetadata` — an
+// unchecked cast. A post missing `updatedAt`/`title` (or with an unparseable
+// date) then crashed the whole build deep in an unrelated file (sitemap
+// RangeError, RSS TypeError) with no hint which post was at fault. Validate at
+// the single load chokepoint instead and fail with the file + field named.
+// `satisfies` keeps this schema in lockstep with the DocMetadata type.
+const isoDateString = (field: string) =>
+  z
+    .string({ required_error: `${field} is required` })
+    .refine(
+      (v) => !Number.isNaN(Date.parse(v)),
+      `${field} must be a valid date string (e.g. "2025-02-03")`,
+    );
+
+const docMetadataSchema = z.object({
+  title: z.string({ required_error: "title is required" }).min(1, "title must not be empty"),
+  description: z
+    .string({ required_error: "description is required" })
+    .min(1, "description must not be empty"),
+  image: z.string().optional(),
+  category: z.nativeEnum(DOC_CATEGORIES).optional(),
+  new: z.boolean().optional(),
+  pinned: z.boolean().optional(),
+  createdAt: isoDateString("createdAt"),
+  updatedAt: isoDateString("updatedAt"),
+}) satisfies z.ZodType<DocMetadata>;
 
 function calculateReadingTime(content: string): number {
   // Strip MDX/HTML tags and frontmatter
@@ -23,11 +52,19 @@ function calculateReadingTime(content: string): number {
   return Math.max(1, Math.ceil(minutes));
 }
 
-function parseFrontmatter(fileContent: string) {
+function parseFrontmatter(fileContent: string, source: string) {
   const file = matter(fileContent);
 
+  const result = docMetadataSchema.safeParse(file.data);
+  if (!result.success) {
+    const issues = result.error.issues
+      .map((issue) => `  - ${issue.path.join(".") || "(root)"}: ${issue.message}`)
+      .join("\n");
+    throw new Error(`Invalid frontmatter in ${source}:\n${issues}`);
+  }
+
   return {
-    metadata: file.data as DocMetadata,
+    metadata: result.data,
     content: file.content,
   };
 }
@@ -38,7 +75,7 @@ function getMDXFiles(dir: string) {
 
 function readMDXFile(filePath: string) {
   const rawContent = fs.readFileSync(filePath, "utf-8");
-  return parseFrontmatter(rawContent);
+  return parseFrontmatter(rawContent, path.basename(filePath));
 }
 
 function getMDXData(dir: string) {
