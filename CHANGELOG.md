@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.16.2](https://github.com/Michael0520/milo.me/compare/v0.16.1...v0.16.2) (2026-07-23)
+
+
+### Bug Fixes
+
+* **app:** navigation shortcuts, pagination sync, share a11y, vCard photo ([#81](https://github.com/Michael0520/milo.me/issues/81)) ([29e8546](https://github.com/Michael0520/milo.me/commit/29e85460200f1e15bf3e1ef1329011dafe963c3d))
+* **ci:** fail the done gate when detect-changes fails ([#75](https://github.com/Michael0520/milo.me/issues/75)) ([7395c11](https://github.com/Michael0520/milo.me/commit/7395c1182b8e37d5f30b0c44401a83a5a03751cb))
+* **seo:** repair OG images, citation URLs, and JSON-LD ([#79](https://github.com/Michael0520/milo.me/issues/79)) ([0375878](https://github.com/Michael0520/milo.me/commit/03758788162be54ff318d3ddc6ea299826a9c700))
+* **types:** close the type-check coverage gaps ([#82](https://github.com/Michael0520/milo.me/issues/82)) ([4ceafd3](https://github.com/Michael0520/milo.me/commit/4ceafd3bc31a0dbedd7861173458f558151f146b))
+
 ## [0.16.1](https://github.com/Michael0520/milo.me/compare/v0.16.0...v0.16.1) (2026-07-22)
 
 
