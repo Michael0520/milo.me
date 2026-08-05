@@ -28,7 +28,16 @@ export function GitHubContributionGraph({ contributions }: { contributions: Prom
       blockMargin={3}
       blockRadius={2}
     >
-      <ContributionGraphCalendar className="no-scrollbar px-2" title="GitHub Contributions">
+      {/*
+        The grid is a single graphic to assistive tech: the per-day tooltips are
+        hover-only, and the real summary is announced by the footer below.
+      */}
+      <ContributionGraphCalendar
+        className="no-scrollbar px-2 **:data-[slot=month-labels]:text-muted-foreground"
+        title="GitHub Contributions"
+        role="img"
+        aria-label="GitHub contributions graph"
+      >
         {({ activity, dayIndex, weekIndex }) => (
           <Tooltip>
             <TooltipTrigger
