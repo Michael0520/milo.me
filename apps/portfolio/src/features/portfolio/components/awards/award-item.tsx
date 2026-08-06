@@ -24,7 +24,7 @@ export function AwardItem({ className, award }: { className?: string; award: Awa
             <div className="flex-1">
               <h3 className="mb-1 leading-snug font-medium text-balance">{award.title}</h3>
 
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
                 <dl>
                   <dt className="sr-only">Prize</dt>
                   <dd>{award.prize}</dd>
