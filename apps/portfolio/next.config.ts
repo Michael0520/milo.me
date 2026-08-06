@@ -24,9 +24,6 @@ const nextConfig: NextConfig = {
     ],
     qualities: [75, 100],
   },
-  experimental: {
-    viewTransition: true,
-  },
   compiler:
     process.env.NODE_ENV === "production"
       ? {
