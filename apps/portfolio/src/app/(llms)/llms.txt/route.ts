@@ -10,7 +10,11 @@ const content = `# michaello.me
 > Michael Lo's personal portfolio and blog. Full Stack Web Developer based in Taipei, Taiwan.
 
 - [About](${SITE_INFO.url}/about.md): About me, my tech stack, and how to connect.
-- [Talks](${SITE_INFO.url}/talks): Conference talks and presentations.
+- [Experience](${SITE_INFO.url}/experience.md): Roles I've held, with duration, skills, and what I worked on.
+- [Projects](${SITE_INFO.url}/projects.md): Selected projects, with links and the stack behind each.
+- [Talks](${SITE_INFO.url}/talks.md): Conference talks and meetup sessions, with slide links.
+- [Awards](${SITE_INFO.url}/awards.md): Awards and honors I've received.
+- [Certifications](${SITE_INFO.url}/certifications.md): Certifications and credentials I've earned.
 
 ## Daily
 
