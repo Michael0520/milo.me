@@ -48,7 +48,7 @@ export function CertificationItem({
       <div className="flex-1 space-y-1 border-l border-dashed border-line p-4 pr-2">
         <h3 className="leading-snug font-medium text-balance">{certification.title}</h3>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
           <dl>
             <dt className="sr-only">Issued by</dt>
             <dd>
