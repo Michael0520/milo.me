@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/Michael0520/milo.me/compare/v0.16.4...v0.17.0) (2026-08-09)
+
+
+### Features
+
+* pick three changes from upstream (llms.txt index, footer padding, graph a11y) ([#93](https://github.com/Michael0520/milo.me/issues/93)) ([ed72dea](https://github.com/Michael0520/milo.me/commit/ed72dea4f5c65da8ed27ff89295b24c53e469732))
+
 ## [0.16.4](https://github.com/Michael0520/milo.me/compare/v0.16.3...v0.16.4) (2026-07-23)
 
 
