@@ -42,8 +42,9 @@
       "enabled": false
     },
     {
-      "description": "Next.js pinned to 16.1.7 (16.2.x dev-server memory leak) — no updates.",
+      "description": "Next.js — the 16.1.7 pin was lifted in PR #96 (16.3.0 ships turbopackMemoryEviction on by default, which fixes the Apple Silicon dev-server memory growth of vercel/next.js#92055). 16.x minor/patch now flow through the grouped PR so security fixes are not stranded; the next major stays manual.",
       "matchPackageNames": ["next"],
+      "matchUpdateTypes": ["major"],
       "enabled": false
     },
     {
