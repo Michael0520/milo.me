@@ -43,4 +43,11 @@ export default defineConfig({
   run: {
     cache: true,
   },
+  test: {
+    // apps/portfolio/e2e/*.spec.ts are Playwright specs driven by
+    // `vp run michaello-portfolio#test:e2e`, not Vitest. Without this they get
+    // picked up by `vp test` at the root and fail on the missing Playwright
+    // fixtures. This never surfaced before because `vp test` itself was broken.
+    exclude: ["**/node_modules/**", "**/dist/**", "**/.next/**", "apps/portfolio/e2e/**"],
+  },
 });
