@@ -86,8 +86,8 @@ catalogs:
       specifier: ^2.3.6
       version: 2.3.6
     jotai:
-      specifier: ^2.20.2
-      version: 2.20.2
+      specifier: ^3.0.0
+      version: 3.0.0
     libphonenumber-js:
       specifier: ^1.13.9
       version: 1.13.9
@@ -346,7 +346,7 @@ importers:
         version: 2.3.6
       jotai:
         specifier: 'catalog:'
-        version: 2.20.2(@babel/core@7.29.0)(@babel/template@7.29.7)(@types/react@19.2.18)(react@19.2.8)
+        version: 3.0.0(@types/react@19.2.18)(react@19.2.8)
       libphonenumber-js:
         specifier: 'catalog:'
         version: 1.13.9
@@ -5547,19 +5547,13 @@ packages:
   jose@6.2.2:
     resolution: {integrity: sha512-d7kPDd34KO/YnzaDOlikGpOurfF0ByC2sEV4cANCtdqLlTfBlw2p14O/5d/zv40gJPbIQxfES3nSx1/oYNyuZQ==}
 
-  jotai@2.20.2:
-    resolution: {integrity: sha512-aHB4CNb9qRcyf0mwSB6EO5bCGAjx8cTwFgOFCE2leOnTzqACbnSWG8XoWB3LxCT1Qoj03I1OWAHszDmN4uHb/w==}
-    engines: {node: '>=12.20.0'}
+  jotai@3.0.0:
+    resolution: {integrity: sha512-KxhbmsJUp/tmrv6aZgO+nzB3H9K8C0xmk5i3aGkwy/EANg73DVBkggv3zVHaAi5PlNlQgTgP4uiVepo+JC+wSA==}
+    engines: {node: '>=22.12.0'}
     peerDependencies:
-      '@babel/core': '>=7.0.0'
-      '@babel/template': '>=7.0.0'
-      '@types/react': '>=17.0.0'
-      react: '>=17.0.0'
+      '@types/react': '>=18.0.0'
+      react: '>=18.0.0'
     peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@babel/template':
-        optional: true
       '@types/react':
         optional: true
       react:
@@ -13041,10 +13035,8 @@ snapshots:
 
   jose@6.2.2: {}
 
-  jotai@2.20.2(@babel/core@7.29.0)(@babel/template@7.29.7)(@types/react@19.2.18)(react@19.2.8):
+  jotai@3.0.0(@types/react@19.2.18)(react@19.2.8):
     optionalDependencies:
-      '@babel/core': 7.29.0
-      '@babel/template': 7.29.7
       '@types/react': 19.2.18
       react: 19.2.8
 
@@ -15974,7 +15966,7 @@ snapshots:
 
   vite@8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
-      lightningcss: 1.32.0
+      lightningcss: 1.33.0
       picomatch: 4.0.4
       postcss: 8.5.23
       rolldown: 1.0.0-rc.12(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
@@ -15990,7 +15982,7 @@ snapshots:
 
   vite@8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.11.3)(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
-      lightningcss: 1.32.0
+      lightningcss: 1.33.0
       picomatch: 4.0.4
       postcss: 8.5.23
       rolldown: 1.0.0-rc.12(@emnapi/core@1.10.0)(@emnapi/runtime@1.11.3)
