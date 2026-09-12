@@ -68,8 +68,8 @@ catalogs:
       specifier: ^4.4.0
       version: 4.4.0
     dialkit:
-      specifier: ^1.3.0
-      version: 1.3.0
+      specifier: ^2.0.0
+      version: 2.0.2
     fumadocs-core:
       specifier: ^16.10.7
       version: 16.10.7
@@ -331,7 +331,7 @@ importers:
         version: 4.4.0
       dialkit:
         specifier: 'catalog:'
-        version: 1.3.0(motion@13.0.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vue@3.5.40(typescript@6.0.3))
+        version: 2.0.2(motion@13.0.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vue@3.5.40(typescript@6.0.3))
       fumadocs-core:
         specifier: 'catalog:'
         version: 16.10.7(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.5)(@types/mdast@4.0.4)(@types/react@19.2.18)(lucide-react@1.25.0(react@19.2.8))(next@16.3.0(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(@types/node@25.9.5)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@3.25.76)
@@ -4718,8 +4718,8 @@ packages:
   devtools-protocol@0.0.1608973:
     resolution: {integrity: sha512-Tpm17fxYzt+J7VrGdc1k8YdRqS3YV7se/M6KeemEqvUbq/n7At1rWVuXMxQgpWkdwSdIEKYbU//Bve+Shm4YNQ==}
 
-  dialkit@1.3.0:
-    resolution: {integrity: sha512-//tnKhG+6gWhH3h9L7RpRPQZJkRBj0qQyUu1Og1l0VI6Nn/7iKaZZDFs/hG+Jsrtvwp4hlLrrmzj8M6hkXR3EA==}
+  dialkit@2.0.2:
+    resolution: {integrity: sha512-D5ZFLBhcB8WVxI6Q8e7HuPPA4SKQBPfLHpvgZQ5V0ZrqohHjYjTR5JoLfXSCeN8tKvUdemyGnVHy/3EtsaliUw==}
     peerDependencies:
       motion: '>=11.0.0'
       motion-v: '>=2.0.0'
@@ -4729,6 +4729,8 @@ packages:
       svelte: '>=5.8.0'
       vue: '>=3.3.0'
     peerDependenciesMeta:
+      motion:
+        optional: true
       motion-v:
         optional: true
       react:
@@ -12161,10 +12163,9 @@ snapshots:
 
   devtools-protocol@0.0.1608973: {}
 
-  dialkit@1.3.0(motion@13.0.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vue@3.5.40(typescript@6.0.3)):
-    dependencies:
-      motion: 13.0.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+  dialkit@2.0.2(motion@13.0.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vue@3.5.40(typescript@6.0.3)):
     optionalDependencies:
+      motion: 13.0.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
       vue: 3.5.40(typescript@6.0.3)
@@ -15974,7 +15975,7 @@ snapshots:
 
   vite@8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
-      lightningcss: 1.32.0
+      lightningcss: 1.33.0
       picomatch: 4.0.4
       postcss: 8.5.23
       rolldown: 1.0.0-rc.12(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
@@ -15990,7 +15991,7 @@ snapshots:
 
   vite@8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.11.3)(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0):
     dependencies:
-      lightningcss: 1.32.0
+      lightningcss: 1.33.0
       picomatch: 4.0.4
       postcss: 8.5.23
       rolldown: 1.0.0-rc.12(@emnapi/core@1.10.0)(@emnapi/runtime@1.11.3)
