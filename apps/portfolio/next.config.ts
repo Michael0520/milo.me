@@ -87,7 +87,12 @@ const nextConfig: NextConfig = {
           destination: "/doc.md/:slug",
         },
         {
-          source: "/:section(daily|tech|components)/:slug",
+          // beforeFiles runs ahead of the filesystem, so this pattern must not
+          // swallow the real /:section/rss route handlers. An earlier identity
+          // rewrite does not shield them: rules keep being evaluated after a
+          // match, so the catch-all still fired. Excluding the segment here is
+          // what works. Add any future sibling route to the exclusion.
+          source: "/:section(daily|tech|components)/:slug((?!rss$)[^/]+)",
           destination: "/doc.md/:slug",
           has: [
             {
