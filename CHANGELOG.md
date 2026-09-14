@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://github.com/Michael0520/milo.me/compare/v0.17.0...v0.18.0) (2026-09-14)
+
+
+### Features
+
+* sync upstream 2026-09 (markdown negotiation fix, IconTile, full-row triggers) ([#107](https://github.com/Michael0520/milo.me/issues/107)) ([b9f7f46](https://github.com/Michael0520/milo.me/commit/b9f7f461183292534e30dbb03d4d6afec54991da))
+
 ## [0.17.0](https://github.com/Michael0520/milo.me/compare/v0.16.4...v0.17.0) (2026-08-09)
 
 
