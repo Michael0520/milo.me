@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/base/ui/button";
 import { ComponentIcon } from "@/components/icons";
 import { getDocsByCategory } from "@/features/doc/data/documents";
+import { IconTile } from "@/components/ui/icon-tile";
 import { cn } from "@/lib/utils";
 
 import { Panel, PanelHeader, PanelTitle, PanelTitleSup } from "./panel";
@@ -41,18 +42,15 @@ export function Components() {
                 "md:nth-[3n+1]:screen-line-top md:nth-[3n+1]:screen-line-bottom",
               )}
             >
-              <div className="relative flex size-6 shrink-0 items-center justify-center rounded-lg border border-muted-foreground/15 bg-muted ring-1 ring-line ring-offset-1 ring-offset-background">
-                <ComponentIcon
-                  className="pointer-events-none size-4 text-muted-foreground"
-                  variant={component.slug}
-                />
+              <IconTile className="relative">
+                <ComponentIcon variant={component.slug} />
                 {component.metadata.new && (
                   <span className="absolute -top-1 -right-1 flex items-center justify-center">
                     <span className="flex size-2 rounded-sm bg-info ring-1 ring-background" />
                     <span className="sr-only">New</span>
                   </span>
                 )}
-              </div>
+              </IconTile>
 
               <h3 className="leading-snug font-medium text-balance">{component.metadata.title}</h3>
             </Link>

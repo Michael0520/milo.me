@@ -18,11 +18,11 @@ const content = `# michaello.me
 
 ## Daily
 
-${dailyPosts.map((item) => `- [${item.metadata.title}](${SITE_INFO.url}${getDocPath(item)}.mdx): ${item.metadata.description}`).join("\n")}
+${dailyPosts.map((item) => `- [${item.metadata.title}](${SITE_INFO.url}${getDocPath(item)}.md): ${item.metadata.description}`).join("\n")}
 
 ## Tech
 
-${techPosts.length > 0 ? techPosts.map((item) => `- [${item.metadata.title}](${SITE_INFO.url}${getDocPath(item)}.mdx): ${item.metadata.description}`).join("\n") : "No posts yet."}
+${techPosts.length > 0 ? techPosts.map((item) => `- [${item.metadata.title}](${SITE_INFO.url}${getDocPath(item)}.md): ${item.metadata.description}`).join("\n") : "No posts yet."}
 `;
 
 export const revalidate = false;

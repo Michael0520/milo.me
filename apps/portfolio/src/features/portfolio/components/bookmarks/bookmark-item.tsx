@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { ArrowUpRightIcon, BookmarkIcon } from "lucide-react";
 
 import { getIcon } from "@/components/icons";
+import { IconTile } from "@/components/ui/icon-tile";
 import { Separator } from "@/components/ui/separator";
 import { UTM_PARAMS } from "@/config/site";
 import type { Bookmark } from "@/features/portfolio/types/bookmarks";
@@ -16,15 +17,7 @@ export function BookmarkItem({ className, bookmark }: { className?: string; book
       target="_blank"
       rel="noopener"
     >
-      <div
-        className={cn(
-          "mx-4 flex size-6 shrink-0 items-center justify-center rounded-lg select-none",
-          "border border-muted-foreground/15 ring-1 ring-line ring-offset-1 ring-offset-background",
-          "bg-muted text-muted-foreground [&_svg]:size-4",
-        )}
-      >
-        {getIcon(bookmark.iconName) ?? <BookmarkIcon />}
-      </div>
+      <IconTile className="mx-4">{getIcon(bookmark.iconName) ?? <BookmarkIcon />}</IconTile>
 
       <div className="flex-1 space-y-1 border-l border-dashed border-line p-4 pr-2">
         <h3 className="leading-snug font-medium text-balance">{bookmark.title}</h3>

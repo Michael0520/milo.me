@@ -60,6 +60,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/:section(daily|tech|components)/:slug.mdx",
+        destination: "/:section/:slug.md",
+        permanent: true,
+      },
+      {
         source: "/blog",
         destination: "/daily",
         permanent: true,
@@ -72,40 +77,67 @@ const nextConfig: NextConfig = {
     ];
   },
   async rewrites() {
-    return [
-      // SPA fallback for Slidev decks: deep routes like /slides/<slug>/3 have no
-      // static file on disk, so serve the deck's index.html and let Slidev's
-      // client router resolve the slide. Runs in the afterFiles phase, so real
-      // assets (index.html, assets/*, images/*) are served directly and never
-      // hit this rule. Replaces Slidev's _redirects, which Vercel ignores.
-      {
-        source: "/slides/:slug/:path*",
-        destination: "/slides/:slug/index.html",
-      },
-      {
-        source: "/:section(daily|tech|components)/:slug.mdx",
-        destination: "/doc.mdx/:slug",
-      },
-      {
-        source: "/:section(daily|tech|components)/:slug",
-        destination: "/doc.mdx/:slug",
-        has: [
-          {
-            type: "header",
-            key: "accept",
-            value: "(?<accept>.*text/markdown.*)",
-          },
-        ],
-      },
-      {
-        source: "/rss",
-        destination: "/daily/rss",
-      },
-      {
-        source: "/registry/rss",
-        destination: "/components/rss",
-      },
-    ];
+    return {
+      // beforeFiles runs ahead of prerendered pages. afterFiles rewrites never
+      // fire for SSG pages on Vercel, which silently broke Accept-based
+      // markdown negotiation in production (HTML came back instead).
+      beforeFiles: [
+        {
+          source: "/:section(daily|tech|components)/:slug.md",
+          destination: "/doc.md/:slug",
+        },
+        {
+          // beforeFiles runs ahead of the filesystem, so this pattern must not
+          // swallow the real /:section/rss route handlers. An earlier identity
+          // rewrite does not shield them: rules keep being evaluated after a
+          // match, so the catch-all still fired. Excluding the segment here is
+          // what works. Add any future sibling route to the exclusion.
+          source: "/:section(daily|tech|components)/:slug((?!rss$)[^/]+)",
+          destination: "/doc.md/:slug",
+          has: [
+            {
+              type: "header",
+              key: "accept",
+              value: "(?<accept>.*text/markdown.*)",
+            },
+          ],
+        },
+        {
+          source: "/index.md",
+          destination: "/llms.txt",
+        },
+        {
+          source: "/",
+          destination: "/llms.txt",
+          has: [
+            {
+              type: "header",
+              key: "accept",
+              value: "(?<accept>.*text/markdown.*)",
+            },
+          ],
+        },
+      ],
+      afterFiles: [
+        // SPA fallback for Slidev decks: deep routes like /slides/<slug>/3 have no
+        // static file on disk, so serve the deck's index.html and let Slidev's
+        // client router resolve the slide. Must stay in afterFiles so real
+        // assets (index.html, assets/*, images/*) are served directly and never
+        // hit this rule. Replaces Slidev's _redirects, which Vercel ignores.
+        {
+          source: "/slides/:slug/:path*",
+          destination: "/slides/:slug/index.html",
+        },
+        {
+          source: "/rss",
+          destination: "/daily/rss",
+        },
+        {
+          source: "/registry/rss",
+          destination: "/components/rss",
+        },
+      ],
+    };
   },
 };
 

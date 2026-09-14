@@ -95,6 +95,8 @@ export function ViewOptions({
   isComponent?: boolean;
 }) {
   const items = useMemo(() => {
+    // The public URL serves .md, but the source file on GitHub is .mdx.
+    const sourceFile = `${markdownUrl.split("/").pop()?.replace(/\.md$/, "")}.mdx`;
     const fullMarkdownUrl =
       typeof window !== "undefined"
         ? new URL(markdownUrl, window.location.origin).toString()
@@ -110,7 +112,7 @@ export function ViewOptions({
       },
       {
         title: "Open in GitHub",
-        href: `https://github.com/Michael0520/milo.me/blob/main/apps/portfolio/src/features/doc/content/${markdownUrl.split("/").slice(-1).join("/")}`,
+        href: `https://github.com/Michael0520/milo.me/blob/main/apps/portfolio/src/features/doc/content/${sourceFile}`,
         icon: Icons.github,
       },
       {
