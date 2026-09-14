@@ -5,6 +5,7 @@ import { Collapsible, CollapsibleChevronsIcon } from "@/components/base/collapsi
 import { CollapsibleContent, CollapsibleTrigger } from "@/components/base/ui/collapsible";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/base/ui/tooltip";
 import { Markdown } from "@/components/markdown";
+import { IconTile } from "@/components/ui/icon-tile";
 import { Separator } from "@/components/ui/separator";
 
 import type { Award } from "../../types/awards";
@@ -14,77 +15,75 @@ export function AwardItem({ className, award }: { className?: string; award: Awa
 
   return (
     <Collapsible className={className} disabled={!canExpand}>
-      <div className="flex items-center hover:bg-accent-muted">
-        <div className="mx-4 flex size-6 shrink-0 items-center justify-center rounded-lg border border-muted-foreground/15 bg-muted ring-1 ring-line ring-offset-1 ring-offset-background">
-          <AwardIcon className="pointer-events-none size-4 text-muted-foreground" />
-        </div>
+      <CollapsibleTrigger className="flex w-full items-center text-left hover:bg-accent-muted">
+        <IconTile className="mx-4">
+          <AwardIcon />
+        </IconTile>
 
-        <div className="flex-1 border-l border-dashed border-line">
-          <CollapsibleTrigger className="flex w-full items-center gap-2 p-4 pr-2 text-left">
-            <div className="flex-1">
-              <h3 className="mb-1 leading-snug font-medium text-balance">{award.title}</h3>
+        <div className="flex flex-1 items-center gap-2 border-l border-dashed border-line p-4 pr-2">
+          <div className="flex-1">
+            <h3 className="mb-1 leading-snug font-medium text-balance">{award.title}</h3>
 
-              <div className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
-                <dl>
-                  <dt className="sr-only">Prize</dt>
-                  <dd>{award.prize}</dd>
-                </dl>
+            <div className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
+              <dl>
+                <dt className="sr-only">Prize</dt>
+                <dd>{award.prize}</dd>
+              </dl>
 
-                <Separator
-                  className="data-vertical:h-4 data-vertical:self-center"
-                  orientation="vertical"
-                />
+              <Separator
+                className="data-vertical:h-4 data-vertical:self-center"
+                orientation="vertical"
+              />
 
-                <dl>
-                  <dt className="sr-only">Awarded in</dt>
-                  <dd>
-                    <time dateTime={new Date(award.date).toISOString()}>
-                      {format(new Date(award.date), "MM.yyyy")}
-                    </time>
-                  </dd>
-                </dl>
+              <dl>
+                <dt className="sr-only">Awarded in</dt>
+                <dd>
+                  <time dateTime={new Date(award.date).toISOString()}>
+                    {format(new Date(award.date), "MM.yyyy")}
+                  </time>
+                </dd>
+              </dl>
 
-                <Separator
-                  className="data-vertical:h-4 data-vertical:self-center"
-                  orientation="vertical"
-                />
+              <Separator
+                className="data-vertical:h-4 data-vertical:self-center"
+                orientation="vertical"
+              />
 
-                <dl>
-                  <dt className="sr-only">Received in Grade</dt>
-                  <dd>{award.grade}</dd>
-                </dl>
-              </div>
+              <dl>
+                <dt className="sr-only">Received in Grade</dt>
+                <dd>{award.grade}</dd>
+              </dl>
             </div>
+          </div>
 
-            {award.referenceLink && (
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <a
-                      className="relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
-                      href={award.referenceLink}
-                      target="_blank"
-                      rel="noopener"
-                      aria-label="Open Reference Attachment"
-                    >
-                      <FileCheckIcon className="pointer-events-none size-4" />
-                    </a>
-                  }
-                />
-                <TooltipContent>
-                  <p>Open Reference Attachment</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
+          {award.referenceLink && (
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <a
+                    className="relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
+                    href={award.referenceLink}
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Open Reference Attachment"
+                  >
+                    <FileCheckIcon className="pointer-events-none size-4" />
+                  </a>
+                }
+              />
+              <TooltipContent>
+                <p>Open Reference Attachment</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
 
-            {canExpand && (
-              <div className="shrink-0 text-muted-foreground [&_svg]:size-4">
-                <CollapsibleChevronsIcon duration={0.15} />
-              </div>
-            )}
-          </CollapsibleTrigger>
+          {canExpand && (
+            <div className="shrink-0 text-muted-foreground [&_svg]:size-4">
+              <CollapsibleChevronsIcon duration={0.15} />
+            </div>
+          )}
         </div>
-      </div>
+      </CollapsibleTrigger>
 
       {canExpand && (
         <CollapsibleContent className="overflow-hidden">

@@ -3,6 +3,7 @@ import { BriefcaseBusinessIcon, InfinityIcon } from "lucide-react";
 import { Collapsible, CollapsibleChevronsIcon } from "@/components/base/collapsible-animated";
 import { CollapsibleContent, CollapsibleTrigger } from "@/components/base/ui/collapsible";
 import { Markdown } from "@/components/markdown";
+import { IconTile } from "@/components/ui/icon-tile";
 import { Separator } from "@/components/ui/separator";
 import { Tag } from "@/components/ui/tag";
 import { cn } from "@/lib/utils";
@@ -28,16 +29,7 @@ export function ExperiencePositionItem({ position }: { position: ExperiencePosit
         )}
       >
         <div className="relative z-1 mb-1 flex items-center gap-3">
-          <div
-            className={cn(
-              "flex size-6 shrink-0 items-center justify-center rounded-lg",
-              "bg-muted text-muted-foreground",
-              "border border-muted-foreground/15 ring-1 ring-line ring-offset-1 ring-offset-background",
-              "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-            )}
-          >
-            {position.icon ?? <BriefcaseBusinessIcon />}
-          </div>
+          <IconTile>{position.icon ?? <BriefcaseBusinessIcon />}</IconTile>
 
           <h4 className="flex-1 font-medium text-balance">{position.title}</h4>
 

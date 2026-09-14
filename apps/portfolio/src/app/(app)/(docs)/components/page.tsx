@@ -20,6 +20,7 @@ import { RegistryCommandAnimated } from "@/components/registry-command-animated"
 import { registryConfig } from "@/config/registry";
 import { UTM_PARAMS, X_USERNAME } from "@/config/site";
 import { getDocsByCategory } from "@/features/doc/data/documents";
+import { IconTile } from "@/components/ui/icon-tile";
 import { cn } from "@/lib/utils";
 import { addQueryParams } from "@/utils/url";
 
@@ -160,18 +161,15 @@ export default function Page() {
                   "md:nth-[3n+1]:screen-line-top md:nth-[3n+1]:screen-line-bottom",
                 )}
               >
-                <div className="relative flex size-6 shrink-0 items-center justify-center rounded-lg border border-muted-foreground/15 bg-muted ring-1 ring-line ring-offset-1 ring-offset-background">
-                  <ComponentIcon
-                    className="pointer-events-none size-4 text-muted-foreground"
-                    variant={post.slug}
-                  />
+                <IconTile className="relative">
+                  <ComponentIcon variant={post.slug} />
                   {post.metadata.new && (
                     <span className="absolute -top-1 -right-1 flex items-center justify-center">
                       <span className="flex size-2 rounded-sm bg-info ring-1 ring-background" />
                       <span className="sr-only">New</span>
                     </span>
                   )}
-                </div>
+                </IconTile>
 
                 <h2 className="line-clamp-1 leading-snug font-medium text-balance">
                   {post.metadata.title}
