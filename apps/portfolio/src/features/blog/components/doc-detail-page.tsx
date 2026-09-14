@@ -118,10 +118,7 @@ export function DocDetailPage({
         </Button>
 
         <div className="flex items-center gap-2">
-          <LLMCopyButtonWithViewOptions
-            markdownUrl={`${getDocPath(doc)}.mdx`}
-            isComponent={false}
-          />
+          <LLMCopyButtonWithViewOptions markdownUrl={`${getDocPath(doc)}.md`} isComponent={false} />
 
           <PostShareMenu title={doc.metadata.title} url={getDocPath(doc)} />
 

@@ -153,7 +153,7 @@ export default async function Page({
         </Button>
 
         <div className="flex items-center gap-2">
-          <LLMCopyButtonWithViewOptions markdownUrl={`/components/${doc.slug}.mdx`} isComponent />
+          <LLMCopyButtonWithViewOptions markdownUrl={`/components/${doc.slug}.md`} isComponent />
 
           <PostShareMenu title={doc.metadata.title} url={`/components/${doc.slug}`} />
 
