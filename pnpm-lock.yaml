@@ -232,8 +232,8 @@ catalogs:
       specifier: 1.2.10
       version: 1.2.10
     '@iconify-json/simple-icons':
-      specifier: 1.2.95
-      version: 1.2.95
+      specifier: 1.2.96
+      version: 1.2.96
     '@iconify-json/twemoji':
       specifier: 1.2.5
       version: 1.2.5
@@ -536,7 +536,7 @@ importers:
         version: 1.2.10
       '@iconify-json/simple-icons':
         specifier: catalog:slides
-        version: 1.2.95
+        version: 1.2.96
       '@iconify-json/twemoji':
         specifier: catalog:slides
         version: 1.2.5
@@ -1066,8 +1066,8 @@ packages:
   '@iconify-json/ri@1.2.10':
     resolution: {integrity: sha512-WWMhoncVVM+Xmu9T5fgu2lhYRrKTEWhKk3Com0KiM111EeEsRLiASjpsFKnC/SrB6covhUp95r2mH8tGxhgd5Q==}
 
-  '@iconify-json/simple-icons@1.2.95':
-    resolution: {integrity: sha512-QwWgcoiL+eNCD38QM0OStFVFoOgDvzeHrcwMAvATvcFl0VvMEtED92qp3K3juS0H6RZ9BGUlgq9mODPwNWkjJg==}
+  '@iconify-json/simple-icons@1.2.96':
+    resolution: {integrity: sha512-/FmCYo/H5rIywTLV/P6OYsr0rg/31vuc8jYq0QnkOZl6m7PWIs+h5oAnSTT2cqRhOsMaKqbXcdkka6tnZ1WiUA==}
 
   '@iconify-json/svg-spinners@1.2.4':
     resolution: {integrity: sha512-ayn0pogFPwJA1WFZpDnoq9/hjDxN+keeCMyThaX4d3gSJ3y0mdKUxIA/b1YXWGtY9wVtZmxwcvOIeEieG4+JNg==}
@@ -4656,9 +4656,6 @@ packages:
   date-fns@4.4.0:
     resolution: {integrity: sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w==}
 
-  dayjs@1.11.20:
-    resolution: {integrity: sha512-YbwwqR/uYpeoP4pu043q+LTDLFBLApUP6VxRihdfNTqu4ubqMlGDLd6ErXhEgsyvY0K6nCs7nggYumAN+9uEuQ==}
-
   dayjs@1.11.23:
     resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
 
@@ -4793,9 +4790,6 @@ packages:
   domhandler@5.0.3:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
-
-  dompurify@3.3.3:
-    resolution: {integrity: sha512-Oj6pzI2+RqBfFG+qOaOLbFXLQ90ARpcGG6UePL82bJLtdsa6CYJD7nmiU8MW9nQNOtCHV3lZ/Bzq1X0QYbBZCA==}
 
   dompurify@3.4.15:
     resolution: {integrity: sha512-EUBjM+B+lkDE41iE82DDSCfkoPGfXx8IxFxPMjNzm/Uk4xDet77rTN9wqlxlVg71kK7XGuUMv6wUxJUwwv+Xyw==}
@@ -5631,10 +5625,6 @@ packages:
 
   jszip@3.10.1:
     resolution: {integrity: sha512-xXDvecyTpGLrqFrvkrUSoxxfJI5AH7U8zxxtVclpsUtMCq4JQ290LY8AW5c7Ggnr/Y/oK+bQMbqK2qmtk3pN4g==}
-
-  katex@0.16.45:
-    resolution: {integrity: sha512-pQpZbdBu7wCTmQUh7ufPmLr0pFoObnGUoL/yhtwJDgmmQpbkg/0HSVti25Fu4rmd1oCR6NGWe9vqTWuWv3GcNA==}
-    hasBin: true
 
   katex@0.16.47:
     resolution: {integrity: sha512-Eeo8Ys1doU1z+x8AZsPpQu+p/QcZBI5PeOo7QGQdy2x2m0MU/hYagBbGOmXwr5KVbEfVuWv9LpnQWeehogurjg==}
@@ -8466,7 +8456,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/simple-icons@1.2.95':
+  '@iconify-json/simple-icons@1.2.96':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -10325,7 +10315,7 @@ snapshots:
       htmlparser2: 10.1.0
       is-installed-globally: 1.0.0
       jiti: 2.7.0
-      katex: 0.16.45
+      katex: 0.16.47
       local-pkg: 1.2.1
       lz-string: 1.5.0
       magic-string: 0.30.21
@@ -10420,7 +10410,7 @@ snapshots:
       file-saver: 2.0.5
       floating-vue: 5.2.2(@nuxt/kit@3.21.8)(vue@3.5.40(typescript@6.0.3))
       fuse.js: 7.5.0
-      katex: 0.16.45
+      katex: 0.16.47
       lz-string: 1.5.0
       mermaid: 11.16.0
       monaco-editor: 0.53.0
@@ -10475,7 +10465,7 @@ snapshots:
       file-saver: 2.0.5
       floating-vue: 5.2.2(@nuxt/kit@3.21.8)(vue@3.5.40(typescript@6.0.3))
       fuse.js: 7.5.0
-      katex: 0.16.45
+      katex: 0.16.47
       lz-string: 1.5.0
       mermaid: 11.16.0
       monaco-editor: 0.53.0
@@ -10568,7 +10558,7 @@ snapshots:
       '@shikijs/markdown-it': 3.23.0(markdown-it-async@2.2.0)
       '@vitejs/plugin-vue': 6.0.8(vite@7.3.6(@types/node@25.9.5)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0))(vue@3.5.40(typescript@6.0.3))
       '@vitejs/plugin-vue-jsx': 5.1.6(vite@7.3.6(@types/node@25.9.5)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0))(vue@3.5.40(typescript@6.0.3))
-      katex: 0.16.45
+      katex: 0.16.47
       mermaid: 11.16.0
       monaco-editor: 0.53.0
       shiki: 3.23.0
@@ -10603,7 +10593,7 @@ snapshots:
       '@shikijs/markdown-it': 3.23.0(markdown-it-async@2.2.0)
       '@vitejs/plugin-vue': 6.0.8(vite@8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0))(vue@3.5.40(typescript@5.9.3))
       '@vitejs/plugin-vue-jsx': 5.1.6(vite@8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0))(vue@3.5.40(typescript@5.9.3))
-      katex: 0.16.45
+      katex: 0.16.47
       mermaid: 11.16.0
       monaco-editor: 0.53.0
       shiki: 3.23.0
@@ -12169,8 +12159,6 @@ snapshots:
 
   date-fns@4.4.0: {}
 
-  dayjs@1.11.20: {}
-
   dayjs@1.11.23: {}
 
   debug@2.6.9:
@@ -12258,10 +12246,6 @@ snapshots:
   domhandler@5.0.3:
     dependencies:
       domelementtype: 2.3.0
-
-  dompurify@3.3.3:
-    optionalDependencies:
-      '@types/trusted-types': 2.0.7
 
   dompurify@3.4.15:
     optionalDependencies:
@@ -13156,10 +13140,6 @@ snapshots:
       readable-stream: 2.3.8
       setimmediate: 1.0.5
 
-  katex@0.16.45:
-    dependencies:
-      commander: 8.3.0
-
   katex@0.16.47:
     dependencies:
       commander: 8.3.0
@@ -13566,10 +13546,10 @@ snapshots:
       d3: 7.9.0
       d3-sankey: 0.12.3
       dagre-d3-es: 7.0.14
-      dayjs: 1.11.20
-      dompurify: 3.3.3
+      dayjs: 1.11.23
+      dompurify: 3.4.15
       es-toolkit: 1.46.1
-      katex: 0.16.45
+      katex: 0.16.47
       khroma: 2.1.0
       marked: 16.4.2
       roughjs: 4.6.6
