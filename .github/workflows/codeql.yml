@@ -37,7 +37,7 @@ jobs:
       # JS/TS needs no build step — CodeQL analyzes source directly. Skip the
       # built Slidev decks (minified vendor bundles) and deck sources (not app
       # code) to cut noise.
-      - uses: github/codeql-action/init@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4
+      - uses: github/codeql-action/init@1c5b675653bb5c22dbe9b12b556ec555138e09fd # v4
         with:
           languages: javascript-typescript
           config: |
@@ -45,6 +45,6 @@ jobs:
               - apps/portfolio/public/slides
               - apps/slides
 
-      - uses: github/codeql-action/analyze@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4
+      - uses: github/codeql-action/analyze@1c5b675653bb5c22dbe9b12b556ec555138e09fd # v4
         with:
           category: "/language:javascript-typescript"
