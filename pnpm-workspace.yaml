@@ -9,7 +9,7 @@ allowBuilds:
 # `"<pkg>": "catalog:"` updates in one place.
 catalog:
   # Framework
-  next: 16.3.5
+  next: 16.4.0
   react: 19.3.0
   react-dom: 19.3.0
   # React ecosystem
@@ -58,7 +58,7 @@ catalog:
   remark-gfm: ^4.0.1
   remark-mdx: ^3.1.1
   remark-rehype: ^11.1.2
-  shiki: 4.4.3
+  shiki: 4.5.0
   unist-builder: ^4.0.0
   unist-util-visit: ^5.1.0
 
@@ -102,12 +102,12 @@ catalogs:
 
   # Slidev presentation toolchain (apps/slides). Bun → pnpm; real vite 7 (see overrides).
   slides:
-    "@iconify-json/carbon": 1.2.27
-    "@iconify-json/logos": 1.2.14
-    "@iconify-json/material-symbols": 1.2.92
+    "@iconify-json/carbon": 1.2.28
+    "@iconify-json/logos": 1.2.15
+    "@iconify-json/material-symbols": 1.2.94
     "@iconify-json/ph": 1.2.2
     "@iconify-json/ri": 1.2.10
-    "@iconify-json/simple-icons": 1.2.95
+    "@iconify-json/simple-icons": 1.2.99
     "@iconify-json/twemoji": 1.2.5
     "@slidev/cli": 52.6.0
     "@slidev/client": 52.6.0
