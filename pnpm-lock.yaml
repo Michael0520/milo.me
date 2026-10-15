@@ -41,8 +41,8 @@ catalogs:
       specifier: ^3.2.12
       version: 3.2.12
     '@c15t/nextjs':
-      specifier: ^2.1.0
-      version: 2.1.0
+      specifier: ^3.0.0
+      version: 3.0.0
     '@date-fns/tz':
       specifier: ^1.5.0
       version: 1.5.0
@@ -304,7 +304,7 @@ importers:
         version: 3.2.12(next@16.3.5(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(@types/node@25.9.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@c15t/nextjs':
         specifier: 'catalog:'
-        version: 2.1.0(@types/react@19.3.0)(next@16.3.5(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(@types/node@25.9.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))
+        version: 3.0.0(next@16.3.5(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(@types/node@25.9.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
       '@date-fns/tz':
         specifier: 'catalog:'
         version: 1.5.0
@@ -792,27 +792,48 @@ packages:
   '@braintree/sanitize-url@7.1.2':
     resolution: {integrity: sha512-jigsZK+sMF/cuiB7sERuo9V7N9jx+dhmHHnQyDSVdpZwVutaBu7WvNYqMDLSgFgfB30n452TP3vjDAvFC973mA==}
 
-  '@c15t/nextjs@2.1.0':
-    resolution: {integrity: sha512-W64elZWmNRNqXQIdz8sK5QNcECQkGxRVtls2prqTRdZIvtngYCO+5UJafQvAyRKJrePKCyBVlmunS08XR+3EOg==}
+  '@c15t/core@3.0.0':
+    resolution: {integrity: sha512-OaP86YrkyUfxd6m5JiIlf+IAzXRqjSHCLGbO7hD+D06uHtDsNIyjXYUnyJR3La1gpYUAYJs4SLJ/ULeMRFmu0w==}
+
+  '@c15t/dev-tools@3.0.0':
+    resolution: {integrity: sha512-9j3K7xUsurjPtjqOnxSarrkklByCAMISqQ8CbFM6C/8m7J5A8bT5cuSBW3yMqgvyDFwWGH08kTZOdp4YFJch5w==}
+
+  '@c15t/iab@3.0.0':
+    resolution: {integrity: sha512-NzqgkdfhMOxFK2Z8Byia9TqKVX2y3BRg+z9tYeGFaOuWpkQTapvboP7W3mHnDw3uM9kEcAbw8pDSPjsT1mGxZw==}
+
+  '@c15t/nextjs@3.0.0':
+    resolution: {integrity: sha512-krIKy8X2+Cb9eMGSjLiDijINT9OMDg6DSG2GcrrvmXQK6NVSYqVfhhdVUeXzm3X/Yd/+tnIYvDKpPDvAzhmDwg==}
     peerDependencies:
-      next: ^16.0.0 || ^15.0.0 || ^14.0.0 || ^13.0.0
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+      next: ^15.0.0 || ^16.0.0
+      react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      next:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
-  '@c15t/react@2.1.0':
-    resolution: {integrity: sha512-tlHPjLN8R/M2xXkjoVfoiFxAy/NALVfO+DtDVUO/KL+/fqV9j1ycL489lG7s1p2jAgYeurHEnNmeb8lgjvoIDg==}
+  '@c15t/react@3.0.0':
+    resolution: {integrity: sha512-jX/W7O51OGR/ZwK6yUAPwcMvsIUkgviaA5fr2ydkQJW+bdLUmTBMFsXMVAKQ46UPurG4DXf/1zGuBG1PlC+K2g==}
     peerDependencies:
-      react: ^19.0.0 || ^19.0.0-rc || ^18.0.0 || ^17.0.0 || ^16.8.0
-      react-dom: ^19.0.0 || ^19.0.0-rc || ^18.0.0 || ^17.0.0 || ^16.8.0
+      react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
-  '@c15t/schema@2.1.0':
-    resolution: {integrity: sha512-/Kxe4qv6E5cR6wgzxx1CTZuhMFfJQHi3GGFzcRCx4smqN8IrgsVtXv800O7Nz9RqoDu/8DFiHGpJ25aupwMsRQ==}
+  '@c15t/schema@3.0.0':
+    resolution: {integrity: sha512-eIDclYzJblktI2DvkBhE62yTifYgGuQfT/tS5jl3Rw/ByiSvD+C7U80r5Ujv4cyNIHNAUUgkEQXWDvEzIyAohQ==}
 
-  '@c15t/translations@2.1.0':
-    resolution: {integrity: sha512-pB6A5nMKHaAwFOUetcIkyIscMBr5iVm/lxBqzoSk3MU0KMGn4F/OTpcLZOT7k5P87RMkuuKkXN+gyf6jCuvBAw==}
+  '@c15t/translations@3.0.0':
+    resolution: {integrity: sha512-HQg18k6BjCtyIYUhtefVeAywGMa4jkDi4GYZSwCW90cJPzuN+pl1XSmZo7yOnc+uIAhPu3jrbGUUY5ZRLdTs0w==}
 
-  '@c15t/ui@2.1.0':
-    resolution: {integrity: sha512-tl9mQnQdPbtWQQpXNFRzqrQDk4crjRUX+lIJmd7Le+uZVIuEiNbDeEIjQLj0XH0Cp3Xv3NJn0C7XF5H9CRVHKA==}
+  '@c15t/ui@3.0.0':
+    resolution: {integrity: sha512-aglVaWs6DpsNwxg3diIi4l3kD+r1V9reUiitXo9cN3A40U4LCDmlFqOZ88sTcZ7nlaXmQx7p3z3bQPwU0nTvRw==}
 
   '@chevrotain/cst-dts-gen@11.1.2':
     resolution: {integrity: sha512-XTsjvDVB5nDZBQB8o0o/0ozNelQtn2KrUVteIHSlPd2VAV2utEb6JzyCJaJ8tGxACR4RiBNWy5uYUHX2eji88Q==}
@@ -1050,6 +1071,9 @@ packages:
     resolution: {integrity: sha512-Jsv6UOWYTrEFJ/01ZrnwVXs7KDvP8XIo115i++5PWvNkNvkrsTfGiLS6w+eJ57CYtUtDQalUWovCZDHFJ8u1VQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
+
+  '@iabtechlabtcf/core@1.5.22':
+    resolution: {integrity: sha512-Iaz42mXXflxLL19nU7S7RBV1hjELln32mettVVTxdzFFqxVPze6dOzgaNMHP/L9a2Anr017D7yFAcPzMgnfchw==}
 
   '@iconify-json/carbon@1.2.27':
     resolution: {integrity: sha512-tufpkYXBDlXqczQEZo6QgvfwBd5aIK36gt+pHOI66eK4KOO8oh7CIHDZ4JsiSnOyjqRbApVHzXv4Nz8NO0GPFQ==}
@@ -3459,6 +3483,9 @@ packages:
   '@types/geojson@7946.0.16':
     resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
 
+  '@types/google.maps@3.65.3':
+    resolution: {integrity: sha512-tqbbx7MUtoDk+RwpZMymPDj6Skez0FhqDZNhLhS5UDmCx4D1dgP+BJOHTebiO/rhjJLa1f8te2p6mJJeFKVFOQ==}
+
   '@types/hammerjs@2.0.46':
     resolution: {integrity: sha512-ynRvcq6wvqexJ9brDMS4BnBLzmr0e14d6ZJTEShTBWKymQiHwlAyGu0ZPEFI2Fh1U53F7tN9ufClWM5KvqkKOw==}
 
@@ -3922,123 +3949,145 @@ packages:
     resolution: {integrity: sha512-yo96Oef12WzqnphInfz/eexVse3+kWgfGS5g2S3rFS3dcGn1ENW9xLFDZUP9rh+yP76DOq38wBoFi1+I9+6qBg==}
     cpu: [arm64]
     os: [darwin]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-darwin-x64@0.5.48':
     resolution: {integrity: sha512-aRCTw0EZC4bVosmw//0OMYP5tGWFE0Cu5yUBFkUbhXx/iBzvORcJ2xPNlOp/vtCCo9Ys4vp8b0DigJV6uOVb2g==}
     cpu: [x64]
     os: [darwin]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-freebsd-x64@0.5.48':
     resolution: {integrity: sha512-CA0AQAEApDkbw51PdLWMtKPJ41/7rvXsS3SJs+phG7fHJI+MuFzWuLbkucZfZoEOiDscmcsfYIdgL8BsfuyKKQ==}
     cpu: [x64]
     os: [freebsd]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm-gnu@0.5.48':
     resolution: {integrity: sha512-DuSQlk8bH4gpmW3/00P0NLagAcMv8jOxjT40cQmxKRkktr+SUOALCfkT89tdDq3qtY95NR2GXOZ7AjNh7KKqCw==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm-musl@0.5.48':
     resolution: {integrity: sha512-bxj4Ee+wlaJcWJwft2ReJXWw5sfl1qavDz6+dlRdU1xfTEtjPSNiAWhiCHnJR0R4Ygd57DnzSQmAVGvFv6RcGw==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm64-gnu@0.5.48':
     resolution: {integrity: sha512-mk5JVWh+0JOe5ue8k17kbYX8uGBoKt3ZqoCyxNh4nYAAcX7+X1tFUiU7jbjctu4vHeejCBFSTdQ021+V31cUCQ==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm64-musl@0.5.48':
     resolution: {integrity: sha512-4q3vkrNghbllyxOm2KesFLxCPKHF7r3JyQ7BWZccY1j2Y05yKoIFhoWCqIuQ2W/dpte9RI0+OVfwyxnrKg6fkA==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-x64-gnu@0.5.48':
     resolution: {integrity: sha512-csd4M1EVrGaohM8acM6gq1zpUA/Rwe2ulUMBKUcwQXm/k6n7cq1A++qdew78SOVb4do3JH1WE+WFwoGQAcWc1w==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-x64-musl@0.5.48':
     resolution: {integrity: sha512-KcDuEOT+GFoVKdvAWOv1v9iYjwnmvMZlO+j1Rw+5PYdeFLGWGzv/DD11y4SAAdwXIFcil4T0hibeIaF82WStMg==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-win32-arm64@0.5.48':
     resolution: {integrity: sha512-HI8qNrI8dWM5BuqIMKsqornRvTNFrE6sm5zToIJ9YIa9zt5+29P7fJ7Nr39EVf6dAWSb6q7JSpScJnRsQ+FgZA==}
     cpu: [arm64]
     os: [win32]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-win32-x64@0.5.48':
     resolution: {integrity: sha512-X5YWJLO6EfBZpeBqO0AYESnUizbpFDWArcvVD61w0PEWQ3CaFRLnbQXs+kpM4ZZfGMfIE22zfA08QSY67q7TNQ==}
     cpu: [x64]
     os: [win32]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-parser/binding-darwin-arm64@0.5.48':
     resolution: {integrity: sha512-If8mb7HH3vqghJ2NNZ8SuHfhsnjVzOxJpB8xcNOXS5WjYrs2mUhHIh5KOIvK13hDOzh0htGeGK3A6MsiEqE7HQ==}
     cpu: [arm64]
     os: [darwin]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-darwin-x64@0.5.48':
     resolution: {integrity: sha512-EimvPXfspzxf1K11eB6tCW5oiQEXB8g84T2wP1TwzQagdDKo33bkmmVF0B32vTIpXnk/Ifu5IB61izZ1MylljA==}
     cpu: [x64]
     os: [darwin]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-freebsd-x64@0.5.48':
     resolution: {integrity: sha512-0GcUMrumLHheThY9r5Tp46gaZYzn0irWPS1Zba6WY+vVQfhUtzGiWgXxI6tuXX0N32kEaaEVRpkKctvo6Kx3aQ==}
     cpu: [x64]
     os: [freebsd]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm-gnu@0.5.48':
     resolution: {integrity: sha512-8S5T5wjCC73dmmpQeZ49aYsSunIUM3D4Fc6rdK96c+Ayg/p3FmeSPF3xuLZHejcTmqJIIvnbfPlUF+rB6DITjQ==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm-musl@0.5.48':
     resolution: {integrity: sha512-tTmbxvnUHcK2/crS9547vk2SMmsajH1yqJ8ltXhIuHJgqR1v+d9n9KT+kSayo/5CS76LegeYxhMFjEivBH2hFA==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm64-gnu@0.5.48':
     resolution: {integrity: sha512-KGYCBMqI2zfwyhgq5tpPVNe7jpUeYTBm8DhjdS+zqWNumde/PEC170QE5RHxcOAlsirIDeIUk0jqx+r/axoFSw==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm64-musl@0.5.48':
     resolution: {integrity: sha512-2wTSMsCSXLTc2lZUjMAuU5X4cje55u205WJqfV5NWNF6j9pW/tXyxr15dJeekj8ziLqBXzIsj4DbRh4sY/WcjA==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-x64-gnu@0.5.48':
     resolution: {integrity: sha512-d/6v9UnGglVu1WC2JQyv/5aWSi5fXZeGSlidCfmHp4+N65N1GDKUnFtys5MK5eAPeAjTgSHGGtOc/yCcKTlv3A==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-x64-musl@0.5.48':
     resolution: {integrity: sha512-gX19gw6u4ApPy7SYMPKfFlEkrtj6WlORvrTKK3sBQqjyV+8+mUAkQgxXNjHw4RnOiAmVYg7TOlZcg8d+Qqod9A==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-win32-arm64@0.5.48':
     resolution: {integrity: sha512-w6cQQLbqj3Jcom5Q7ifm103NUOQ9d+Cb4VU5lkrZDjMnwVJ9Hzzg1vCQR7miJuF44vhCXldbme5UryE3giEKlA==}
     cpu: [arm64]
     os: [win32]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-win32-x64@0.5.48':
     resolution: {integrity: sha512-4gO0HmG7fzFxrw1rs0dUdnnaY9YgennjETqDWrTSp7x9fmTUOAoN4VsMfP7YyliQeG1WJJHc55O+rOhmsLppow==}
     cpu: [x64]
     os: [win32]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-toolchain/types@0.5.43':
     resolution: {integrity: sha512-kSpvPntnXw5+lYjO71ffBEnQ5ycQ74KGIYknh0TS4xeyCuBkOqxyJumxZkMhLBBUCLjDAbx2+Icnr3Zh4ftjpQ==}
@@ -4191,6 +4240,9 @@ packages:
   bare-url@2.4.0:
     resolution: {integrity: sha512-NSTU5WN+fy/L0DDenfE8SXQna4voXuW0FHM7wH8i3/q9khUSchfPbPezO4zSFMnDGIf9YE+mt/RWhZgNRKRIXA==}
 
+  base-x@5.0.1:
+    resolution: {integrity: sha512-M7uio8Zt++eg3jPj+rHMfCC+IuygQHHCOU+IYsVtik6FWjuYpVt/+MRKcgsAMHh8mMFAwnB+Bs+mTrFiXjMzKg==}
+
   baseline-browser-mapping@2.10.13:
     resolution: {integrity: sha512-BL2sTuHOdy0YT1lYieUxTw/QMtPBC3pmlJC6xk8BBYVv6vcw3SGdKemQ+Xsx9ik2F/lYDO9tqsFQH1r9PFuHKw==}
     engines: {node: '>=6.0.0'}
@@ -4248,9 +4300,6 @@ packages:
     peerDependenciesMeta:
       magicast:
         optional: true
-
-  c15t@2.1.0:
-    resolution: {integrity: sha512-ukWy6y/yNGPrJv4bAr2DeMNkxtcsdehe++AeqzEC6ITDCVVaqCGeePIKo/3qMZzhyyCPtcKsQJKNIfqszyzpvQ==}
 
   cac@7.0.0:
     resolution: {integrity: sha512-tixWYgm5ZoOD+3g6UTea91eow5z6AAHaho3g0V9CNSNb45gM8SmflpAc+GRd1InC4AqN/07Unrgp56Y94N9hJQ==}
@@ -4656,9 +4705,6 @@ packages:
   date-fns@4.4.0:
     resolution: {integrity: sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w==}
 
-  dayjs@1.11.20:
-    resolution: {integrity: sha512-YbwwqR/uYpeoP4pu043q+LTDLFBLApUP6VxRihdfNTqu4ubqMlGDLd6ErXhEgsyvY0K6nCs7nggYumAN+9uEuQ==}
-
   dayjs@1.11.23:
     resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
 
@@ -4793,9 +4839,6 @@ packages:
   domhandler@5.0.3:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
-
-  dompurify@3.3.3:
-    resolution: {integrity: sha512-Oj6pzI2+RqBfFG+qOaOLbFXLQ90ARpcGG6UePL82bJLtdsa6CYJD7nmiU8MW9nQNOtCHV3lZ/Bzq1X0QYbBZCA==}
 
   dompurify@3.4.15:
     resolution: {integrity: sha512-EUBjM+B+lkDE41iE82DDSCfkoPGfXx8IxFxPMjNzm/Uk4xDet77rTN9wqlxlVg71kK7XGuUMv6wUxJUwwv+Xyw==}
@@ -5631,10 +5674,6 @@ packages:
 
   jszip@3.10.1:
     resolution: {integrity: sha512-xXDvecyTpGLrqFrvkrUSoxxfJI5AH7U8zxxtVclpsUtMCq4JQ290LY8AW5c7Ggnr/Y/oK+bQMbqK2qmtk3pN4g==}
-
-  katex@0.16.45:
-    resolution: {integrity: sha512-pQpZbdBu7wCTmQUh7ufPmLr0pFoObnGUoL/yhtwJDgmmQpbkg/0HSVti25Fu4rmd1oCR6NGWe9vqTWuWv3GcNA==}
-    hasBin: true
 
   katex@0.16.47:
     resolution: {integrity: sha512-Eeo8Ys1doU1z+x8AZsPpQu+p/QcZBI5PeOo7QGQdy2x2m0MU/hYagBbGOmXwr5KVbEfVuWv9LpnQWeehogurjg==}
@@ -7535,8 +7574,8 @@ packages:
     resolution: {integrity: sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==}
     hasBin: true
 
-  valibot@1.3.1:
-    resolution: {integrity: sha512-sfdRir/QFM0JaF22hqTroPc5xy4DimuGQVKFrzF1YfGwaS1nJot3Y8VqMdLO2Lg27fMzat2yD3pY5PbAYO39Gg==}
+  valibot@1.4.2:
+    resolution: {integrity: sha512-gjdCvJ6d3RyHAneqxMYMW9QMCwYMb3jpOO0IyHZV1bnRHFBHrX3VkIILt5XYR0WhwHiH7Mty8ovuPZ/O3gamrg==}
     peerDependencies:
       typescript: '>=5'
     peerDependenciesMeta:
@@ -7942,24 +7981,6 @@ packages:
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
-  zustand@5.0.12:
-    resolution: {integrity: sha512-i77ae3aZq4dhMlRhJVCYgMLKuSiZAaUPAct2AksxQ+gOtimhGMdXljRT21P5BNpeT4kXlLIckvkPM029OljD7g==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=18.0.0'
-      immer: '>=9.0.6'
-      react: '>=18.0.0'
-      use-sync-external-store: '>=1.2.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      immer:
-        optional: true
-      react:
-        optional: true
-      use-sync-external-store:
-        optional: true
-
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -8215,50 +8236,71 @@ snapshots:
 
   '@braintree/sanitize-url@7.1.2': {}
 
-  '@c15t/nextjs@2.1.0(@types/react@19.3.0)(next@16.3.5(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(@types/node@25.9.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))':
+  '@c15t/core@3.0.0(typescript@6.0.3)':
     dependencies:
-      '@c15t/react': 2.1.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))
-      '@c15t/translations': 2.1.0
-      c15t: 2.1.0(@types/react@19.3.0)(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))
+      '@c15t/schema': 3.0.0(typescript@6.0.3)
+      '@c15t/translations': 3.0.0
+    transitivePeerDependencies:
+      - typescript
+
+  '@c15t/dev-tools@3.0.0(typescript@6.0.3)':
+    dependencies:
+      '@c15t/core': 3.0.0(typescript@6.0.3)
+    transitivePeerDependencies:
+      - typescript
+
+  '@c15t/iab@3.0.0(typescript@6.0.3)':
+    dependencies:
+      '@c15t/core': 3.0.0(typescript@6.0.3)
+      '@c15t/schema': 3.0.0(typescript@6.0.3)
+      '@iabtechlabtcf/core': 1.5.22
+    transitivePeerDependencies:
+      - typescript
+
+  '@c15t/nextjs@3.0.0(next@16.3.5(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(@types/node@25.9.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)':
+    dependencies:
+      '@c15t/core': 3.0.0(typescript@6.0.3)
+      '@c15t/react': 3.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
+      '@c15t/schema': 3.0.0(typescript@6.0.3)
+      '@c15t/translations': 3.0.0
+    optionalDependencies:
       next: 16.3.5(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(@types/node@25.9.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
     transitivePeerDependencies:
-      - '@types/react'
-      - immer
       - typescript
-      - use-sync-external-store
 
-  '@c15t/react@2.1.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))':
+  '@c15t/react@3.0.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)':
     dependencies:
-      '@c15t/ui': 2.1.0(@types/react@19.3.0)(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))
-      c15t: 2.1.0(@types/react@19.3.0)(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))
+      '@c15t/core': 3.0.0(typescript@6.0.3)
+      '@c15t/dev-tools': 3.0.0(typescript@6.0.3)
+      '@c15t/iab': 3.0.0(typescript@6.0.3)
+      '@c15t/schema': 3.0.0(typescript@6.0.3)
+      '@c15t/translations': 3.0.0
+      '@c15t/ui': 3.0.0(typescript@6.0.3)
+      '@types/google.maps': 3.65.3
+    optionalDependencies:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
     transitivePeerDependencies:
-      - '@types/react'
-      - immer
       - typescript
-      - use-sync-external-store
 
-  '@c15t/schema@2.1.0(typescript@6.0.3)':
+  '@c15t/schema@3.0.0(typescript@6.0.3)':
     dependencies:
-      valibot: 1.3.1(typescript@6.0.3)
+      '@c15t/translations': 3.0.0
+      base-x: 5.0.1
+      valibot: 1.4.2(typescript@6.0.3)
     transitivePeerDependencies:
       - typescript
 
-  '@c15t/translations@2.1.0': {}
+  '@c15t/translations@3.0.0': {}
 
-  '@c15t/ui@2.1.0(@types/react@19.3.0)(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))':
+  '@c15t/ui@3.0.0(typescript@6.0.3)':
     dependencies:
-      '@c15t/translations': 2.1.0
-      c15t: 2.1.0(@types/react@19.3.0)(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0))
+      '@c15t/core': 3.0.0(typescript@6.0.3)
+      '@c15t/translations': 3.0.0
     transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - react
       - typescript
-      - use-sync-external-store
 
   '@chevrotain/cst-dts-gen@11.1.2':
     dependencies:
@@ -8445,6 +8487,8 @@ snapshots:
     dependencies:
       '@standard-schema/utils': 0.3.0
       react-hook-form: 7.81.0(react@19.3.0)
+
+  '@iabtechlabtcf/core@1.5.22': {}
 
   '@iconify-json/carbon@1.2.27':
     dependencies:
@@ -10325,7 +10369,7 @@ snapshots:
       htmlparser2: 10.1.0
       is-installed-globally: 1.0.0
       jiti: 2.7.0
-      katex: 0.16.45
+      katex: 0.16.47
       local-pkg: 1.2.1
       lz-string: 1.5.0
       magic-string: 0.30.21
@@ -10420,7 +10464,7 @@ snapshots:
       file-saver: 2.0.5
       floating-vue: 5.2.2(@nuxt/kit@3.21.8)(vue@3.5.40(typescript@6.0.3))
       fuse.js: 7.5.0
-      katex: 0.16.45
+      katex: 0.16.47
       lz-string: 1.5.0
       mermaid: 11.16.0
       monaco-editor: 0.53.0
@@ -10475,7 +10519,7 @@ snapshots:
       file-saver: 2.0.5
       floating-vue: 5.2.2(@nuxt/kit@3.21.8)(vue@3.5.40(typescript@6.0.3))
       fuse.js: 7.5.0
-      katex: 0.16.45
+      katex: 0.16.47
       lz-string: 1.5.0
       mermaid: 11.16.0
       monaco-editor: 0.53.0
@@ -10568,7 +10612,7 @@ snapshots:
       '@shikijs/markdown-it': 3.23.0(markdown-it-async@2.2.0)
       '@vitejs/plugin-vue': 6.0.8(vite@7.3.6(@types/node@25.9.5)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0))(vue@3.5.40(typescript@6.0.3))
       '@vitejs/plugin-vue-jsx': 5.1.6(vite@7.3.6(@types/node@25.9.5)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.9.0))(vue@3.5.40(typescript@6.0.3))
-      katex: 0.16.45
+      katex: 0.16.47
       mermaid: 11.16.0
       monaco-editor: 0.53.0
       shiki: 3.23.0
@@ -10603,7 +10647,7 @@ snapshots:
       '@shikijs/markdown-it': 3.23.0(markdown-it-async@2.2.0)
       '@vitejs/plugin-vue': 6.0.8(vite@8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0))(vue@3.5.40(typescript@5.9.3))
       '@vitejs/plugin-vue-jsx': 5.1.6(vite@8.0.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.9.5)(jiti@2.7.0)(yaml@2.9.0))(vue@3.5.40(typescript@5.9.3))
-      katex: 0.16.45
+      katex: 0.16.47
       mermaid: 11.16.0
       monaco-editor: 0.53.0
       shiki: 3.23.0
@@ -10891,6 +10935,8 @@ snapshots:
   '@types/estree@1.0.9': {}
 
   '@types/geojson@7946.0.16': {}
+
+  '@types/google.maps@3.65.3': {}
 
   '@types/hammerjs@2.0.46': {}
 
@@ -11675,6 +11721,8 @@ snapshots:
     dependencies:
       bare-path: 3.0.0
 
+  base-x@5.0.1: {}
+
   baseline-browser-mapping@2.10.13: {}
 
   basic-ftp@5.2.0: {}
@@ -11748,18 +11796,6 @@ snapshots:
       pkg-types: 2.3.1
       rc9: 3.0.1
     optional: true
-
-  c15t@2.1.0(@types/react@19.3.0)(react@19.3.0)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.3.0)):
-    dependencies:
-      '@c15t/schema': 2.1.0(typescript@6.0.3)
-      '@c15t/translations': 2.1.0
-      zustand: 5.0.12(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.6.0(react@19.3.0))
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - react
-      - typescript
-      - use-sync-external-store
 
   cac@7.0.0: {}
 
@@ -12169,8 +12205,6 @@ snapshots:
 
   date-fns@4.4.0: {}
 
-  dayjs@1.11.20: {}
-
   dayjs@1.11.23: {}
 
   debug@2.6.9:
@@ -12258,10 +12292,6 @@ snapshots:
   domhandler@5.0.3:
     dependencies:
       domelementtype: 2.3.0
-
-  dompurify@3.3.3:
-    optionalDependencies:
-      '@types/trusted-types': 2.0.7
 
   dompurify@3.4.15:
     optionalDependencies:
@@ -13156,10 +13186,6 @@ snapshots:
       readable-stream: 2.3.8
       setimmediate: 1.0.5
 
-  katex@0.16.45:
-    dependencies:
-      commander: 8.3.0
-
   katex@0.16.47:
     dependencies:
       commander: 8.3.0
@@ -13566,10 +13592,10 @@ snapshots:
       d3: 7.9.0
       d3-sankey: 0.12.3
       dagre-d3-es: 7.0.14
-      dayjs: 1.11.20
-      dompurify: 3.3.3
+      dayjs: 1.11.23
+      dompurify: 3.4.15
       es-toolkit: 1.46.1
-      katex: 0.16.45
+      katex: 0.16.47
       khroma: 2.1.0
       marked: 16.4.2
       roughjs: 4.6.6
@@ -15779,7 +15805,7 @@ snapshots:
 
   uuid@11.1.0: {}
 
-  valibot@1.3.1(typescript@6.0.3):
+  valibot@1.4.2(typescript@6.0.3):
     optionalDependencies:
       typescript: 6.0.3
 
@@ -16341,11 +16367,5 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.3.6: {}
-
-  zustand@5.0.12(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.6.0(react@19.3.0)):
-    optionalDependencies:
-      '@types/react': 19.3.0
-      react: 19.3.0
-      use-sync-external-store: 1.6.0(react@19.3.0)
 
   zwitch@2.0.4: {}
