@@ -174,16 +174,14 @@ export function DocDetailPage({
         <div className="stripe-divider" />
       </div>
 
-      <Prose className="px-4">
-        <h1 className="screen-line-bottom text-3xl font-semibold tracking-tight text-balance">
-          {doc.metadata.title}
-        </h1>
+      <Prose className="article-prose">
+        <h1 className="screen-line-bottom">{doc.metadata.title}</h1>
 
         <p className="text-muted-foreground">{doc.metadata.description}</p>
 
-        <InlineTOC items={toc} />
+        <InlineTOC items={toc} className="my-8 md:my-10" />
 
-        <div>
+        <div className="article-content">
           <MDX code={doc.content} />
         </div>
       </Prose>

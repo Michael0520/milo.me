@@ -71,12 +71,6 @@ const MENU_LINKS: CommandLinkItem[] = [
   },
   ...DEV_MENU_LINKS,
   {
-    title: "Daily",
-    href: "/daily",
-    icon: <Icons.news />,
-    shortcut: "GD",
-  },
-  {
     title: "Tech",
     href: "/tech",
     icon: <LayersIcon />,
@@ -118,7 +112,7 @@ const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map((item) => ({
 const OTHER_LINK_ITEMS: CommandLinkItem[] = [
   {
     title: "RSS Feed",
-    href: "/rss",
+    href: "/tech/rss",
     icon: <RssIcon />,
     openInNewTab: true,
   },
@@ -185,7 +179,7 @@ export function CommandMenu({
     [router],
   );
 
-  const { componentLinks, dailyLinks, techLinks } = useMemo(
+  const { componentLinks, techLinks } = useMemo(
     () => ({
       componentLinks: docs
         .filter((doc) => doc.category === DOC_CATEGORIES.components)
@@ -194,9 +188,6 @@ export function CommandMenu({
             sensitivity: "base",
           }),
         )
-        .map(docToCommandLinkItem),
-      dailyLinks: docs
-        .filter((doc) => doc.category === DOC_CATEGORIES.personal)
         .map(docToCommandLinkItem),
       techLinks: docs
         .filter((doc) => doc.category === DOC_CATEGORIES.tech)
@@ -260,13 +251,6 @@ export function CommandMenu({
               />
             </>
           )}
-
-          <CommandLinkGroup
-            heading="Daily"
-            links={dailyLinks}
-            fallbackIcon={<Icons.news />}
-            onLinkSelect={handleOpenLink}
-          />
 
           <CommandLinkGroup
             heading="Tech"
