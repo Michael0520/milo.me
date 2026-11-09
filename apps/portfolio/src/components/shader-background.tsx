@@ -1,8 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
-export const ShaderBackground = dynamic(
+const AnimatedShaderBackground = dynamic(
   () =>
     import("shaders/react").then(({ Shader, FilmGrain, FlowingGradient, Grid }) => {
       return function ShaderBackgroundContent() {
@@ -27,3 +28,27 @@ export const ShaderBackground = dynamic(
     }),
   { ssr: false },
 );
+
+export function ShaderBackground() {
+  const [supported, setSupported] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    async function checkSupport() {
+      try {
+        const adapter = await navigator.gpu?.requestAdapter();
+        if (active && adapter) setSupported(true);
+      } catch {
+        // The shader is decorative; unavailable GPU access keeps the regular background.
+      }
+    }
+
+    void checkSupport();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return supported ? <AnimatedShaderBackground /> : null;
+}
