@@ -52,6 +52,22 @@
     letter-spacing: normal;
   }
 
+  .article-content :where(p[id], h1, h2, h3, h4, h5, h6) {
+    scroll-margin-top: 6rem;
+  }
+
+  .article-content p[id]:target,
+  .article-content p[data-quote-target] {
+    border-radius: 0.25rem;
+    background: var(--accent-muted);
+    outline: 0.25rem solid var(--accent-muted);
+  }
+
+  ::target-text {
+    color: var(--foreground);
+    background: var(--selection);
+  }
+
   @media (min-width: 48rem) {
     --article-flow: 1.5rem;
     --article-section-gap: 3rem;
