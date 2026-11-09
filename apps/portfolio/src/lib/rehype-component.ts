@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import path from "node:path";
 
 import { u } from "unist-builder";
@@ -8,6 +7,7 @@ import { Index } from "@/__registry__/index";
 import type { UnistNode, UnistTree } from "@/types/unist";
 
 import { fixImport } from "./registry";
+import { readSourceFile } from "./read-source-file";
 
 export function rehypeComponent() {
   // Thanks @shadcn/ui
@@ -33,7 +33,7 @@ export function rehypeComponent() {
           let src: string;
 
           if (srcPath) {
-            src = path.join(process.cwd(), srcPath);
+            src = srcPath;
           } else {
             const component = Index[name];
             src = fileName
@@ -48,7 +48,7 @@ export function rehypeComponent() {
 
           // Read the source file.
           const filePath = src;
-          let source = fs.readFileSync(filePath, "utf8");
+          let source = readSourceFile(filePath);
 
           // Replace imports.
           // TODO: Use @swc/core and a visitor to replace this.
@@ -107,7 +107,7 @@ export function rehypeComponent() {
 
           // Read the source file.
           const filePath = src;
-          let source = fs.readFileSync(filePath, "utf8");
+          let source = readSourceFile(filePath);
 
           // Replace imports.
           // TODO: Use @swc/core and a visitor to replace this.
