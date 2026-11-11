@@ -8,11 +8,8 @@ const IS_DEV = process.env.NODE_ENV === "development";
 export function KeyboardShortcuts() {
   const router = useRouter();
 
-  // Mirror the command menu's advertised shortcuts (command-menu.tsx MENU_LINKS)
-  // exactly: GH/GD/GN/GT. Previously GD/GN/GT were shown but never registered,
-  // and g>s (/sponsors) + g>w (/wall-of-love) pointed at routes that don't exist.
+  // Keep navigation shortcuts in sync with the command menu.
   useHotkeys("g>h", () => router.push("/"));
-  useHotkeys("g>d", () => router.push("/daily"));
   useHotkeys("g>n", () => router.push("/tech"));
   useHotkeys("g>t", () => router.push("/talks"));
 

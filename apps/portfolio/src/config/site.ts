@@ -34,10 +34,6 @@ const DEV_NAV: NavItem[] =
 export const MAIN_NAV: NavItem[] = [
   ...DEV_NAV,
   {
-    title: "Daily",
-    href: "/daily",
-  },
-  {
     title: "Tech",
     href: "/tech",
   },

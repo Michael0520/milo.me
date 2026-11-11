@@ -1,28 +1,9 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-
 import { ImageResponse } from "next/og";
 
 import { ML_MARK_PATH, ML_MARK_VIEWBOX } from "@/components/ml-mark-path";
 
+import { geistMonoRegular, geistSemiBold } from "../fonts";
 import { clampParam, OG_CACHE_CONTROL } from "../params";
-
-function loadFont(filename: string) {
-  const paths = [
-    join(process.cwd(), "src/assets/fonts", filename),
-    join(process.cwd(), "apps/portfolio/src/assets/fonts", filename),
-  ];
-  for (const p of paths) {
-    try {
-      return readFileSync(p);
-    } catch {}
-  }
-  throw new Error(`Font not found: ${filename}`);
-}
-
-const geistSemiBold = loadFont("Geist-SemiBold.ttf");
-
-const geistMonoRegular = loadFont("GeistMono-Regular.ttf");
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

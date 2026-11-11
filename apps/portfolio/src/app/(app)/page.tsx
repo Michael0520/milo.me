@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import type { ProfilePage as PageSchema, WithContext } from "schema-dts";
 
+import { ShaderBackground } from "@/components/shader-background";
 import { getDocsByCategory } from "@/features/doc/data/documents";
 import { DOC_CATEGORIES } from "@/features/doc/types/document";
 import { About } from "@/features/portfolio/components/about";
 import { Awards } from "@/features/portfolio/components/awards";
-import { Blog } from "@/features/portfolio/components/blog";
 import { Bookmarks } from "@/features/portfolio/components/bookmarks";
 import { Certifications } from "@/features/portfolio/components/certifications";
 import { Components } from "@/features/portfolio/components/components";
@@ -54,9 +54,6 @@ export default function Page() {
     getDocsByCategory(DOC_CATEGORIES.components).length > 0
       ? [{ title: "Components", url: "#components", depth: 2 }]
       : []),
-    ...(getDocsByCategory(DOC_CATEGORIES.personal).length > 0
-      ? [{ title: "Daily", url: "#daily", depth: 2 }]
-      : []),
     ...(EXPERIENCES.length > 0 ? [{ title: "Experience", url: "#experience", depth: 2 }] : []),
     { title: "Projects", url: "#projects", depth: 2 },
     ...(AWARDS.length > 0 ? [{ title: "Awards", url: "#awards", depth: 2 }] : []),
@@ -66,6 +63,7 @@ export default function Page() {
 
   return (
     <>
+      <ShaderBackground />
       <TOC items={tocItems} />
 
       <script
@@ -113,9 +111,6 @@ export default function Page() {
             <Separator />
           </>
         )}
-
-        <Blog />
-        <Separator />
 
         {EXPERIENCES.length > 0 && (
           <>

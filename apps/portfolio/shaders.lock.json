@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "shaders": {
+    "4750240": {
+      "title": "Orbital Sunrise 4",
+      "component": "OrbitalSunrise4",
+      "file": "src/components/shaders/OrbitalSunrise4.tsx",
+      "framework": "react",
+      "hash": "sha256:f4dd8270e35778d6ca92757b7fff01cbc905ad4fdf292413b2483a3dee2416ce",
+      "updatedAt": "2026-11-11T02:34:22.148124+00:00",
+      "installedAt": "2026-11-11T02:34:22.253Z",
+      "source": {
+        "kind": "preset",
+        "presetId": "2302dce5-151c-4922-a30f-7d3871fed057",
+        "slug": "orbital-sunrise-4"
+      }
+    }
+  }
+}

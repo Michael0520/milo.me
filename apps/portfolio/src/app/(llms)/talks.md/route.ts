@@ -1,5 +1,6 @@
 import { SITE_INFO } from "@/config/site";
 import { TALKS } from "@/features/portfolio/data/talks";
+import { markdownResponse } from "@/lib/markdown-response";
 
 const content = `# Talks
 
@@ -15,9 +16,5 @@ export const revalidate = false;
 export const dynamic = "force-static";
 
 export async function GET() {
-  return new Response(content, {
-    headers: {
-      "Content-Type": "text/markdown;charset=utf-8",
-    },
-  });
+  return markdownResponse(content);
 }
