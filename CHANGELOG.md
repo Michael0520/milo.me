@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.19.0](https://github.com/Michael0520/milo.me/compare/v0.18.0...v0.19.0) (2026-11-11)
+
+
+### Features
+
+* add article metadata, quote sharing, and link previews ([a397e45](https://github.com/Michael0520/milo.me/commit/a397e450c5a64b55e3f8b0acaa5a5443cdf3e2c0))
+* improve article typography and archive Daily navigation ([839c71c](https://github.com/Michael0520/milo.me/commit/839c71cdcb4bfdc7e6b485e8f03b141a9bc4491e))
+* **portfolio:** add homepage orbital sunrise background ([#121](https://github.com/Michael0520/milo.me/issues/121)) ([68059ed](https://github.com/Michael0520/milo.me/commit/68059edd1de4f8a8fe6c15e90a9e852c0f0d89e1))
+* **text-flip:** respect reduced motion in profile animation ([73efea2](https://github.com/Michael0520/milo.me/commit/73efea29bfd0b64b31acd572a7b56935e85014f9))
+
+
+### Bug Fixes
+
+* **background:** skip shaders when WebGPU is unavailable ([6623067](https://github.com/Michael0520/milo.me/commit/66230677d9a4efbd41a0dce5dc41ac4e8b3498fc))
+* bound OG font and MDX source file tracing ([0c002bd](https://github.com/Michael0520/milo.me/commit/0c002bd974c49110b540bfc791418b5cafe9690c))
+* **contact:** reveal copy controls for keyboard and touch ([939dd8c](https://github.com/Michael0520/milo.me/commit/939dd8cbd45736ea83cbfe6009e88e3839e70c3c))
+* **markdown:** vary negotiated responses on Accept ([106b92f](https://github.com/Michael0520/milo.me/commit/106b92fe66aa798d11935e1e2b26ba12a7e357f7))
+* **scroll-to-top:** prevent interaction while hidden ([e60486f](https://github.com/Michael0520/milo.me/commit/e60486f2d0ecd74d6ffde8da3fdd999ebb3bac42))
+* **search:** preserve trigger name across screen sizes ([887eaa6](https://github.com/Michael0520/milo.me/commit/887eaa6920df0673197eedd64fc0edb772ffacb9))
+
 ## [0.18.0](https://github.com/Michael0520/milo.me/compare/v0.17.0...v0.18.0) (2026-09-14)
 
 
