@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import type { ProfilePage as PageSchema, WithContext } from "schema-dts";
 
+import { ShaderBackground } from "@/components/shader-background";
 import { getDocsByCategory } from "@/features/doc/data/documents";
 import { DOC_CATEGORIES } from "@/features/doc/types/document";
 import { About } from "@/features/portfolio/components/about";
@@ -62,6 +63,7 @@ export default function Page() {
 
   return (
     <>
+      <ShaderBackground />
       <TOC items={tocItems} />
 
       <script
