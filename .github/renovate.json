@@ -18,14 +18,30 @@
   },
   "packageRules": [
     {
-      "description": "Group non-major npm/catalog updates into a single PR to cut noise.",
+      "description": "Group non-major npm/catalog updates and respect deliberate PR closure. Further upgrades can be reviewed manually with taze.",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "npm minor & patch"
+      "groupName": "npm minor & patch",
+      "recreateWhen": "never"
     },
     {
       "description": "Held majors — kept back on purpose (see project memory / CLAUDE.md).",
-      "matchPackageNames": ["zod", "@hookform/resolvers", "@types/node", "puppeteer", "pnpm"],
+      "matchPackageNames": [
+        "zod",
+        "@hookform/resolvers",
+        "@types/node",
+        "puppeteer",
+        "pnpm",
+        "@c15t/nextjs",
+        "motion",
+        "shaders"
+      ],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Keep the portfolio on its declared Node 24 runtime. Major runtime upgrades require a separate migration; 24.x maintenance updates remain enabled.",
+      "matchPackageNames": ["node"],
       "matchUpdateTypes": ["major"],
       "enabled": false
     },

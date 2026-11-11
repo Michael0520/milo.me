@@ -15,6 +15,9 @@ import { getDocPath } from "@/features/doc/data/documents";
 import type { Doc } from "@/features/doc/types/document";
 import { USER } from "@/features/portfolio/data/user";
 
+import { ArticleHeading } from "./article-heading";
+import { ArticleLink } from "./article-link";
+import { ArticleSelectionShare } from "./article-selection-share";
 import { PostKeyboardShortcuts } from "./post-keyboard-shortcuts";
 import { PostNeighbourNav } from "./post-neighbour-nav";
 import { LLMCopyButtonWithViewOptions } from "./post-page-actions";
@@ -81,6 +84,8 @@ export function DocDetailPage({
   viewTransitionName: string;
 }) {
   const toc = getTableOfContents(doc.content);
+  const formatDate = (value: string) =>
+    new Intl.DateTimeFormat("en", { dateStyle: "medium", timeZone: "UTC" }).format(new Date(value));
 
   return (
     <>
@@ -174,18 +179,46 @@ export function DocDetailPage({
         <div className="stripe-divider" />
       </div>
 
-      <Prose className="px-4">
-        <h1 className="screen-line-bottom text-3xl font-semibold tracking-tight text-balance">
-          {doc.metadata.title}
-        </h1>
+      <Prose className="article-prose">
+        <h1 className="screen-line-bottom">{doc.metadata.title}</h1>
+
+        <div className="not-prose flex flex-wrap gap-x-4 gap-y-1 text-xs leading-6 tracking-normal text-muted-foreground sm:text-sm">
+          <span>
+            Published{" "}
+            <time dateTime={doc.metadata.createdAt}>{formatDate(doc.metadata.createdAt)}</time>
+          </span>
+          {doc.metadata.updatedAt.slice(0, 10) !== doc.metadata.createdAt.slice(0, 10) && (
+            <span>
+              Updated{" "}
+              <time dateTime={doc.metadata.updatedAt}>{formatDate(doc.metadata.updatedAt)}</time>
+            </span>
+          )}
+          <span>{doc.readingTime} min read</span>
+        </div>
 
         <p className="text-muted-foreground">{doc.metadata.description}</p>
 
-        <InlineTOC items={toc} />
+        <InlineTOC items={toc} className="my-8 md:my-10" />
 
-        <div>
-          <MDX code={doc.content} />
-        </div>
+        <p className="not-prose mb-6 text-xs leading-6 tracking-normal text-muted-foreground">
+          Select text to copy or share a quote.
+        </p>
+
+        <ArticleSelectionShare>
+          <MDX
+            code={doc.content}
+            paragraphAnchors
+            components={{
+              a: ArticleLink,
+              h1: (props) => <ArticleHeading as="h1" {...props} />,
+              h2: (props) => <ArticleHeading as="h2" {...props} />,
+              h3: (props) => <ArticleHeading as="h3" {...props} />,
+              h4: (props) => <ArticleHeading as="h4" {...props} />,
+              h5: (props) => <ArticleHeading as="h5" {...props} />,
+              h6: (props) => <ArticleHeading as="h6" {...props} />,
+            }}
+          />
+        </ArticleSelectionShare>
       </Prose>
 
       <div className="screen-line-top screen-line-bottom">

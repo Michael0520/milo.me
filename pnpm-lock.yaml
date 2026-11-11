@@ -170,8 +170,8 @@ catalogs:
       specifier: ^2.0.0
       version: 2.0.0
     shaders:
-      specifier: ^3.0.0
-      version: 3.0.440
+      specifier: ^4.0.7
+      version: 4.0.7
     sharp:
       specifier: ^0.34.5
       version: 0.34.5
@@ -406,7 +406,7 @@ importers:
         version: 2.0.0(typescript@6.0.3)
       shaders:
         specifier: 'catalog:'
-        version: 3.0.440(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vue@3.5.40(typescript@6.0.3))
+        version: 4.0.7(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vue@3.5.40(typescript@6.0.3))
       sharp:
         specifier: 'catalog:'
         version: 0.34.5
@@ -6956,19 +6956,16 @@ packages:
     engines: {node: '>=20.18.1'}
     hasBin: true
 
-  shaders@3.0.440:
-    resolution: {integrity: sha512-erDztfeue5VXhd1/ef8XFABfKdJcQjoDpYYHsTTpi8fdZQa1vfEfy/6ydZSgb8GVS6QB+T+Bi6jisNNj4rgphw==}
+  shaders@4.0.7:
+    resolution: {integrity: sha512-v/EQv2U6TQccRuoWX0D5lhkJsIizigCRVadsavY8olKLwb4uhHFi+JlIREEMYD4pvywjLnwVpMNpTtJgzR/FwQ==}
     hasBin: true
     peerDependencies:
-      pixi.js: ^8.0.0
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
       solid-js: ^1.8.0
       svelte: ^5
       vue: ^3.5.0
     peerDependenciesMeta:
-      pixi.js:
-        optional: true
       react:
         optional: true
       react-dom:
@@ -7345,8 +7342,8 @@ packages:
   typed-query-selector@2.12.2:
     resolution: {integrity: sha512-EOPFbyIub4ngnEdqi2yOcNeDLaX/0jcE1JoAXQDDMIthap7FoN795lc/SHfIq2d416VufXpM8z/lD+WRm2gfOQ==}
 
-  typegpu@0.11.9:
-    resolution: {integrity: sha512-AqBV6P9lW2jA7pEVDeiMD7Qoza9doPgueQbwyUyf09u4ndb9jOttHwpZ18c+BEzwLHaPlV50jw0hx5QsmVJGNg==}
+  typegpu@0.12.3:
+    resolution: {integrity: sha512-zYwQEhnPPwhq5vQKmollXRK1LCVjStOnL+2B0PiebqvAzYPr25rPNR4r3olLoow5sKKjyj3kzHKEcpD5SyDzGQ==}
     engines: {node: '>=12.20.0'}
     hasBin: true
 
@@ -15090,9 +15087,9 @@ snapshots:
       - supports-color
       - typescript
 
-  shaders@3.0.440(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vue@3.5.40(typescript@6.0.3)):
+  shaders@4.0.7(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vue@3.5.40(typescript@6.0.3)):
     dependencies:
-      typegpu: 0.11.9
+      typegpu: 0.12.3
     optionalDependencies:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
@@ -15523,7 +15520,7 @@ snapshots:
 
   typed-query-selector@2.12.2: {}
 
-  typegpu@0.11.9:
+  typegpu@0.12.3:
     dependencies:
       tinyest: 0.3.2
       tsover-runtime: 0.0.7

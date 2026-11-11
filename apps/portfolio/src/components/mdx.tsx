@@ -25,6 +25,7 @@ import {
 } from "@/lib/rehype-code-block";
 import { rehypeComponent } from "@/lib/rehype-component";
 import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
+import { rehypeParagraphIds } from "@/lib/rehype-paragraph-ids";
 import { remarkCodeImport } from "@/lib/remark-code-import";
 import { cn } from "@/lib/utils";
 
@@ -156,7 +157,7 @@ const components: MDXRemoteProps["components"] = {
   ArchitectureDiagram,
 };
 
-const options: MDXRemoteProps["options"] = {
+const options: NonNullable<MDXRemoteProps["options"]> = {
   // Allow JSX attribute expressions (e.g. nodes={[...]}) in our own trusted MDX content.
   // next-mdx-remote v6 strips all JS expressions by default (blockJS: true);
   // blockDangerousJS stays on and still blocks eval-like calls.
@@ -223,6 +224,25 @@ const options: MDXRemoteProps["options"] = {
   },
 };
 
-export function MDX({ code }: { code: string }) {
-  return <MDXRemote source={code} components={components} options={options} />;
+export function MDX({
+  code,
+  components: overrides,
+  paragraphAnchors = false,
+}: {
+  code: string;
+  components?: MDXRemoteProps["components"];
+  paragraphAnchors?: boolean;
+}) {
+  const mdxOptions = paragraphAnchors
+    ? {
+        ...options,
+        mdxOptions: {
+          ...options.mdxOptions,
+          rehypePlugins: [...(options.mdxOptions?.rehypePlugins ?? []), rehypeParagraphIds],
+        },
+      }
+    : options;
+  return (
+    <MDXRemote source={code} components={{ ...components, ...overrides }} options={mdxOptions} />
+  );
 }

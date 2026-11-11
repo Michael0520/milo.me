@@ -1,6 +1,7 @@
 import { SITE_INFO } from "@/config/site";
 import { getDocPath, getDocsByCategory } from "@/features/doc/data/documents";
 import { DOC_CATEGORIES } from "@/features/doc/types/document";
+import { markdownResponse } from "@/lib/markdown-response";
 
 const dailyPosts = getDocsByCategory(DOC_CATEGORIES.personal);
 const techPosts = getDocsByCategory(DOC_CATEGORIES.tech);
@@ -29,9 +30,5 @@ export const revalidate = false;
 export const dynamic = "force-static";
 
 export async function GET() {
-  return new Response(content, {
-    headers: {
-      "Content-Type": "text/markdown;charset=utf-8",
-    },
-  });
+  return markdownResponse(content, { negotiated: true });
 }
