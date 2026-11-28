@@ -94,7 +94,7 @@ catalogs:
     "@types/unist": ^3.0.3
 
   script:
-    "@fission-ai/openspec": ^1.6.0
+    "@fission-ai/openspec": ^2.0.0
     libphonenumber-metadata-generator: ^2.0.6
     puppeteer: ^24.43.1
     shadcn: ^4.13.1
